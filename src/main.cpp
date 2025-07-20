@@ -1,15 +1,20 @@
 #include <iostream>
+#include "parser/ast.hpp"
 
-#include "parser/parser.h"
-#include "DBEngine/engine.h"
+extern int yyparse();
+extern ASTNode* root;  // Defined in parser.y
+extern FILE* yyin;
 
 int main() {
-    std::cout << "hi!\n" << __cplusplus << '\n';
-    auto myParser = SQLParser();
-    auto Engine = DataBaseEngine();
-
-    Engine.initDBEngine();
-    myParser.initParser();
-
+    yyin = stdin;
+    std::cout << "Enter SQL statement:\n";
+    yyparse();
+    if (root) {
+        std::cout << "If is running";
+        root->interpret();
+        delete root;
+    } else {
+        std::cerr << "Parsing failed.\n";
+    }
     return 0;
 }
