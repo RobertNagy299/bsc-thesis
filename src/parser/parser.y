@@ -1,28 +1,51 @@
+
 %code requires {
   #include <string>
   #include "ast.hpp"
 }
 
-%{
-#include <string>
-#include <memory>
-#include "ast.hpp"
+%code {
+  #include <string>
+  #include <memory>
+  #include <iostream>
+  #include <sstream>
+  #include <vector>
+  #include <cstring>
+  #include "ast.hpp"
 
-extern int yylex();
-void yyerror(const char *msg);
+  int yylex(YYSTYPE* yylval, YYLTYPE* yylloc);
+  void yyerror(const YYLTYPE* loc, const char* msg);
 
-// Define the global root pointer
-ASTNode* root = nullptr;
-%}
+  extern int yylineno;
+  extern char* yytext;
+  extern int yytoken;
+
+  ASTNode* root = nullptr;
+}
+
+
+/** %define section */
+
+%define api.pure full
+%define parse.error verbose
+%defines
+
+%locations
 
 %union {
     std::string* str;
     ASTNode* node;
 }
 
+
+/** %token section */
+
 %token <str> IDENTIFIER
 %token CREATE TABLE PRIMARY KEY NUMBER_TYPE
 %token LPAREN RPAREN SEMICOLON
+
+
+/** %type section */
 
 %type <node> statement table_decl
 
@@ -44,11 +67,19 @@ table_decl:
         printf("Yay!");
         $$ = new CreateTableNode(*$3, *$5);
         delete $3; delete $5;
+        $3 = nullptr; $5 = nullptr;
     }
     ;
 
 %%
 
-void yyerror(const char *msg) {
-    fprintf(stderr, "Parse error: %s\n", msg);
+void yyerror(const YYLTYPE* loc, const char* msg) {
+    if(!loc || !msg) {
+      std::cerr << "Parse error - one of yyerror's arguments is a nullptr, Detailed error report not possible.";
+    }
+    std::cerr << "Parse error at line " << loc->first_line
+              << ", column " << loc->first_column << ": ";
+
+    // Print what was expected
+    std::cerr << msg << std::endl;
 }

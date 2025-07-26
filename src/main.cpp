@@ -13,6 +13,7 @@ int main() {
         std::cout << "If is running";
         root->interpret();
         delete root;
+        root = nullptr;
     } else {
         std::cerr << "Parsing failed.\n";
     }

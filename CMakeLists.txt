@@ -12,7 +12,6 @@ bison_target(
   src/parser/parser.y
   ${CMAKE_CURRENT_BINARY_DIR}/parser.cpp
   DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/parser.hpp
-  DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/parser.tab.hpp
 )
 
 flex_target(
@@ -35,9 +34,7 @@ target_include_directories(
   PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser     # <- to find ast.hpp
-    ${CMAKE_CURRENT_BINARY_DIR}                # <- to find parser.hpp (generated)
-  PRIVATE 
-    ${CMAKE_CURRENT_BINARY_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}                # <- to find parser.hpp (generated)   
   )
 
 # Create the main executable
