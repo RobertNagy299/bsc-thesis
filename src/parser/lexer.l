@@ -1,9 +1,9 @@
 %{
-
 #include "parser.hpp"
 
 #include <string>
 #include <iostream>
+#include <cstdio>
 
 extern int yylineno;
 extern char* yytext;
@@ -18,7 +18,6 @@ int yycolumn = 1;
     yylloc->first_column = yycolumn; \
     yylloc->last_column = yycolumn + yyleng - 1; \
     yycolumn += yyleng;
-
 %}
 
 %option yylineno
@@ -40,8 +39,10 @@ WS        [ \t\r\n]+
 ")"              { YY_USER_ACTION return RPAREN; }
 ";"              { YY_USER_ACTION return SEMICOLON; }
 \n               { yylineno++; yycolumn = 1; yylloc->first_column = 1; }
-{WS}             {  /* skip */ }
-.                { printf("Unexpected token: %s", yytext);return *yytext; } 
+{WS}             { /* skip */ }
+.                { std::fprintf(stderr, "Unexpected token: %s\n", yytext); return *yytext; }
+
+<<EOF>>          { return 0; }
 
 %%
 

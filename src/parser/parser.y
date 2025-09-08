@@ -1,4 +1,3 @@
-
 %code requires {
   #include <string>
   #include "ast.hpp"
@@ -23,13 +22,9 @@
   ASTNode* root = nullptr;
 }
 
-
-/** %define section */
-
 %define api.pure full
 %define parse.error verbose
 %defines
-
 %locations
 
 %union {
@@ -37,15 +32,13 @@
     ASTNode* node;
 }
 
-
-/** %token section */
+/* Tell Bison how to free semantic values if it discards them. */
+%destructor { delete $$; } <str>
+%destructor { delete $$; } <node>
 
 %token <str> IDENTIFIER
 %token CREATE TABLE PRIMARY KEY NUMBER_TYPE
 %token LPAREN RPAREN SEMICOLON
-
-
-/** %type section */
 
 %type <node> statement table_decl
 
@@ -64,7 +57,7 @@ statement:
 
 table_decl:
     CREATE TABLE IDENTIFIER LPAREN IDENTIFIER PRIMARY KEY RPAREN {
-        printf("Yay!");
+        std::printf("Yay!");
         $$ = new CreateTableNode(*$3, *$5);
         delete $3; delete $5;
         $3 = nullptr; $5 = nullptr;
@@ -79,7 +72,5 @@ void yyerror(const YYLTYPE* loc, const char* msg) {
     }
     std::cerr << "Parse error at line " << loc->first_line
               << ", column " << loc->first_column << ": ";
-
-    // Print what was expected
     std::cerr << msg << std::endl;
 }
