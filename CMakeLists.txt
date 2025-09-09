@@ -23,14 +23,21 @@ flex_target(
 add_flex_bison_dependency(Lexer Parser)
 
 # Create the shared library
-add_library(DBEngine SHARED src/DBEngine/engine.cpp)
+# Core library with parser + engine (no main.cpp!)
+add_library(SQLCore SHARED
+    src/parser/ast.cpp
+    ${BISON_Parser_OUTPUTS}
+    ${FLEX_Lexer_OUTPUTS}
+    src/DBEngine/engine.cpp
+)
+# add_library(DBEngine SHARED src/DBEngine/engine.cpp)
 
 # Tell the compiler to look in the binary dir for the generated header
 include_directories(${CMAKE_BINARY_DIR})
 
 # Include headers
 target_include_directories(
-  DBEngine 
+  SQLCore 
   PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser     # <- to find ast.hpp
@@ -46,4 +53,8 @@ add_executable(MainApp
 )
 
 # Link the executable with the shared lib
-target_link_libraries(MainApp DBEngine)
+target_link_libraries(MainApp SQLCore)
+
+# Enable tests
+enable_testing()
+add_subdirectory(tests)
