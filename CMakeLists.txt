@@ -41,7 +41,8 @@ target_include_directories(
   PUBLIC 
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser     # <- to find ast.hpp
-    ${CMAKE_CURRENT_BINARY_DIR}                # <- to find parser.hpp (generated)   
+    ${CMAKE_CURRENT_BINARY_DIR}                # <- to find parser.hpp (generated)
+    ${CMAKE_CURRENT_BINARY_DIR}/src/interpreter
   )
 
 # Create the main executable

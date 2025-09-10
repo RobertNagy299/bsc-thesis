@@ -30,40 +30,100 @@
 %union {
     std::string* str;
     ASTNode* node;
+    std::vector<ASTNode*>* nodeList;
+    std::vector<std::string>* strList;
 }
 
 /* Tell Bison how to free semantic values if it discards them. */
 %destructor { delete $$; } <str>
-%destructor { delete $$; } <node>
+%destructor { } <node>
+%destructor { delete $$; } <strList>
 
-%token <str> IDENTIFIER
-%token CREATE TABLE PRIMARY KEY NUMBER_TYPE
+%destructor {
+  for (auto p : *$$) {
+    delete p;
+  }
+  delete $$;
+} <nodeList>
+
+
+
+%token CREATE UNTYPED TABLE PRIMARY KEY KW_NOT KW_NULL KW_DEFAULT KW_UNIQUE NUMBER_TYPE COMMA
+
 %token LPAREN RPAREN SEMICOLON
+%token <str> IDENTIFIER
+%token <str> KW_VALUE
 
-%type <node> statement table_decl
+%type <node> program statement tabl_crea untyped_col_def
+%type <nodeList> untyped_col_defs
+%type <strList> opt_col_modifiers
+%type <str> col_modifier
+
 
 %%
-
-program:
-    statement SEMICOLON {
-      root = $1;
-      return 0;
+program
+    : statement SEMICOLON {
+        auto prog = new ProgramNode();
+        prog->statements.push_back($1);
+        root = prog;   // root is global
+        $$ = prog;
+    }
+    | program statement SEMICOLON {
+        auto prog = static_cast<ProgramNode*>($1);
+        prog->statements.push_back($2);
+        $$ = prog;
     }
     ;
 
-statement:
-    table_decl
+statement
+    : tabl_crea { $$ = $1; }
     ;
 
-table_decl:
-    CREATE TABLE IDENTIFIER LPAREN IDENTIFIER PRIMARY KEY RPAREN {
-        std::printf("Yay!");
-        $$ = new CreateTableNode(*$3, *$5);
-        delete $3; delete $5;
-        $3 = nullptr; $5 = nullptr;
+tabl_crea
+    : CREATE UNTYPED TABLE IDENTIFIER LPAREN untyped_col_defs RPAREN {
+        $$ = new CreateUntypedTableNode(*$4, *$6);
+        delete $4; delete $6;
     }
     ;
 
+untyped_col_defs
+    : /* empty */ {
+        $$ = new std::vector<ASTNode*>();
+    }
+    | untyped_col_def {
+        $$ = new std::vector<ASTNode*>();
+        $$->push_back($1);
+    }
+    | untyped_col_def COMMA untyped_col_defs {
+        $3->insert($3->begin(), $1);
+        $$ = $3;
+    }
+    ;
+
+untyped_col_def
+    : IDENTIFIER opt_col_modifiers {
+        $$ = new UntypedColumnDefNode(*$1, *$2);
+        delete $1; delete $2;
+    }
+    ;
+
+opt_col_modifiers
+    : /* empty */ {
+        $$ = new std::vector<std::string>();
+    }
+    | opt_col_modifiers col_modifier {
+        $1->push_back(*$2);
+        $$ = $1;
+        delete $2;
+    }
+    ;
+
+col_modifier
+    : PRIMARY KEY   { $$ = new std::string("PRIMARY KEY"); }
+    | KW_NOT KW_NULL      { $$ = new std::string("NOT NULL"); }
+    | KW_UNIQUE        { $$ = new std::string("UNIQUE"); }
+    | KW_DEFAULT KW_VALUE { $$ = new std::string("DEFAULT " + *$2); delete $2; $2 = nullptr; }
+    ;
 %%
 
 void yyerror(const YYLTYPE* loc, const char* msg) {
