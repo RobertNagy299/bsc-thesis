@@ -2,6 +2,8 @@
 #include "execution_context.hpp"
 #include "../parser/ast.hpp"
 #include <iostream>
+#include <filesystem>
+#include <fstream>
 
 struct InterpreterVisitor : ASTVisitor
 {
@@ -26,13 +28,53 @@ public:
       std::cerr << "Error: Table " << node.tableName << " already exists.\n";
       return;
     }
+    // Store metadata on disk
+    // Base directory for schema
+    std::string base_dir = "../src/schema/metadata";
+    std::filesystem::create_directories(base_dir); // ensures parents exist
+
+    // Path for this table
+    std::string table_path = base_dir + "/" + node.tableName;
+    std::filesystem::create_directories(table_path);
+
+    // Write metadata file
+    std::string metadata_path = table_path + "/metadata.txt";
+    std::ofstream file(metadata_path);
+    if (!file.is_open())
+    {
+      std::cerr << "Error: Could not create metadata file for table "
+                << node.tableName << "\n";
+      return;
+    }
+
+    for (auto c : node.columns)
+    {
+      auto col = dynamic_cast<UntypedColumnDefNode *>(c);
+      if (col)
+      {
+        file << col->name;
+        if (!col->modifiers.empty())
+          file << " ";
+        for (size_t i = 0; i < col->modifiers.size(); ++i)
+        {
+          file << col->modifiers[i];
+          if (i + 1 < col->modifiers.size())
+            file << ",";
+        }
+        file << "\n";
+      }
+    }
+    file.close();
+
     // Store schema in context
     std::vector<UntypedColumnDefNode *> schema;
     for (auto c : node.columns)
     {
       auto col = dynamic_cast<UntypedColumnDefNode *>(c);
       if (col)
+      {
         schema.push_back(col);
+      }
     }
     ctx.untyped_tables[node.tableName] = schema;
     std::cout << "Created table " << node.tableName

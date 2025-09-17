@@ -26,14 +26,10 @@ int main()
   if (root)
   {
     ExecutionContext ctx;
+    ctx.init();
 
     InterpreterVisitor visitor(ctx);
     root->accept(visitor); // Run the program via visitor
-    // if (root)
-    // {
-    //   delete root;
-    //   root = nullptr;
-    // }
 
     std::cout << "Successful parsing in main,cpp!\n";
   }
