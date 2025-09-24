@@ -49,11 +49,11 @@
 
 
 %token SEMICOLON LPAREN RPAREN KW_NUMBER_T COMMA
-%token KW_CREATE KW_UNTYPED KW_TABLE KW_VALUE KW_NOT KW_NULL KW_KEY KW_PRIMARY KW_DEFAULT KW_UNIQUE
+%token KW_CREATE KW_UNTYPED KW_TABLE KW_VALUE KW_NOT KW_NULL KW_KEY KW_PRIMARY KW_DEFAULT KW_UNIQUE KW_DROP
 
 %token <str> IDENTIFIER LITERAL_STRING LITERAL_NUMBER LITERAL_VALUE
 
-%type <node> program statement tabl_crea untyped_col_def
+%type <node> program statement tabl_crea untyped_col_def tabl_drop
 %type <nodeList> untyped_col_defs
 %type <strList> opt_col_modifiers
 %type <str> col_modifier literal_value
@@ -76,6 +76,7 @@ program
 
 statement
     : tabl_crea { $$ = $1; }
+    | tabl_drop { $$ = $1; }
     ;
 
 tabl_crea
@@ -84,6 +85,13 @@ tabl_crea
         delete $4; delete $6;
     }
     ;
+
+tabl_drop
+    : KW_DROP KW_TABLE IDENTIFIER {
+      $$ = new DropTableNode(*$3);
+      delete $3;
+      $3 = nullptr;
+    }
 
 untyped_col_defs
     : /* empty */ {

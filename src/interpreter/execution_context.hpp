@@ -63,10 +63,11 @@ struct ExecutionContext
 
         file.close();
         untyped_tables[tableName] = schema;
-        std::cout << "Recognized table " + tableName + " with " + std::to_string(schema.size()) + " columns.";
+        std::cout << "Recognized table " + tableName + " with " + std::to_string(schema.size()) + " columns.\n";
       }
     }
   }
+
   ~ExecutionContext()
   {
     for (auto &it : untyped_tables)

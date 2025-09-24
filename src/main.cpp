@@ -12,8 +12,8 @@ extern int yylex_destroy(); // <-- from flex
 int main()
 {
   std::cout << "Parsing started from main.cpp!\n";
-  const char *sql = "CREATE UNTYPED TABLE users(id PRIMARY KEY, name NOT NULL DEFAULT 'Gipsz jakab', age DEFAULT 18);";
-
+  //  const char *sql = "CREATE UNTYPED TABLE users(id PRIMARY KEY, name NOT NULL DEFAULT 'Gipsz jakab', age DEFAULT 18);";
+  const char *sql = "DROP TABLE comments;";
   // Open SQL string as input
   FILE *f = fmemopen((void *)sql, strlen(sql), "r");
 

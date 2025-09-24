@@ -9,6 +9,7 @@ struct InterpreterVisitor : ASTVisitor
 {
 private:
   ExecutionContext &ctx;
+  std::string base_directory = "../src/schema/metadata";
 
 public:
   InterpreterVisitor(ExecutionContext &c) : ctx(c) {}
@@ -30,11 +31,10 @@ public:
     }
     // Store metadata on disk
     // Base directory for schema
-    std::string base_dir = "../src/schema/metadata";
-    std::filesystem::create_directories(base_dir); // ensures parents exist
+    std::filesystem::create_directories(this->base_directory); // ensures parents exist
 
     // Path for this table
-    std::string table_path = base_dir + "/" + node.tableName;
+    std::string table_path = this->base_directory + "/" + node.tableName;
     std::filesystem::create_directories(table_path);
 
     // Write metadata file
@@ -79,6 +79,19 @@ public:
     ctx.untyped_tables[node.tableName] = schema;
     std::cout << "Created table " << node.tableName
               << " with " << schema.size() << " columns\n";
+  }
+
+  void visit(DropTableNode &node) override
+  {
+    std::cout << "Drop table command recognized!" << " Table name : " << node.tableName << "\n";
+    // TODO(rnagy): implement table removal from file system and execution context
+    // if (ctx.untyped_tables.find(node.tableName) != ctx.untyped_tables.end())
+    // {
+    //   std::string table_directory = this->base_directory + node.tableName;
+    //   std::filesystem::remove_all(table_directory);
+
+    //   return;
+    // }
   }
 
   void visit(UntypedColumnDefNode &node) override

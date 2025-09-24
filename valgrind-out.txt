@@ -1,204 +1,160 @@
-==6293== Memcheck, a memory error detector
-==6293== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==6293== Using Valgrind-3.19.0-8d3c8034b8-20220411 and LibVEX; rerun with -h for copyright info
-==6293== Command: ./MainApp
-==6293== Parent PID: 4086
-==6293== 
---6293-- 
---6293-- Valgrind options:
---6293--    --leak-check=full
---6293--    --show-leak-kinds=all
---6293--    --track-origins=yes
---6293--    --verbose
---6293--    --log-file=../valgrind-out.txt
---6293-- Contents of /proc/version:
---6293--   Linux version 6.1.0-39-amd64 (debian-kernel@lists.debian.org) (gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #1 SMP PREEMPT_DYNAMIC Debian 6.1.148-1 (2025-08-26)
---6293-- 
---6293-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3
---6293-- Page sizes: currently 4096, max supported 4096
---6293-- Valgrind library directory: /usr/libexec/valgrind
---6293-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp
---6293-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
---6293--   Considering /usr/lib/debug/.build-id/65/80196fa83df5c1edec10a57b2725eda6c73d7c.debug ..
---6293--   .. build-id is valid
---6293-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
---6293--   Considering /usr/lib/debug/.build-id/82/26c2aa6b808ebd5a6fafb694a7fb3287f33590.debug ..
---6293--   .. build-id is valid
---6293--    object doesn't have a dynamic symbol table
---6293-- Scheduler: using generic scheduler lock implementation.
---6293-- Reading suppressions file: /usr/libexec/valgrind/default.supp
-==6293== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-6293-by-robi-on-???
-==6293== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-6293-by-robi-on-???
-==6293== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-6293-by-robi-on-???
-==6293== 
-==6293== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==6293== don't want to do, unless you know exactly what you're doing,
-==6293== or are doing some strange experiment):
-==6293==   /usr/bin/vgdb --pid=6293 ...command...
-==6293== 
-==6293== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==6293==   /path/to/gdb ./MainApp
-==6293== and then give GDB the following command
-==6293==   target remote | /usr/bin/vgdb --pid=6293
-==6293== --pid is optional if only one valgrind process is running
-==6293== 
---6293-- REDIR: 0x40239c0 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bb0e2 (vgPlain_amd64_linux_REDIR_FOR_strlen)
---6293-- REDIR: 0x40221a0 (ld-linux-x86-64.so.2:index) redirected to 0x580bb0fc (vgPlain_amd64_linux_REDIR_FOR_index)
---6293-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
---6293--   Considering /usr/lib/debug/.build-id/ad/f1388be4d8781737b0c83fe111a5a9c6e930aa.debug ..
---6293--   .. build-id is valid
---6293-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
---6293--   Considering /usr/lib/debug/.build-id/d8/ec66cffcb23a75c3f15940674d6028709121f8.debug ..
---6293--   .. build-id is valid
-==6293== WARNING: new redirection conflicts with existing -- ignoring it
---6293--     old: 0x040239c0 (strlen              ) R-> (0000.0) 0x580bb0e2 vgPlain_amd64_linux_REDIR_FOR_strlen
---6293--     new: 0x040239c0 (strlen              ) R-> (2007.0) 0x048478a0 strlen
---6293-- REDIR: 0x40223c0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4848780 (strcmp)
---6293-- REDIR: 0x4021630 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x484c1a0 (mempcpy)
---6293-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30
---6293--    object doesn't have a symbol table
---6293-- Reading syms from /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
---6293--    object doesn't have a symbol table
---6293-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
---6293--   Considering /usr/lib/debug/.build-id/61/96744a316dbd57c0fd8968df1680aac482cec4.debug ..
---6293--   .. build-id is valid
-==6293== WARNING: new redirection conflicts with existing -- ignoring it
---6293--     old: 0x04b38600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
---6293--     new: 0x04b38600 (memalign            ) R-> (1017.0) 0x04846b90 aligned_alloc
-==6293== WARNING: new redirection conflicts with existing -- ignoring it
---6293--     old: 0x04b38600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
---6293--     new: 0x04b38600 (memalign            ) R-> (1017.0) 0x04846b60 aligned_alloc
-==6293== WARNING: new redirection conflicts with existing -- ignoring it
---6293--     old: 0x04b38600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
---6293--     new: 0x04b38600 (memalign            ) R-> (1017.0) 0x04846b90 aligned_alloc
-==6293== WARNING: new redirection conflicts with existing -- ignoring it
---6293--     old: 0x04b38600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
---6293--     new: 0x04b38600 (memalign            ) R-> (1017.0) 0x04846b60 aligned_alloc
---6293-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
---6293--   Considering /usr/lib/debug/.build-id/d6/e6f9e3af1243eed9bf5efd366dd015a9f22c13.debug ..
---6293--   .. build-id is valid
---6293-- REDIR: 0x4b3e540 (libc.so.6:strnlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3e5d0 (libc.so.6:strpbrk) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3c6f0 (libc.so.6:strcmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b514e0 (libc.so.6:wcsnlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3b830 (libc.so.6:memset) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b4fe20 (libc.so.6:wcslen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3ae60 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b4fc50 (libc.so.6:wcschr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3c5e0 (libc.so.6:index) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3e600 (libc.so.6:rindex) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b4fce0 (libc.so.6:wcscmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3ba70 (libc.so.6:stpncpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b50230 (libc.so.6:wmemchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3e3f0 (libc.so.6:strncmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3bae0 (libc.so.6:strcasecmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3d950 (libc.so.6:strcspn) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b4fd70 (libc.so.6:wcscpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3c560 (libc.so.6:strcat) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3e2e0 (libc.so.6:strncasecmp_l) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3ad70 (libc.so.6:bcmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3b7a0 (libc.so.6:memrchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3c660 (libc.so.6:strchrnul) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3d8d0 (libc.so.6:strcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3bb80 (libc.so.6:strcasecmp_l) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3e1b0 (libc.so.6:strlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3e490 (libc.so.6:strncpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3b9f0 (libc.so.6:stpcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3b580 (libc.so.6:memmove) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3acf0 (libc.so.6:memchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3e7c0 (libc.so.6:strspn) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3b690 (libc.so.6:mempcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3e240 (libc.so.6:strncasecmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b3b930 (libc.so.6:rawmemchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---6293-- REDIR: 0x4b4ebe0 (libc.so.6:__strrchr_sse2) redirected to 0x4847320 (__strrchr_sse2)
---6293-- REDIR: 0x4b37920 (libc.so.6:malloc) redirected to 0x4841740 (malloc)
---6293-- REDIR: 0x4b48d50 (libc.so.6:__strlen_sse2) redirected to 0x48477e0 (__strlen_sse2)
---6293-- REDIR: 0x4b417e0 (libc.so.6:__memcmp_sse2) redirected to 0x484a9e0 (__memcmp_sse2)
---6293-- REDIR: 0x4c10600 (libc.so.6:__strcmp_sse42) redirected to 0x4848740 (__strcmp_sse42)
---6293-- REDIR: 0x4b386d0 (libc.so.6:calloc) redirected to 0x4846540 (calloc)
---6293-- REDIR: 0x4b42640 (libc.so.6:__memset_sse2_unaligned) redirected to 0x484b1c0 (memset)
---6293-- REDIR: 0x4b41d70 (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4848890 (memcpy@GLIBC_2.2.5)
---6293-- REDIR: 0x4b41d50 (libc.so.6:__mempcpy_sse2_unaligned) redirected to 0x484bdb0 (mempcpy)
---6293-- REDIR: 0x490e570 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4841ec0 (operator new(unsigned long))
---6293-- REDIR: 0x490c8e0 (libstdc++.so.6:operator delete(void*, unsigned long)) redirected to 0x4844930 (operator delete(void*, unsigned long))
---6293-- REDIR: 0x4b37ee0 (libc.so.6:free) redirected to 0x4844110 (free)
---6293-- REDIR: 0x4b414b0 (libc.so.6:__memchr_sse2) redirected to 0x4848800 (memchr)
---6293-- REDIR: 0x4b46b20 (libc.so.6:__strchr_sse2) redirected to 0x4847400 (__strchr_sse2)
---6293-- REDIR: 0x490e5d0 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x48431a0 (operator new[](unsigned long))
---6293-- REDIR: 0x490c8d0 (libstdc++.so.6:operator delete(void*)) redirected to 0x48446b0 (operator delete(void*))
---6293-- REDIR: 0x490c900 (libstdc++.so.6:operator delete[](void*)) redirected to 0x48456f0 (operator delete[](void*))
-==6293== 
-==6293== HEAP SUMMARY:
-==6293==     in use at exit: 478 bytes in 11 blocks
-==6293==   total heap usage: 80 allocs, 69 frees, 144,157 bytes allocated
-==6293== 
-==6293== Searching for pointers to 11 not-freed blocks
-==6293== Checked 149,792 bytes
-==6293== 
-==6293== 8 bytes in 1 blocks are still reachable in loss record 1 of 7
-==6293==    at 0x4841F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
-==6293==    by 0x119F7B: std::__new_allocator<ASTNode*>::allocate(unsigned long, void const*) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x119C87: std::allocator_traits<std::allocator<ASTNode*> >::allocate(std::allocator<ASTNode*>&, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x119A09: std::_Vector_base<ASTNode*, std::allocator<ASTNode*> >::_M_allocate(unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x1194E5: void std::vector<ASTNode*, std::allocator<ASTNode*> >::_M_realloc_insert<ASTNode* const&>(__gnu_cxx::__normal_iterator<ASTNode**, std::vector<ASTNode*, std::allocator<ASTNode*> > >, ASTNode* const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x118D39: std::vector<ASTNode*, std::allocator<ASTNode*> >::push_back(ASTNode* const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x117B83: yyparse() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x10D67E: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293== 
-==6293== 22 bytes in 1 blocks are still reachable in loss record 2 of 7
-==6293==    at 0x4841F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
-==6293==    by 0x115968: std::__new_allocator<char>::allocate(unsigned long, void const*) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x1138C2: std::allocator_traits<std::allocator<char> >::allocate(std::allocator<char>&, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x112505: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_create(unsigned long&, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x1118E2: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x10F7F0: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x113AA7: decltype (::new ((void*)(0)) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >((declval<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>)())) std::construct_at<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x112665: void std::allocator_traits<std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::construct<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x112881: void std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_realloc_insert<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(__gnu_cxx::__normal_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x1111B1: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::push_back(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x117E3B: yyparse() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x10D67E: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293== 
-==6293== 32 bytes in 1 blocks are still reachable in loss record 3 of 7
-==6293==    at 0x4841F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
-==6293==    by 0x119F7B: std::__new_allocator<ASTNode*>::allocate(unsigned long, void const*) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x119C87: std::allocator_traits<std::allocator<ASTNode*> >::allocate(std::allocator<ASTNode*>&, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x119A09: std::_Vector_base<ASTNode*, std::allocator<ASTNode*> >::_M_allocate(unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x1194E5: void std::vector<ASTNode*, std::allocator<ASTNode*> >::_M_realloc_insert<ASTNode* const&>(__gnu_cxx::__normal_iterator<ASTNode**, std::vector<ASTNode*, std::allocator<ASTNode*> > >, ASTNode* const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x118F5B: std::vector<ASTNode*, std::allocator<ASTNode*> >::insert(__gnu_cxx::__normal_iterator<ASTNode* const*, std::vector<ASTNode*, std::allocator<ASTNode*> > >, ASTNode* const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x117D48: yyparse() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x10D67E: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293== 
-==6293== 32 bytes in 1 blocks are still reachable in loss record 4 of 7
-==6293==    at 0x4841F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
-==6293==    by 0x117B48: yyparse() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x10D67E: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293== 
-==6293== 64 bytes in 1 blocks are still reachable in loss record 5 of 7
-==6293==    at 0x4841F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
-==6293==    by 0x117C04: yyparse() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x10D67E: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293== 
-==6293== 128 bytes in 3 blocks are still reachable in loss record 6 of 7
-==6293==    at 0x4841F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
-==6293==    by 0x116355: std::__new_allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >::allocate(unsigned long, void const*) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x114CBC: std::allocator_traits<std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::allocate(std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x113B4F: std::_Vector_base<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_allocate(unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x112845: void std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_realloc_insert<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(__gnu_cxx::__normal_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x1111B1: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::push_back(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x117E3B: yyparse() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x10D67E: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293== 
-==6293== 192 bytes in 3 blocks are still reachable in loss record 7 of 7
-==6293==    at 0x4841F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
-==6293==    by 0x117D65: yyparse() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293==    by 0x10D67E: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==6293== 
-==6293== LEAK SUMMARY:
-==6293==    definitely lost: 0 bytes in 0 blocks
-==6293==    indirectly lost: 0 bytes in 0 blocks
-==6293==      possibly lost: 0 bytes in 0 blocks
-==6293==    still reachable: 478 bytes in 11 blocks
-==6293==         suppressed: 0 bytes in 0 blocks
-==6293== 
-==6293== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==9838== Memcheck, a memory error detector
+==9838== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==9838== Using Valgrind-3.19.0-8d3c8034b8-20220411 and LibVEX; rerun with -h for copyright info
+==9838== Command: ./MainApp
+==9838== Parent PID: 4086
+==9838== 
+--9838-- 
+--9838-- Valgrind options:
+--9838--    --leak-check=full
+--9838--    --show-leak-kinds=all
+--9838--    --track-origins=yes
+--9838--    --verbose
+--9838--    --log-file=../valgrind-out.txt
+--9838-- Contents of /proc/version:
+--9838--   Linux version 6.1.0-39-amd64 (debian-kernel@lists.debian.org) (gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #1 SMP PREEMPT_DYNAMIC Debian 6.1.148-1 (2025-08-26)
+--9838-- 
+--9838-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3
+--9838-- Page sizes: currently 4096, max supported 4096
+--9838-- Valgrind library directory: /usr/libexec/valgrind
+--9838-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp
+--9838-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--9838--   Considering /usr/lib/debug/.build-id/65/80196fa83df5c1edec10a57b2725eda6c73d7c.debug ..
+--9838--   .. build-id is valid
+--9838-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--9838--   Considering /usr/lib/debug/.build-id/82/26c2aa6b808ebd5a6fafb694a7fb3287f33590.debug ..
+--9838--   .. build-id is valid
+--9838--    object doesn't have a dynamic symbol table
+--9838-- Scheduler: using generic scheduler lock implementation.
+--9838-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==9838== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-9838-by-robi-on-???
+==9838== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-9838-by-robi-on-???
+==9838== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-9838-by-robi-on-???
+==9838== 
+==9838== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==9838== don't want to do, unless you know exactly what you're doing,
+==9838== or are doing some strange experiment):
+==9838==   /usr/bin/vgdb --pid=9838 ...command...
+==9838== 
+==9838== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==9838==   /path/to/gdb ./MainApp
+==9838== and then give GDB the following command
+==9838==   target remote | /usr/bin/vgdb --pid=9838
+==9838== --pid is optional if only one valgrind process is running
+==9838== 
+--9838-- REDIR: 0x40239c0 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bb0e2 (vgPlain_amd64_linux_REDIR_FOR_strlen)
+--9838-- REDIR: 0x40221a0 (ld-linux-x86-64.so.2:index) redirected to 0x580bb0fc (vgPlain_amd64_linux_REDIR_FOR_index)
+--9838-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--9838--   Considering /usr/lib/debug/.build-id/ad/f1388be4d8781737b0c83fe111a5a9c6e930aa.debug ..
+--9838--   .. build-id is valid
+--9838-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+--9838--   Considering /usr/lib/debug/.build-id/d8/ec66cffcb23a75c3f15940674d6028709121f8.debug ..
+--9838--   .. build-id is valid
+==9838== WARNING: new redirection conflicts with existing -- ignoring it
+--9838--     old: 0x040239c0 (strlen              ) R-> (0000.0) 0x580bb0e2 vgPlain_amd64_linux_REDIR_FOR_strlen
+--9838--     new: 0x040239c0 (strlen              ) R-> (2007.0) 0x048478a0 strlen
+--9838-- REDIR: 0x40223c0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4848780 (strcmp)
+--9838-- REDIR: 0x4021630 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x484c1a0 (mempcpy)
+--9838-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30
+--9838--    object doesn't have a symbol table
+--9838-- Reading syms from /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+--9838--    object doesn't have a symbol table
+--9838-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--9838--   Considering /usr/lib/debug/.build-id/61/96744a316dbd57c0fd8968df1680aac482cec4.debug ..
+--9838--   .. build-id is valid
+==9838== WARNING: new redirection conflicts with existing -- ignoring it
+--9838--     old: 0x04b38600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
+--9838--     new: 0x04b38600 (memalign            ) R-> (1017.0) 0x04846b90 aligned_alloc
+==9838== WARNING: new redirection conflicts with existing -- ignoring it
+--9838--     old: 0x04b38600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
+--9838--     new: 0x04b38600 (memalign            ) R-> (1017.0) 0x04846b60 aligned_alloc
+==9838== WARNING: new redirection conflicts with existing -- ignoring it
+--9838--     old: 0x04b38600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
+--9838--     new: 0x04b38600 (memalign            ) R-> (1017.0) 0x04846b90 aligned_alloc
+==9838== WARNING: new redirection conflicts with existing -- ignoring it
+--9838--     old: 0x04b38600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
+--9838--     new: 0x04b38600 (memalign            ) R-> (1017.0) 0x04846b60 aligned_alloc
+--9838-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
+--9838--   Considering /usr/lib/debug/.build-id/d6/e6f9e3af1243eed9bf5efd366dd015a9f22c13.debug ..
+--9838--   .. build-id is valid
+--9838-- REDIR: 0x4b3e540 (libc.so.6:strnlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3e5d0 (libc.so.6:strpbrk) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3c6f0 (libc.so.6:strcmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b514e0 (libc.so.6:wcsnlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3b830 (libc.so.6:memset) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b4fe20 (libc.so.6:wcslen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3ae60 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b4fc50 (libc.so.6:wcschr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3c5e0 (libc.so.6:index) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3e600 (libc.so.6:rindex) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b4fce0 (libc.so.6:wcscmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3ba70 (libc.so.6:stpncpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b50230 (libc.so.6:wmemchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3e3f0 (libc.so.6:strncmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3bae0 (libc.so.6:strcasecmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3d950 (libc.so.6:strcspn) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b4fd70 (libc.so.6:wcscpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3c560 (libc.so.6:strcat) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3e2e0 (libc.so.6:strncasecmp_l) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3ad70 (libc.so.6:bcmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3b7a0 (libc.so.6:memrchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3c660 (libc.so.6:strchrnul) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3d8d0 (libc.so.6:strcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3bb80 (libc.so.6:strcasecmp_l) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3e1b0 (libc.so.6:strlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3e490 (libc.so.6:strncpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3b9f0 (libc.so.6:stpcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3b580 (libc.so.6:memmove) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3acf0 (libc.so.6:memchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3e7c0 (libc.so.6:strspn) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3b690 (libc.so.6:mempcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3e240 (libc.so.6:strncasecmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b3b930 (libc.so.6:rawmemchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9838-- REDIR: 0x4b4ebe0 (libc.so.6:__strrchr_sse2) redirected to 0x4847320 (__strrchr_sse2)
+--9838-- REDIR: 0x4b37920 (libc.so.6:malloc) redirected to 0x4841740 (malloc)
+--9838-- REDIR: 0x4b48d50 (libc.so.6:__strlen_sse2) redirected to 0x48477e0 (__strlen_sse2)
+--9838-- REDIR: 0x4b417e0 (libc.so.6:__memcmp_sse2) redirected to 0x484a9e0 (__memcmp_sse2)
+--9838-- REDIR: 0x4c10600 (libc.so.6:__strcmp_sse42) redirected to 0x4848740 (__strcmp_sse42)
+--9838-- REDIR: 0x4b386d0 (libc.so.6:calloc) redirected to 0x4846540 (calloc)
+--9838-- REDIR: 0x4b42640 (libc.so.6:__memset_sse2_unaligned) redirected to 0x484b1c0 (memset)
+--9838-- REDIR: 0x4b41d70 (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4848890 (memcpy@GLIBC_2.2.5)
+--9838-- REDIR: 0x490e570 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4841ec0 (operator new(unsigned long))
+--9838-- REDIR: 0x490c8e0 (libstdc++.so.6:operator delete(void*, unsigned long)) redirected to 0x4844930 (operator delete(void*, unsigned long))
+--9838-- REDIR: 0x4b37ee0 (libc.so.6:free) redirected to 0x4844110 (free)
+--9838-- REDIR: 0x4b414b0 (libc.so.6:__memchr_sse2) redirected to 0x4848800 (memchr)
+--9838-- REDIR: 0x4b46b20 (libc.so.6:__strchr_sse2) redirected to 0x4847400 (__strchr_sse2)
+--9838-- REDIR: 0x490e5d0 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x48431a0 (operator new[](unsigned long))
+--9838-- REDIR: 0x490c8d0 (libstdc++.so.6:operator delete(void*)) redirected to 0x48446b0 (operator delete(void*))
+--9838-- REDIR: 0x490c900 (libstdc++.so.6:operator delete[](void*)) redirected to 0x48456f0 (operator delete[](void*))
+--9838-- REDIR: 0x4b41d50 (libc.so.6:__mempcpy_sse2_unaligned) redirected to 0x484bdb0 (mempcpy)
+==9838== 
+==9838== HEAP SUMMARY:
+==9838==     in use at exit: 40 bytes in 2 blocks
+==9838==   total heap usage: 55 allocs, 53 frees, 143,279 bytes allocated
+==9838== 
+==9838== Searching for pointers to 2 not-freed blocks
+==9838== Checked 149,464 bytes
+==9838== 
+==9838== 8 bytes in 1 blocks are still reachable in loss record 1 of 2
+==9838==    at 0x4841F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==9838==    by 0x11A127: std::__new_allocator<ASTNode*>::allocate(unsigned long, void const*) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9838==    by 0x119E33: std::allocator_traits<std::allocator<ASTNode*> >::allocate(std::allocator<ASTNode*>&, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9838==    by 0x119BB5: std::_Vector_base<ASTNode*, std::allocator<ASTNode*> >::_M_allocate(unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9838==    by 0x119691: void std::vector<ASTNode*, std::allocator<ASTNode*> >::_M_realloc_insert<ASTNode* const&>(__gnu_cxx::__normal_iterator<ASTNode**, std::vector<ASTNode*, std::allocator<ASTNode*> > >, ASTNode* const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9838==    by 0x118EE5: std::vector<ASTNode*, std::allocator<ASTNode*> >::push_back(ASTNode* const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9838==    by 0x117BFD: yyparse() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9838==    by 0x10D681: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9838== 
+==9838== 32 bytes in 1 blocks are still reachable in loss record 2 of 2
+==9838==    at 0x4841F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==9838==    by 0x117BC2: yyparse() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9838==    by 0x10D681: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9838== 
+==9838== LEAK SUMMARY:
+==9838==    definitely lost: 0 bytes in 0 blocks
+==9838==    indirectly lost: 0 bytes in 0 blocks
+==9838==      possibly lost: 0 bytes in 0 blocks
+==9838==    still reachable: 40 bytes in 2 blocks
+==9838==         suppressed: 0 bytes in 0 blocks
+==9838== 
+==9838== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

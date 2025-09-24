@@ -1,16 +1,19 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <iostream>
 
 struct ProgramNode;
 struct CreateUntypedTableNode;
 struct UntypedColumnDefNode;
+struct DropTableNode;
 
 struct ASTVisitor
 {
   virtual void visit(ProgramNode &node) = 0;
   virtual void visit(CreateUntypedTableNode &node) = 0;
   virtual void visit(UntypedColumnDefNode &node) = 0;
+  virtual void visit(DropTableNode &node) = 0;
   virtual ~ASTVisitor() = default;
 };
 
@@ -24,15 +27,23 @@ struct ProgramNode : ASTNode
 {
   std::vector<ASTNode *> statements;
 
-  // ProgramNode(std::vector<ASTNode *> &statements)
-  //     : statements(std::move(statements)) {}
-
-  void accept(ASTVisitor &v) override { v.visit(*this); }
-
-  ~ProgramNode()
+  void accept(ASTVisitor &v) override
   {
-    for (auto s : statements)
-      delete s;
+    v.visit(*this);
+    // delete this; -- this causes a segfault - TODO investigate
+  }
+
+  ~ProgramNode() override
+  {
+    // TODO Debug why this never gets called anywhere, and if I call it it creates a Segfault???
+    std::cout << "ProgramNode destructor called!\n";
+    for (auto &s : statements)
+    {
+      if (s)
+      {
+        delete s;
+      }
+    }
   }
 };
 
@@ -64,4 +75,17 @@ struct UntypedColumnDefNode : ASTNode
   }
 
   void accept(ASTVisitor &v) override { v.visit(*this); }
+};
+
+struct DropTableNode : ASTNode
+{
+  std::string tableName;
+
+  DropTableNode(std::string &tableName) : tableName(std::move(tableName)) {}
+
+  void accept(ASTVisitor &v) override
+  {
+    v.visit(*this);
+    delete this;
+  }
 };

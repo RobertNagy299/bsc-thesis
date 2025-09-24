@@ -31,6 +31,7 @@ STRING    \'([^\\\n]|(\\.))*\'
 %%
 
 "CREATE"         { YY_USER_ACTION return KW_CREATE; }
+"DROP"           { YY_USER_ACTION return KW_DROP; }
 "UNTYPED"        { YY_USER_ACTION return KW_UNTYPED; }
 "TABLE"          { YY_USER_ACTION return KW_TABLE; }
 "PRIMARY"        { YY_USER_ACTION return KW_PRIMARY; }
