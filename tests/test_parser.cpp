@@ -7,10 +7,9 @@ extern ASTNode *root;
 extern FILE *yyin;
 extern int yylex_destroy();
 
-
 TEST(ParserTest, CreateTableCorrectly)
 {
-  const char *sql = "CREATE TABLE users (id PRIMARY KEY);";
+  const char *sql = "CREATE UNTYPED TABLE users(id, name, age);";
 
   // Open SQL string as input
   FILE *f = fmemopen((void *)sql, strlen(sql), "r");
@@ -30,7 +29,6 @@ TEST(ParserTest, CreateTableCorrectly)
   delete root;
   root = nullptr;
 }
-
 
 TEST(ParserTest, CreateTableWithoutTableKeyword)
 {
