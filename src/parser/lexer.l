@@ -24,30 +24,32 @@ int yycolumn = 1;
 %option noyywrap
 
 IDENT     [a-zA-Z_][a-zA-Z0-9_]*
-NUMBER    [0-9]+
+NUMBER    [+-]?([0-9]+)(\.[0-9]+)?(e?[0-9]+(\.[0-9]+)?)?
 WS        [ \t\r\n]+
-VALUE     [a-zA-Z0-9.{}"'[]-]+
+STRING    \'([^\\\n]|(\\.))*\'
 
 %%
 
-"CREATE"         { YY_USER_ACTION return CREATE; }
-"UNTYPED"        { YY_USER_ACTION return UNTYPED; }
-"TABLE"          { YY_USER_ACTION return TABLE; }
-"PRIMARY"        { YY_USER_ACTION return PRIMARY; }
-"KEY"            { YY_USER_ACTION return KEY; }
-"NUMBER"         { YY_USER_ACTION return NUMBER_TYPE; }
+"CREATE"         { YY_USER_ACTION return KW_CREATE; }
+"UNTYPED"        { YY_USER_ACTION return KW_UNTYPED; }
+"TABLE"          { YY_USER_ACTION return KW_TABLE; }
+"PRIMARY"        { YY_USER_ACTION return KW_PRIMARY; }
+"KEY"            { YY_USER_ACTION return KW_KEY; }
+"NUMBER"         { YY_USER_ACTION return KW_NUMBER_T; }
 "NULL"           { YY_USER_ACTION return KW_NULL; }
-"NOT"           { YY_USER_ACTION return KW_NOT; }
-"UNIQUE"           { YY_USER_ACTION return KW_UNIQUE; }
-"DEFAULT"           { YY_USER_ACTION return KW_DEFAULT; }
-"VALUE"           { YY_USER_ACTION yylval->str = new std::string(yytext); return KW_VALUE; }
-
-{IDENT}          { YY_USER_ACTION yylval->str = new std::string(yytext); return IDENTIFIER; }
+"NOT"            { YY_USER_ACTION return KW_NOT; }
+"UNIQUE"         { YY_USER_ACTION return KW_UNIQUE; }
+"DEFAULT"        { YY_USER_ACTION return KW_DEFAULT; }
+"VALUE"          { YY_USER_ACTION return KW_VALUE; }
 "("              { YY_USER_ACTION return LPAREN; }
 ")"              { YY_USER_ACTION return RPAREN; }
 ";"              { YY_USER_ACTION return SEMICOLON; }
 ","              { YY_USER_ACTION return COMMA; }
 \n               { yylineno++; yycolumn = 1; yylloc->first_column = 1; }
+
+{IDENT}          { YY_USER_ACTION yylval->str = new std::string(yytext); return IDENTIFIER; }
+{STRING}         { YY_USER_ACTION yylval->str = new std::string(yytext); return LITERAL_STRING; }
+{NUMBER}         { YY_USER_ACTION yylval->str = new std::string(yytext); return LITERAL_NUMBER; }
 {WS}             { /* skip */ }
 .                { std::fprintf(stderr, "Unexpected token: %s\n", yytext); return *yytext; }
 

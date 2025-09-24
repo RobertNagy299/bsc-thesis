@@ -48,16 +48,15 @@
 
 
 
-%token CREATE UNTYPED TABLE PRIMARY KEY KW_NOT KW_NULL KW_DEFAULT KW_UNIQUE NUMBER_TYPE COMMA
+%token SEMICOLON LPAREN RPAREN KW_NUMBER_T COMMA
+%token KW_CREATE KW_UNTYPED KW_TABLE KW_VALUE KW_NOT KW_NULL KW_KEY KW_PRIMARY KW_DEFAULT KW_UNIQUE
 
-%token LPAREN RPAREN SEMICOLON
-%token <str> IDENTIFIER
-%token <str> KW_VALUE
+%token <str> IDENTIFIER LITERAL_STRING LITERAL_NUMBER LITERAL_VALUE
 
 %type <node> program statement tabl_crea untyped_col_def
 %type <nodeList> untyped_col_defs
 %type <strList> opt_col_modifiers
-%type <str> col_modifier
+%type <str> col_modifier literal_value
 
 
 %%
@@ -80,7 +79,7 @@ statement
     ;
 
 tabl_crea
-    : CREATE UNTYPED TABLE IDENTIFIER LPAREN untyped_col_defs RPAREN {
+    : KW_CREATE KW_UNTYPED KW_TABLE IDENTIFIER LPAREN untyped_col_defs RPAREN {
         $$ = new CreateUntypedTableNode(*$4, *$6);
         delete $4; delete $6;
     }
@@ -103,7 +102,10 @@ untyped_col_defs
 untyped_col_def
     : IDENTIFIER opt_col_modifiers {
         $$ = new UntypedColumnDefNode(*$1, *$2);
-        delete $1; delete $2;
+        delete $1; 
+        $1 = nullptr;
+        delete $2;
+        $2 = nullptr;
     }
     ;
 
@@ -115,15 +117,24 @@ opt_col_modifiers
         $1->push_back(*$2);
         $$ = $1;
         delete $2;
+        $2 = nullptr;
     }
     ;
 
 col_modifier
-    : PRIMARY KEY   { $$ = new std::string("PRIMARY KEY"); }
+    : KW_PRIMARY KW_KEY   { $$ = new std::string("PRIMARY KEY"); }
     | KW_NOT KW_NULL      { $$ = new std::string("NOT NULL"); }
     | KW_UNIQUE        { $$ = new std::string("UNIQUE"); }
-    | KW_DEFAULT KW_VALUE { $$ = new std::string("DEFAULT " + *$2); delete $2; $2 = nullptr; }
+    | KW_DEFAULT literal_value { $$ = new std::string("DEFAULT " + *$2); delete $2; $2 = nullptr; }
     ;
+
+literal_value
+    : LITERAL_NUMBER 
+    | LITERAL_STRING  {
+      $$ = new std::string(*$1);
+      delete $1; 
+      $1 = nullptr;
+    } 
 %%
 
 void yyerror(const YYLTYPE* loc, const char* msg) {
