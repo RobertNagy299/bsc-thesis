@@ -36,7 +36,6 @@
 
 /* Tell Bison how to free semantic values if it discards them. */
 %destructor { delete $$; } <str>
-%destructor { } <node>
 %destructor { delete $$; } <strList>
 
 %destructor {

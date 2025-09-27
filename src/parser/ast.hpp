@@ -86,6 +86,5 @@ struct DropTableNode : ASTNode
   void accept(ASTVisitor &v) override
   {
     v.visit(*this);
-    delete this;
   }
 };
