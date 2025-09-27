@@ -1,3 +1,0 @@
-id PRIMARY KEY
-name NOT NULL,DEFAULT 'Gipsz jakab'
-age DEFAULT 18

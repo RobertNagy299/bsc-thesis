@@ -83,15 +83,39 @@ public:
 
   void visit(DropTableNode &node) override
   {
-    std::cout << "Drop table command recognized!" << " Table name : " << node.tableName << "\n";
-    // TODO(rnagy): implement table removal from file system and execution context
-    // if (ctx.untyped_tables.find(node.tableName) != ctx.untyped_tables.end())
-    // {
-    //   std::string table_directory = this->base_directory + node.tableName;
-    //   std::filesystem::remove_all(table_directory);
+    std::cout << "Drop table command recognized! Table name: " << node.tableName << "\n";
 
-    //   return;
-    // }
+    std::string table_directory = this->base_directory + "/" + node.tableName;
+
+    if (!std::filesystem::exists(table_directory))
+    {
+      std::cerr << "Error: table \"" << node.tableName << "\" does not exist on disk.\n";
+      return;
+    }
+
+    try
+    {
+      // Remove directory and all metadata
+      std::filesystem::remove_all(table_directory);
+
+      // Now remove from execution context if it exists
+      auto it = ctx.untyped_tables.find(node.tableName);
+      if (it != ctx.untyped_tables.end())
+      {
+        // free the schema memory before erasing
+        for (auto col : it->second)
+        {
+          delete col;
+        }
+        ctx.untyped_tables.erase(it);
+      }
+
+      std::cout << "Table \"" << node.tableName << "\" dropped successfully.\n";
+    }
+    catch (const std::filesystem::filesystem_error &e)
+    {
+      std::cerr << "Filesystem error while dropping table: " << e.what() << "\n";
+    }
   }
 
   void visit(UntypedColumnDefNode &node) override
