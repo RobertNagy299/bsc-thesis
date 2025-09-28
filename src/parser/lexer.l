@@ -31,6 +31,11 @@ STRING    \'([^\\\n]|(\\.))*\'
 %%
 
 "CREATE"         { YY_USER_ACTION return KW_CREATE; }
+"INSERT"         { YY_USER_ACTION return KW_INSERT; }
+"INTO"           { YY_USER_ACTION return KW_INTO; }
+"FALSE"          { YY_USER_ACTION return KW_FALSE; }
+"TRUE"           { YY_USER_ACTION return KW_TRUE; }
+"VALUES"         { YY_USER_ACTION return KW_VALUES; }
 "DROP"           { YY_USER_ACTION return KW_DROP; }
 "UNTYPED"        { YY_USER_ACTION return KW_UNTYPED; }
 "TABLE"          { YY_USER_ACTION return KW_TABLE; }
@@ -41,7 +46,6 @@ STRING    \'([^\\\n]|(\\.))*\'
 "NOT"            { YY_USER_ACTION return KW_NOT; }
 "UNIQUE"         { YY_USER_ACTION return KW_UNIQUE; }
 "DEFAULT"        { YY_USER_ACTION return KW_DEFAULT; }
-"VALUE"          { YY_USER_ACTION return KW_VALUE; }
 "("              { YY_USER_ACTION return LPAREN; }
 ")"              { YY_USER_ACTION return RPAREN; }
 ";"              { YY_USER_ACTION return SEMICOLON; }

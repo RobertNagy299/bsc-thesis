@@ -47,12 +47,13 @@
 
 
 
-%token SEMICOLON LPAREN RPAREN KW_NUMBER_T COMMA
-%token KW_CREATE KW_UNTYPED KW_TABLE KW_VALUE KW_NOT KW_NULL KW_KEY KW_PRIMARY KW_DEFAULT KW_UNIQUE KW_DROP
+%token SEMICOLON LPAREN RPAREN COMMA
+%token KW_CREATE KW_UNTYPED KW_TABLE KW_NOT KW_KEY KW_PRIMARY KW_DEFAULT KW_UNIQUE KW_DROP
+%token KW_INSERT KW_INTO KW_FALSE KW_TRUE KW_NUMBER_T KW_NULL KW_VALUES
 
-%token <str> IDENTIFIER LITERAL_STRING LITERAL_NUMBER LITERAL_VALUE
+%token <str> IDENTIFIER LITERAL_STRING LITERAL_NUMBER
 
-%type <node> program statement tabl_crea untyped_col_def tabl_drop
+%type <node> program statement tabl_crea untyped_col_def tabl_drop tabl_insert
 %type <nodeList> untyped_col_defs
 %type <strList> opt_col_modifiers
 %type <str> col_modifier literal_value
@@ -76,6 +77,7 @@ program
 statement
     : tabl_crea { $$ = $1; }
     | tabl_drop { $$ = $1; }
+    | tabl_insert { $$ = $1; }
     ;
 
 tabl_crea
@@ -136,12 +138,54 @@ col_modifier
     ;
 
 literal_value
-    : LITERAL_NUMBER 
+    : LITERAL_NUMBER
+    | KW_NULL
+    | KW_FALSE
+    | KW_TRUE 
     | LITERAL_STRING  {
       $$ = new std::string(*$1);
       delete $1; 
       $1 = nullptr;
     } 
+
+tabl_insert 
+    : KW_INSERT KW_INTO IDENTIFIER opt_col_list KW_VALUES values_list {
+        $$ = new InsertNode(*$4, *$6);
+        delete $4; delete $6;
+        $4 = nullptr; $6 = nullptr;
+      }
+    ;
+
+opt_col_list 
+    : /* empty */ {
+      $$ = new std::vector<std::string>();
+    }
+    | LPAREN col_list RPAREN {
+        $$ = $1;
+      }
+    ;
+
+col_list 
+    : col_list COMMA IDENTIFIER {
+        
+      }
+    | IDENTIFIER
+    ;
+
+values_list
+    : values_list COMMA value_record
+    | value_record
+    ;
+
+value_record 
+    : LPAREN literal_list RPAREN
+    ;
+
+literal_list 
+    : literal_list COMMA literal_value
+    | literal_value
+    ;
+
 %%
 
 void yyerror(const YYLTYPE* loc, const char* msg) {
