@@ -118,6 +118,31 @@ public:
     }
   }
 
+  void visit(InsertNode &node) override
+  {
+    std::cout << "Insertion visited" << '\n';
+  }
+
+  void visit(ColumnListNode &node) override
+  {
+    std::cout << "ColumnListNode visited" << '\n';
+  }
+
+  void visit(ValuesListNode &node) override
+  {
+    std::cout << "Values list node visited" << '\n';
+  }
+
+  void visit(LiteralNode &node) override
+  {
+    std::cout << "Literal node visited" << '\n';
+  }
+
+  void visit(ValueRecordNode &node) override
+  {
+    std::cout << "ValueRecordNode visited" << '\n';
+  }
+
   void visit(UntypedColumnDefNode &node) override
   {
     // Usually handled by parent (CreateUntypedTableNode)

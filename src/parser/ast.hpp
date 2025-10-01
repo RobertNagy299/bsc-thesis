@@ -8,12 +8,24 @@ struct CreateUntypedTableNode;
 struct UntypedColumnDefNode;
 struct DropTableNode;
 
+struct InsertNode;
+struct ColumnListNode;
+struct LiteralNode;
+struct ValueRecordNode;
+struct ValuesListNode;
+
 struct ASTVisitor
 {
   virtual void visit(ProgramNode &node) = 0;
   virtual void visit(CreateUntypedTableNode &node) = 0;
   virtual void visit(UntypedColumnDefNode &node) = 0;
   virtual void visit(DropTableNode &node) = 0;
+  virtual void visit(InsertNode &node) = 0;
+  virtual void visit(ColumnListNode &node) = 0;
+  virtual void visit(LiteralNode &node) = 0;
+  virtual void visit(ValueRecordNode &node) = 0;
+  virtual void visit(ValuesListNode &node) = 0;
+
   virtual ~ASTVisitor() = default;
 };
 
@@ -35,7 +47,6 @@ struct ProgramNode : ASTNode
 
   ~ProgramNode() override
   {
-    // TODO Debug why this never gets called anywhere, and if I call it it creates a Segfault???
     std::cout << "ProgramNode destructor called!\n";
     for (auto &s : statements)
     {
@@ -57,7 +68,7 @@ struct CreateUntypedTableNode : ASTNode
 
   void accept(ASTVisitor &v) override { v.visit(*this); }
 
-  ~CreateUntypedTableNode()
+  ~CreateUntypedTableNode() override
   {
     for (auto c : columns)
       delete c;
@@ -87,4 +98,85 @@ struct DropTableNode : ASTNode
   {
     v.visit(*this);
   }
+};
+
+// Literal values (strings, numbers, nulls, booleans, etc.)
+struct LiteralNode : ASTNode
+{
+  enum class Type
+  {
+    STRING,
+    NUMBER,
+    NULLVAL,
+    TRUEVAL,
+    FALSEVAL
+  };
+
+  Type type;
+  std::string value; // e.g. "123", "John Doe" (for numbers too, store as string first)
+
+  LiteralNode(Type t, const std::string &val) : type(t), value(val) {}
+
+  void accept(ASTVisitor &v) override { v.visit(*this); };
+};
+
+// A list of literal values = one row/record in VALUES
+struct ValueRecordNode : ASTNode
+{
+  std::vector<LiteralNode *> values;
+
+  ValueRecordNode(std::vector<LiteralNode *> vals) : values(std::move(vals)) {}
+
+  ~ValueRecordNode()
+  {
+    for (auto v : values)
+      delete v;
+  }
+
+  void accept(ASTVisitor &v) override { v.visit(*this); };
+};
+
+// The full VALUES (...) , (...) , (...) part
+struct ValuesListNode : ASTNode
+{
+  std::vector<ValueRecordNode *> records;
+
+  ValuesListNode(std::vector<ValueRecordNode *> recs) : records(std::move(recs)) {}
+
+  ~ValuesListNode()
+  {
+    for (auto r : records)
+      delete r;
+  }
+
+  void accept(ASTVisitor &v) override { v.visit(*this); };
+};
+
+// Column list: (id, name, age)
+struct ColumnListNode : ASTNode
+{
+  std::vector<std::string> columns;
+
+  ColumnListNode(std::vector<std::string> cols) : columns(std::move(cols)) {}
+
+  void accept(ASTVisitor &v) override { v.visit(*this); };
+};
+
+// INSERT statement itself
+struct InsertNode : ASTNode
+{
+  std::string tableName;
+  ColumnListNode *columns; // optional (nullptr if not provided)
+  ValuesListNode *values;  // must exist
+
+  InsertNode(const std::string &t, ColumnListNode *c, ValuesListNode *v)
+      : tableName(t), columns(c), values(v) {}
+
+  ~InsertNode()
+  {
+    delete columns;
+    delete values;
+  }
+
+  void accept(ASTVisitor &v) override { v.visit(*this); };
 };
