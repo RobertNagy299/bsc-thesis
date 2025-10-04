@@ -32,7 +32,7 @@ if(VALGRIND_EXECUTABLE)
         DEPENDS test_parser
         COMMAND ${CMAKE_COMMAND}
             -DVALGRIND_EXECUTABLE=${VALGRIND_EXECUTABLE}
-            -DOUTPUT_DIR=${CMAKE_BINARY_DIR}/tests/valgrind_logs
+            -DOUTPUT_DIR=${CMAKE_CURRENT_SOURCE_DIR}/valgrind_logs
             -DTEST_BINARY=$<TARGET_FILE:test_parser>
             -DTEST_LIST="${TEST_LIST}"
             -P ${CMAKE_SOURCE_DIR}/cmake/run_valgrind_static.cmake
