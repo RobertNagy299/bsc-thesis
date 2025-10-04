@@ -67,18 +67,20 @@ public:
     file.close();
 
     // Store schema in context
-    std::vector<UntypedColumnDefNode *> schema;
-    for (auto c : node.columns)
+    std::vector<UntypedColumnDefNode *> cols;
+    cols.reserve(node.columns.size());
+    for (auto *col : node.columns)
     {
-      auto col = dynamic_cast<UntypedColumnDefNode *>(c);
-      if (col)
+      auto casted_col = dynamic_cast<UntypedColumnDefNode *>(col);
+      if (casted_col)
       {
-        schema.push_back(col);
+        cols.push_back(new UntypedColumnDefNode(*casted_col)); // deep copy
       }
     }
-    ctx.untyped_tables[node.tableName] = schema;
+    ctx.untyped_tables[node.tableName] = std::move(cols);
+
     std::cout << "Created table " << node.tableName
-              << " with " << schema.size() << " columns\n";
+              << " with " << cols.size() << " columns\n";
   }
 
   void visit(DropTableNode &node) override

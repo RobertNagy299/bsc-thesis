@@ -74,7 +74,8 @@ struct ExecutionContext
     {
       for (auto &node : it.second)
       {
-        delete node;
+        if (node)
+          delete node;
       }
     }
   }

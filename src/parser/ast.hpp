@@ -71,7 +71,8 @@ struct CreateUntypedTableNode : ASTNode
   ~CreateUntypedTableNode() override
   {
     for (auto c : columns)
-      delete c;
+      if (c)
+        delete c;
   }
 };
 
@@ -83,6 +84,12 @@ struct UntypedColumnDefNode : ASTNode
   UntypedColumnDefNode(std::string &name, std::vector<std::string> &modifiers)
       : name(std::move(name)), modifiers(std::move(modifiers))
   {
+  }
+
+  UntypedColumnDefNode(const UntypedColumnDefNode &other)
+  {
+    this->name = other.name;
+    this->modifiers = other.modifiers;
   }
 
   void accept(ASTVisitor &v) override { v.visit(*this); }
