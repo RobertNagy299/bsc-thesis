@@ -8,6 +8,7 @@ set(TEST_LIST
     ParserTest.CreateUntypedTableCorrectly
     ParserTest.CreateUntypedTableCorrectlyWithColModifiers
     ParserTest.CreateTableWithoutTableKeyword
+    ParserTest.MultipleCreateCommandsInOneGo
 )
 
 # Iterate over each test individually
