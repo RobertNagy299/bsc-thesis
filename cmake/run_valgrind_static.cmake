@@ -5,10 +5,11 @@ endif()
 file(MAKE_DIRECTORY ${OUTPUT_DIR})
 
 set(TEST_LIST
-    ParserTest.CreateUntypedTableCorrectly
-    ParserTest.CreateUntypedTableCorrectlyWithColModifiers
-    ParserTest.CreateTableWithoutTableKeyword
-    ParserTest.MultipleCreateCommandsInOneGo
+    ParserTest.InsertIntoTableWithoutListOneValueCorrectly
+ #   ParserTest.CreateUntypedTableCorrectly
+  #  ParserTest.CreateUntypedTableCorrectlyWithColModifiers
+   # ParserTest.CreateTableWithoutTableKeyword
+    #ParserTest.MultipleCreateCommandsInOneGo
 )
 
 # Iterate over each test individually

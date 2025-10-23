@@ -12,7 +12,7 @@ extern int yylex_destroy(); // <-- from flex
 int main()
 {
   std::cout << "Parsing started from main.cpp!\n";
-  // Todo: investigate syntax error column numbering and segfault for create untyped table delete root command
+  // Todo: investigate syntax error column numbering
   const char *sql = "CREATE UNTYPED TABLE users(id PRIMARY KEY, name NOT NULL DEFAULT 'Gipsz jakab', age DEFAULT 18);";
   // const char *sql = "DROP TABLE users;";
   // Open SQL string as input

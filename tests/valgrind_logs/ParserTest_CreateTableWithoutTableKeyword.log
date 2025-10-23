@@ -1,15 +1,15 @@
-==10101== Memcheck, a memory error detector
-==10101== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==10101== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
-==10101== Command: /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/tests/test_parser --gtest_filter=ParserTest.CreateTableWithoutTableKeyword
-==10101== Parent PID: 10062
-==10101== 
-==10101== 
-==10101== HEAP SUMMARY:
-==10101==     in use at exit: 0 bytes in 0 blocks
-==10101==   total heap usage: 258 allocs, 258 frees, 147,947 bytes allocated
-==10101== 
-==10101== All heap blocks were freed -- no leaks are possible
-==10101== 
-==10101== For lists of detected and suppressed errors, rerun with: -s
-==10101== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==4862== Memcheck, a memory error detector
+==4862== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==4862== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==4862== Command: /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/tests/test_parser --gtest_filter=ParserTest.CreateTableWithoutTableKeyword
+==4862== Parent PID: 4809
+==4862== 
+==4862== 
+==4862== HEAP SUMMARY:
+==4862==     in use at exit: 0 bytes in 0 blocks
+==4862==   total heap usage: 270 allocs, 270 frees, 148,946 bytes allocated
+==4862== 
+==4862== All heap blocks were freed -- no leaks are possible
+==4862== 
+==4862== For lists of detected and suppressed errors, rerun with: -s
+==4862== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

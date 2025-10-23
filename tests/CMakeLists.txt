@@ -22,9 +22,10 @@ if(VALGRIND_EXECUTABLE)
     message(STATUS "Valgrind found: ${VALGRIND_EXECUTABLE}")
 
     set(TEST_LIST
-        ParserTest.CreateUntypedTableCorrectly
-        ParserTest.CreateUntypedTableCorrectlyWithColModifiers
-        ParserTest.CreateTableWithoutTableKeyword
+        ParserTest.InsertIntoTableWithoutListOneValueCorrectly
+        # ParserTest.CreateUntypedTableCorrectly
+        # ParserTest.CreateUntypedTableCorrectlyWithColModifiers
+        # ParserTest.CreateTableWithoutTableKeyword
     )
 
     add_custom_target(run_valgrind_tests
