@@ -169,7 +169,14 @@ struct ColumnListNode : ASTNode
   void accept(ASTVisitor &v) override { v.visit(*this); };
 };
 
-// INSERT statement itself
+/**
+ * @brief Class used to represent an INSERT statement's Abstract Syntax Tree Node
+ *
+ *
+ * @param tableName std::string
+ * @param columns ColumnListNode*
+ * @param values ValuesListNode*
+ */
 struct InsertNode : ASTNode
 {
   std::string tableName;

@@ -123,6 +123,20 @@ public:
   void visit(InsertNode &node) override
   {
     std::cout << "Insertion visited" << '\n';
+    std::cout << "Table name in insertion = " << node.tableName << '\n';
+    if (node.columns)
+    {
+      std::cout << "Column list: " << node.columns ? node.columns->columns.at(0) : "NULL \n";
+    }
+    std::cout << "ValueRecords:" << '\n';
+    for (const auto &vr : node.values->records)
+    {
+      std::cout << "Values: \n";
+      for (const auto &literal_node : vr->values)
+      {
+        std::cout << literal_node->value;
+      }
+    }
   }
 
   void visit(ColumnListNode &node) override
