@@ -16,8 +16,8 @@ int yycolumn = 1;
 #define YY_USER_ACTION \
     yylloc->first_line = yylloc->last_line = yylineno; \
     yylloc->first_column = yycolumn; \
-    yylloc->last_column = yycolumn + yyleng - 1; \
-    yycolumn += yyleng;
+    yylloc->last_column = yycolumn + (yyleng / 2) - 1; \
+    yycolumn += yyleng >> 1;
 %}
 
 %option yylineno
@@ -55,7 +55,7 @@ STRING    \'([^\\\n]|(\\.))*\'
 {IDENT}          { YY_USER_ACTION yylval->str = new std::string(yytext); return IDENTIFIER; }
 {STRING}         { YY_USER_ACTION yylval->str = new std::string(yytext); return LITERAL_STRING; }
 {NUMBER}         { YY_USER_ACTION yylval->str = new std::string(yytext); return LITERAL_NUMBER; }
-{WS}             { /* skip */ }
+{WS}             { YY_USER_ACTION /* skip */ }
 .                { std::fprintf(stderr, "Unexpected token: %s\n", yytext); return *yytext; }
 
 <<EOF>>          { return 0; }
