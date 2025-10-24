@@ -1,3 +1,5 @@
+%locations
+
 %code requires {
   #include <string>
   #include "ast.hpp"
@@ -25,7 +27,6 @@
 %define api.pure full
 %define parse.error verbose
 %defines
-%locations
 
 %union {
     std::string* str;
@@ -217,7 +218,5 @@ void yyerror(const YYLTYPE* loc, const char* msg) {
     if(!loc || !msg) {
       std::cerr << "Parse error - one of yyerror's arguments is a nullptr, Detailed error report not possible.";
     }
-    std::cerr << "Parse error at line " << loc->first_line
-              << ", column " << loc->first_column << ": ";
     std::cerr << msg << std::endl;
 }
