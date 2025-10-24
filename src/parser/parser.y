@@ -206,7 +206,8 @@ literal_list
     ;
 
 literal_value
-    : LITERAL_NUMBER { $$ = new LiteralNode(LiteralNode::Type::NUMBER, *$1); delete $1; }
+    : /* empty */    { $$ = new LiteralNode(LiteralNode::Type::EMPTY, ""); }
+    | LITERAL_NUMBER { $$ = new LiteralNode(LiteralNode::Type::NUMBER, *$1); delete $1; }
     | LITERAL_STRING { $$ = new LiteralNode(LiteralNode::Type::STRING, *$1); delete $1; }
     | KW_NULL        { $$ = new LiteralNode(LiteralNode::Type::NULLVAL, "NULL"); }
     | KW_TRUE        { $$ = new LiteralNode(LiteralNode::Type::TRUEVAL, "TRUE"); }

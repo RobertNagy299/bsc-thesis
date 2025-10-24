@@ -112,6 +112,7 @@ struct LiteralNode : ASTNode
 {
   enum class Type
   {
+    EMPTY,
     STRING,
     NUMBER,
     NULLVAL,
