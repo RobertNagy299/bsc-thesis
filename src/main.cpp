@@ -16,7 +16,7 @@ int main()
   // const char *sql = "CREATE UNTYPED TABLE users(id PRIMARY KEY, name NOT NULL DEFAULT 'Gipsz jakab', age DEFAULT 18);";
   // const char *sql = "DROP TABLE users;";
   // const char *sql = "INSERT INTO users VALUES(6, 'Frankenstein', 19);";
-  const char *sql = "INSERT INTO users VALUES (6,,53);";
+  const char *sql = "INSERT INTO users VALUES (1,4);";
   // Open SQL string as input
   FILE *f = fmemopen((void *)sql, strlen(sql), "r");
 

@@ -1,13 +1,20 @@
 #pragma once
 #include "execution_context.hpp"
 #include "../parser/ast.hpp"
+#include "utils.hpp"
 #include <iostream>
 #include <filesystem>
 #include <fstream>
 #include <algorithm>
 
+// Utility API
+struct ColModifierChecklist;
+const bool hasEmptyLiteralRuleViolations(const ColModifierChecklist &modifiers_checklist);
 std::string trim(const std::string &str);
+std::vector<std::string> splitString(const std::string &s, const std::string &delimiter);
+const ColModifierChecklist getModifiers(const std::vector<std::string> &current_modifiers);
 
+// Interpreter
 struct InterpreterVisitor : ASTVisitor
 {
 private:
@@ -132,24 +139,13 @@ public:
       return;
     }
 
-    std::cout << "Table exists" << '\n';
-
     // node.columns is optional - if does not exist, is nullptr
     if (!node.columns)
     {
-      std::cout << "No column list provided\n";
       const std::vector<ValueRecordNode *> &value_list = node.values->records;
       const std::vector<UntypedColumnDefNode *> &table_columns = current_table->second;
       const size_t value_record_length = value_list.size();
       const size_t table_cols_length = table_columns.size();
-      std::cout << "value record length: " << value_record_length << "\nFirst node length: " << value_list.at(0)->values.size()
-                << '\n';
-      // if there are more value nodes in a value record than in the table, throw an error
-      if (value_record_length > table_cols_length)
-      {
-        std::cerr << "Error (code: INSRT-0001): " << node.tableName << " Only has " << table_cols_length << " columns, but you tried to insert"
-                  << value_record_length << " values in a row.\n";
-      }
 
       // if there are empty values, make sure the omited values either have a default value
       // or are nullable, otherwise throw an error.
@@ -159,29 +155,34 @@ public:
         {
           const std::vector<LiteralNode *> &literal_nodes_list = value_list.at(i)->values;
           const size_t current_literal_values_length = literal_nodes_list.size();
+          // if there are more value nodes in a value record than in the table, throw an error
+          if (current_literal_values_length > table_cols_length)
+          {
+            std::cerr << "Error (code: INSRT-0001): " << node.tableName << " Only has " << table_cols_length << " columns, but you tried to insert "
+                      << current_literal_values_length << " values in a row.\n";
+          }
           for (size_t j = 0; j < table_cols_length; ++j)
           {
             const std::vector<std::string> &current_modifiers = table_columns.at(j)->modifiers;
+            const ColModifierChecklist &modifiers_checklist = getModifiers(current_modifiers);
+
+            // check the provided literal nodes in the value record
+            // otherwise, use defaults
             if (j < current_literal_values_length)
             {
               if (literal_nodes_list.at(j)->type == LiteralNode::Type::EMPTY)
               {
-                bool not_null = 0;
-                bool primary_key = 0;
-                bool has_default = 0;
-                for (size_t k = 0; k < current_modifiers.size(); ++k)
+                if (hasEmptyLiteralRuleViolations(modifiers_checklist))
                 {
-                  if (trim(current_modifiers.at(k)) == "NOT NULL")
-                  {
-                    not_null = 1;
-                    std::cout << "found not null\n\n";
-                  }
-                }
-                if (not_null)
-                {
-                  std::cerr << "Error (code: INSRT-0002) - cannot insert empty literal into column marked as NOT NULL\n";
                   return;
                 }
+              }
+            }
+            else
+            {
+              if (hasEmptyLiteralRuleViolations(modifiers_checklist))
+              {
+                return;
               }
             }
           }
@@ -220,22 +221,3 @@ public:
     std::cout << "Column: " << node.name << "\n";
   }
 };
-
-// Function to trim leading and trailing whitespace
-std::string trim(const std::string &str)
-{
-  const std::string whitespace = " \t\n\r\f\v"; // Common whitespace characters
-
-  // Find the first non-whitespace character
-  size_t first_non_ws = str.find_first_not_of(whitespace);
-  if (std::string::npos == first_non_ws)
-  {
-    return ""; // Entire string is whitespace
-  }
-
-  // Find the last non-whitespace character
-  size_t last_non_ws = str.find_last_not_of(whitespace);
-
-  // Extract the substring
-  return str.substr(first_non_ws, (last_non_ws - first_non_ws + 1));
-}
