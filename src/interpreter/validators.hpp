@@ -24,7 +24,7 @@ struct SemanticValidator
    *
    * @returns `true` if the insertion Node is semantically valid, `false` otherwise
    */
-  static const bool insertionSemanticValidator(InsertNode &node, ExecutionContext &ctx)
+  static const bool validateInsertSemantics(InsertNode &node, ExecutionContext &ctx)
   {
     const auto &current_table = ctx.untyped_tables.find(node.tableName);
     if (current_table == ctx.untyped_tables.end())

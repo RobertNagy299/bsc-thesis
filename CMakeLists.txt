@@ -28,9 +28,9 @@ add_library(SQLCore SHARED
     src/parser/ast.cpp
     ${BISON_Parser_OUTPUTS}
     ${FLEX_Lexer_OUTPUTS}
-    src/DBEngine/engine.cpp
+    src/DBEngine/engine.hpp
 )
-# add_library(DBEngine SHARED src/DBEngine/engine.cpp)
+# add_library(DBEngine SHARED src/DBEngine/engine.hpp)
 
 # Tell the compiler to look in the binary dir for the generated header
 include_directories(${CMAKE_BINARY_DIR})
