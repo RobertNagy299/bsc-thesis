@@ -10,75 +10,124 @@ struct ColModifierChecklist
   bool not_null : 1;
 };
 
-// Function to trim leading and trailing whitespace
-std::string trim(const std::string &str)
+/**
+ * @brief
+ * This class is intended to be a `static` method container, do not instantiate it!
+ */
+struct Utilities
 {
-  const std::string whitespace = " \t\n\r\f\v"; // Common whitespace characters
 
-  // Find the first non-whitespace character
-  size_t first_non_ws = str.find_first_not_of(whitespace);
-  if (std::string::npos == first_non_ws)
+  // Delete the default constructor to prevent instantiation
+  Utilities() = delete;
+
+  // Delete copy constructor and assignment operator to prevent copying
+  Utilities(const Utilities &) = delete;
+  Utilities &operator=(const Utilities &) = delete;
+
+  /**
+   * @brief
+   * This class is intended to be a `static` method container, do not instantiate it!
+   */
+  struct StringUtils
   {
-    return ""; // Entire string is whitespace
-  }
+    // Delete the default constructor to prevent instantiation
+    StringUtils() = delete;
 
-  // Find the last non-whitespace character
-  size_t last_non_ws = str.find_last_not_of(whitespace);
+    // Delete copy constructor and assignment operator to prevent copying
+    StringUtils(const StringUtils &) = delete;
+    StringUtils &operator=(const StringUtils &) = delete;
 
-  // Extract the substring
-  return str.substr(first_non_ws, (last_non_ws - first_non_ws + 1));
-}
-
-std::vector<std::string> splitString(const std::string &s, const std::string &delimiter)
-{
-  std::vector<std::string> tokens;
-  size_t start = 0;
-  size_t end = s.find(delimiter);
-
-  while (end != std::string::npos)
-  {
-    tokens.push_back(s.substr(start, end - start));
-    start = end + delimiter.length();
-    end = s.find(delimiter, start);
-  }
-  tokens.push_back(s.substr(start)); // Add the last token
-
-  return tokens;
-}
-
-const ColModifierChecklist getModifiers(const std::vector<std::string> &current_modifiers)
-{
-  ColModifierChecklist answer = ColModifierChecklist();
-  for (size_t k = 0; k < current_modifiers.size(); ++k)
-  {
-    const std::string &current_modifier = trim(current_modifiers.at(k));
-    if (current_modifier.find("DEFAULT") != std::string::npos)
+    // Function to trim leading and trailing whitespace
+    static std::string trim(const std::string &str)
     {
-      answer.has_default = 1;
-    }
-    if (current_modifier == "PRIMARY KEY")
-    {
-      answer.primary_key = 1;
-    }
-    if (current_modifier == "NOT NULL")
-    {
-      answer.not_null = 1;
-    }
-  }
-  return answer;
-}
+      const std::string whitespace = " \t\n\r\f\v"; // Common whitespace characters
 
-const bool hasEmptyLiteralRuleViolations(const ColModifierChecklist &modifiers_checklist)
-{
-  if (modifiers_checklist.primary_key)
+      // Find the first non-whitespace character
+      size_t first_non_ws = str.find_first_not_of(whitespace);
+      if (std::string::npos == first_non_ws)
+      {
+        return ""; // Entire string is whitespace
+      }
+
+      // Find the last non-whitespace character
+      size_t last_non_ws = str.find_last_not_of(whitespace);
+
+      // Extract the substring
+      return str.substr(first_non_ws, (last_non_ws - first_non_ws + 1));
+    }
+
+    static std::vector<std::string> splitString(const std::string &s, const std::string &delimiter)
+    {
+      std::vector<std::string> tokens;
+      size_t start = 0;
+      size_t end = s.find(delimiter);
+
+      while (end != std::string::npos)
+      {
+        tokens.push_back(s.substr(start, end - start));
+        start = end + delimiter.length();
+        end = s.find(delimiter, start);
+      }
+      tokens.push_back(s.substr(start)); // Add the last token
+
+      return tokens;
+    }
+  };
+
+  /**
+   * @brief
+   * This class is intended to be a `static` method container, do not instantiate it!
+   */
+  struct InsertUtils
   {
-    std::cerr << "Error (code INSRT-0003) - Primary Key cannot be empty value.\n";
-    return true;
-  }
-  if (modifiers_checklist.not_null && !modifiers_checklist.has_default)
-  {
-    std::cerr << "Error (code: INSRT-0002) - cannot insert empty literal into column marked as NOT NULL without explicit DEFAULT value\n";
-    return true;
-  }
-  return false;
-}
+
+    // Delete the default constructor to prevent instantiation
+    InsertUtils() = delete;
+
+    // Delete copy constructor and assignment operator to prevent copying
+    InsertUtils(const InsertUtils &) = delete;
+    InsertUtils &operator=(const InsertUtils &) = delete;
+
+    static const ColModifierChecklist getModifiers(const std::vector<std::string> &current_modifiers)
+    {
+      ColModifierChecklist answer = ColModifierChecklist();
+      for (size_t k = 0; k < current_modifiers.size(); ++k)
+      {
+        const std::string &current_modifier = Utilities::StringUtils::trim(current_modifiers.at(k));
+        if (current_modifier.find("DEFAULT") != std::string::npos)
+        {
+          answer.has_default = 1;
+        }
+        if (current_modifier == "PRIMARY KEY")
+        {
+          answer.primary_key = 1;
+        }
+        if (current_modifier == "NOT NULL")
+        {
+          answer.not_null = 1;
+        }
+      }
+      return answer;
+    }
+
+    /**
+     * @param modifiers_checklist > ColModifierChecklist
+     *
+     * @returns `true` if empty literal rule violations were found.
+     *  */
+    static const bool hasEmptyLiteralRuleViolations(const ColModifierChecklist &modifiers_checklist)
+    {
+      if (modifiers_checklist.primary_key)
+      {
+        std::cerr << "Error (code INSRT-0003) - Primary Key cannot be empty value.\n";
+        return true;
+      }
+      if (modifiers_checklist.not_null && !modifiers_checklist.has_default)
+      {
+        std::cerr << "Error (code: INSRT-0002) - cannot insert empty literal into column marked as NOT NULL without explicit DEFAULT value\n";
+        return true;
+      }
+      return false;
+    }
+  };
+};
