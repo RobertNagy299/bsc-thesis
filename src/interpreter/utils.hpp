@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include <unordered_set>
 
 struct ColModifierChecklist
 {
@@ -23,6 +24,44 @@ struct Utilities
   // Delete copy constructor and assignment operator to prevent copying
   Utilities(const Utilities &) = delete;
   Utilities &operator=(const Utilities &) = delete;
+
+  /**
+   * @brief
+   * This class is intended to be a `static` method container, do not instantiate it!
+   */
+  struct ColumnUtils
+  {
+    // Delete the default constructor to prevent instantiation
+    ColumnUtils() = delete;
+
+    // Delete copy constructor and assignment operator to prevent copying
+    ColumnUtils(const ColumnUtils &) = delete;
+    ColumnUtils &operator=(const ColumnUtils &) = delete;
+
+    static const bool columnsExistInTable(ColumnListNode *&node, const std::unordered_map<std::string, std::vector<UntypedColumnDefNode *>>::iterator &table)
+    {
+      // use a hash map for faster lookups
+      std::unordered_set<std::string> auxiliary_colname_hashmap;
+      const auto table_cols = table->second;
+      // put the table's columns into the hashmap
+      for (const auto &col_node : table_cols)
+      {
+        const std::string &col_name = col_node->name;
+        auxiliary_colname_hashmap.insert(col_name);
+      }
+      // check if the given cols exist
+      for (const auto &col_name : node->columns)
+      {
+        // if col is not found, then the statement is invalid
+        if (auxiliary_colname_hashmap.find(col_name) == auxiliary_colname_hashmap.end())
+        {
+          std::cerr << "Error (Code: SLCT-0001): Column " << col_name << " does not exist in table " << table->first << '!' << std::endl;
+          return false;
+        }
+      }
+      return true;
+    }
+  };
 
   /**
    * @brief
@@ -119,12 +158,12 @@ struct Utilities
     {
       if (modifiers_checklist.primary_key)
       {
-        std::cerr << "Error (code INSRT-0003) - Primary Key cannot be empty value.\n";
+        std::cerr << "Error (Code: INSRT-0003) - Primary Key cannot be empty value.\n";
         return true;
       }
       if (modifiers_checklist.not_null && !modifiers_checklist.has_default)
       {
-        std::cerr << "Error (code: INSRT-0002) - cannot insert empty literal into column marked as NOT NULL without explicit DEFAULT value\n";
+        std::cerr << "Error (Code: INSRT-0002) - cannot insert empty literal into column marked as NOT NULL without explicit DEFAULT value\n";
         return true;
       }
       return false;

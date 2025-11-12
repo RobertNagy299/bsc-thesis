@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <unordered_set>
 #include "../parser/ast.hpp"
 #include "execution_context.hpp"
 #include "utils.hpp"
@@ -89,5 +90,24 @@ struct SemanticValidator
         std::cerr << "Error during value insertion: " << e.what() << '\n';
       }
     }
+    // TODO: check for column validity
+    }
+
+  static const bool validateSelectSemantics(SelectNode &node, ExecutionContext &ctx)
+  {
+    const auto &current_table = ctx.untyped_tables.find(node.tableName);
+    if (current_table == ctx.untyped_tables.end())
+    {
+      std::cerr << "Table " << node.tableName << " does not exist.";
+      return false;
+    }
+
+    // If no columns were given, then the ASTERISK was given, which is valid.
+    // So we only need to check if the given columns actually exist in the table
+    if (node.columns)
+    {
+      return Utilities::ColumnUtils::columnsExistInTable(node.columns, current_table);
+    }
+    return true;
   }
 };

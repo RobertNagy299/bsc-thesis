@@ -41,6 +41,7 @@ public:
     // Semantic validation - ensure proper literal values, types, etc.
     if (!SemanticValidator::validateInsertSemantics(node, ctx))
     {
+      std::cerr << "Insert statement is semantically invalid! The engine will not perform any file operations." << std::endl;
       return;
     }
 
@@ -51,6 +52,11 @@ public:
   void visit(SelectNode &node) override
   {
     // TODO validate semantics
+    if (!SemanticValidator::validateSelectSemantics(node, ctx))
+    {
+      std::cerr << "Select statement is semantically invalid! The engine will not perform any file operations." << std::endl;
+      return;
+    }
     std::cout << "Select node detected, tableName = " << node.tableName << '\n'
               << "col list = ";
     if (!node.columns)
