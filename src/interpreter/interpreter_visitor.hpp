@@ -45,7 +45,7 @@ public:
     }
 
     // Command is semantically valid, perform file operations
-    // const auto &current_table = ctx.untyped_tables.find(node.tableName);
+    DBEngine::FileHandler::insertData(node, ctx);
   }
 
   void visit(ColumnListNode &node) override
