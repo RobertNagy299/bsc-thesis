@@ -13,6 +13,7 @@ struct ColumnListNode;
 struct LiteralNode;
 struct ValueRecordNode;
 struct ValuesListNode;
+struct SelectNode;
 
 struct ASTVisitor
 {
@@ -25,6 +26,7 @@ struct ASTVisitor
   virtual void visit(LiteralNode &node) = 0;
   virtual void visit(ValueRecordNode &node) = 0;
   virtual void visit(ValuesListNode &node) = 0;
+  virtual void visit(SelectNode &node) = 0;
 
   virtual ~ASTVisitor() = default;
 };
@@ -191,6 +193,22 @@ struct InsertNode : ASTNode
   {
     delete columns;
     delete values;
+  }
+
+  void accept(ASTVisitor &v) override { v.visit(*this); };
+};
+
+struct SelectNode : ASTNode
+{
+  std::string tableName;
+  ColumnListNode *columns; // optional (nullptr if not provided)
+
+  SelectNode(ColumnListNode *c, const std::string &t)
+      : tableName(t), columns(c) {}
+
+  ~SelectNode()
+  {
+    delete columns;
   }
 
   void accept(ASTVisitor &v) override { v.visit(*this); };

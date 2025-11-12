@@ -25,6 +25,8 @@ STRING    \'([^\\\n]|(\\.))*\'
 %%
 
 "CREATE"         {  return KW_CREATE; }
+"SELECT"         {  return KW_SELECT; }
+"FROM"           {  return KW_FROM; }
 "INSERT"         {  return KW_INSERT; }
 "INTO"           {  return KW_INTO; }
 "FALSE"          {  return KW_FALSE; }
@@ -44,6 +46,7 @@ STRING    \'([^\\\n]|(\\.))*\'
 ")"              {  return RPAREN; }
 ";"              {  return SEMICOLON; }
 ","              {  return COMMA; }
+"*"              {  return ASTERISK; }
 "\n"             { }
 
 {IDENT}          {  yylval->str = new std::string(yytext); return IDENTIFIER; }

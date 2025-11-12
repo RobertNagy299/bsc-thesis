@@ -48,6 +48,22 @@ public:
     DBEngine::FileHandler::insertData(node, ctx);
   }
 
+  void visit(SelectNode &node) override
+  {
+    // TODO validate semantics
+    std::cout << "Select node detected, tableName = " << node.tableName << '\n'
+              << "col list = ";
+    if (!node.columns)
+    {
+      std::cout << " * ";
+      return;
+    }
+    for (auto col : node.columns->columns)
+    {
+      std ::cout << col;
+    }
+  }
+
   void visit(ColumnListNode &node) override
   {
     std::cout << "ColumnListNode visited" << '\n';

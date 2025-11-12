@@ -53,13 +53,13 @@
 
 // TODO: destructor rules for insert nodes
 
-%token SEMICOLON LPAREN RPAREN COMMA
+%token SEMICOLON LPAREN RPAREN COMMA ASTERISK
 %token KW_CREATE KW_UNTYPED KW_TABLE KW_NOT KW_KEY KW_PRIMARY KW_DEFAULT KW_UNIQUE KW_DROP
-%token KW_INSERT KW_INTO KW_NUMBER_T KW_VALUES KW_TRUE KW_NULL KW_FALSE
+%token KW_INSERT KW_INTO KW_NUMBER_T KW_VALUES KW_TRUE KW_NULL KW_FALSE KW_SELECT KW_FROM
 
 %token <str> IDENTIFIER LITERAL_STRING LITERAL_NUMBER
 
-%type <node> program statement tabl_crea untyped_col_def tabl_drop tabl_insert
+%type <node> program statement tabl_crea untyped_col_def tabl_drop tabl_insert tabl_select
 %type <nodeList> untyped_col_defs
 %type <strList> opt_col_modifiers
 %type <str> col_modifier
@@ -67,7 +67,7 @@
 %type <litList> literal_list
 %type <valRecord> value_record
 %type <valuesList> values_list
-%type <colList> opt_col_list col_list
+%type <colList> opt_col_list col_list selection_col_statement
 
 %%
 program
@@ -88,6 +88,7 @@ statement
     : tabl_crea { $$ = $1; }
     | tabl_drop { $$ = $1; }
     | tabl_insert { $$ = $1; }
+    | tabl_select { $$ = $1; }
     ;
 
 tabl_crea
@@ -153,6 +154,21 @@ tabl_insert
         delete $3; // cleanup IDENTIFIER string
       }
     ;
+
+tabl_select
+  : KW_SELECT selection_col_statement KW_FROM IDENTIFIER {
+      $$ = new SelectNode($2, *$4);
+      delete $4;
+    }
+  ;
+
+selection_col_statement
+  : ASTERISK {
+    $$ = nullptr;
+  } 
+  | col_list {
+    $$ = $1;
+  }
 
 opt_col_list
     : /* empty */ {
