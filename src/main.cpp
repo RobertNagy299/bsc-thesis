@@ -17,7 +17,9 @@ int main()
   // const char *sql = "DROP TABLE users;";
   // const char *sql = "INSERT INTO users VALUES(6, 'Frankenstein', 19);";
   // const char *sql = "INSERT INTO users VALUES (1,4);";
-  const char *sql = "SELECT id, name FROM users;";
+  // const char *sql = "SELECT id, name FROM users;";
+  const char *sql = "INSERT INTO users(id, kaka) VALUES (1,4);";
+
   // Open SQL string as input
   FILE *f = fmemopen((void *)sql, strlen(sql), "r");
 

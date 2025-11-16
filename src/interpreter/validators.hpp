@@ -90,8 +90,9 @@ struct SemanticValidator
         std::cerr << "Error during value insertion: " << e.what() << '\n';
       }
     }
-    // TODO: check for column validity
-    }
+
+    return Utilities::ColumnUtils::columnsExistInTable(node.columns, current_table);
+  }
 
   static const bool validateSelectSemantics(SelectNode &node, ExecutionContext &ctx)
   {

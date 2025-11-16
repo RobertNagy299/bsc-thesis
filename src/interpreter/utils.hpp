@@ -55,7 +55,10 @@ struct Utilities
         // if col is not found, then the statement is invalid
         if (auxiliary_colname_hashmap.find(col_name) == auxiliary_colname_hashmap.end())
         {
-          std::cerr << "Error (Code: SLCT-0001): Column " << col_name << " does not exist in table " << table->first << '!' << std::endl;
+          std::cerr << std::endl
+                    << "Error (Code: COLUMN-VALIDATOR-0001): Column " << col_name << " does not exist in table " << table->first << '!'
+                    << "\n coming from file : " + std::string(__FILE__) + " Line : #" + std::to_string(__LINE__) << std::endl
+                    << std::endl;
           return false;
         }
       }
