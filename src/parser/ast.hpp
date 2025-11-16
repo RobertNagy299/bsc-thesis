@@ -15,9 +15,19 @@ struct ValueRecordNode;
 struct ValuesListNode;
 struct SelectNode;
 
+struct ComparatorNode;
+struct ConditionNode;
+struct ConditionListNode;
+struct WhereNode;
+
 struct ASTVisitor
 {
   virtual void visit(ProgramNode &node) = 0;
+  virtual void visit(ComparatorNode &node) = 0;
+  virtual void visit(ConditionNode &node) = 0;
+  virtual void visit(ConditionListNode &node) = 0;
+  virtual void visit(WhereNode &node) = 0;
+
   virtual void visit(CreateUntypedTableNode &node) = 0;
   virtual void visit(UntypedColumnDefNode &node) = 0;
   virtual void visit(DropTableNode &node) = 0;
@@ -198,17 +208,97 @@ struct InsertNode : ASTNode
   void accept(ASTVisitor &v) override { v.visit(*this); };
 };
 
+struct ComparatorNode : ASTNode
+{
+
+  enum class Type
+  {
+    IS,
+    IS_NOT,
+    LIKE,
+    NOT_LIKE,
+    EQ,
+    NE,
+    LT,
+    LE,
+    GT,
+    GE,
+  };
+
+  Type type;
+
+  ComparatorNode(Type type) : type(type) {}
+
+  void accept(ASTVisitor &v) override { v.visit(*this); };
+};
+
+struct ConditionNode : ASTNode
+{
+  std::string col_name;
+  ComparatorNode *cmp_node;
+  LiteralNode *literal_value;
+
+  ConditionNode(const std::string &s, ComparatorNode *n, LiteralNode *l)
+      : col_name(s), cmp_node(n), literal_value(l) {}
+
+  void accept(ASTVisitor &v) override { v.visit(*this); };
+
+  ~ConditionNode()
+  {
+    delete cmp_node;
+    delete literal_value;
+  }
+};
+
+struct ConditionListNode : ASTNode
+{
+  std::vector<ConditionNode *> conditions;
+
+  ConditionListNode(std::vector<ConditionNode *> v)
+      : conditions(std::move(v)) {}
+
+  void accept(ASTVisitor &v) override { v.visit(*this); };
+
+  ~ConditionListNode()
+  {
+    for (auto cond : conditions)
+    {
+      delete cond;
+    }
+  }
+};
+
+struct WhereNode : ASTNode
+{
+
+  ConditionListNode *conditions_list_node;
+
+  WhereNode(ConditionListNode *cndl) : conditions_list_node(cndl) {}
+
+  void accept(ASTVisitor &v) override { v.visit(*this); };
+
+  ~WhereNode()
+  {
+    delete conditions_list_node;
+  }
+};
+
 struct SelectNode : ASTNode
 {
-  std::string tableName;
   ColumnListNode *columns; // optional (nullptr if not provided)
+  std::string tableName;
+  WhereNode *opt_where_node; // nullptr if not provided
 
-  SelectNode(ColumnListNode *c, const std::string &t)
-      : tableName(t), columns(c) {}
+  SelectNode(ColumnListNode *c, std::string &t, WhereNode *wheren)
+      : tableName(t), columns(c), opt_where_node(wheren) {}
 
   ~SelectNode()
   {
-    delete columns;
+    if (columns)
+      delete columns;
+
+    if (opt_where_node)
+      delete opt_where_node;
   }
 
   void accept(ASTVisitor &v) override { v.visit(*this); };

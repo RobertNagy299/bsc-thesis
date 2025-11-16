@@ -51,7 +51,7 @@ public:
 
   void visit(SelectNode &node) override
   {
-    // TODO validate semantics
+    // TODO validate semantics for WHERE clause
     if (!SemanticValidator::validateSelectSemantics(node, ctx))
     {
       std::cerr << "Select statement is semantically invalid! The engine will not perform any file operations." << std::endl;
@@ -68,6 +68,33 @@ public:
     {
       std ::cout << col;
     }
+    if (node.opt_where_node)
+    {
+      for (auto &cond : node.opt_where_node->conditions_list_node->conditions)
+      {
+        if (cond)
+        {
+          std::cout << "WHERE clause with: col name = ";
+          std::cout << cond->col_name;
+          std::cout << " literal: " << cond->literal_value->value << std::endl;
+        }
+      }
+    }
+  }
+
+  void visit(WhereNode &node) override
+  {
+    std::cout << "Where node visited" << '\n';
+  }
+
+  void visit(ConditionListNode &node) override
+  {
+    std::cout << "Condition list node visited" << '\n';
+  }
+
+  void visit(ConditionNode &node) override
+  {
+    std::cout << "Condition node visited" << '\n';
   }
 
   void visit(ColumnListNode &node) override
@@ -78,6 +105,11 @@ public:
   void visit(ValuesListNode &node) override
   {
     std::cout << "Values list node visited" << '\n';
+  }
+
+  void visit(ComparatorNode &node) override
+  {
+    std::cout << "Comparator node visited" << '\n';
   }
 
   void visit(LiteralNode &node) override

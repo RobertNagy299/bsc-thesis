@@ -25,6 +25,18 @@ STRING    \'([^\\\n]|(\\.))*\'
 %%
 
 "CREATE"         {  return KW_CREATE; }
+"WHERE"          {  return KW_WHERE; }
+"LIKE"           {  return KW_LIKE; }
+"AND"            {  return KW_AND; }
+"OR"             {  return KW_OR; }
+
+"<"              {  return OP_LT; }
+">"              {  return OP_GT; }
+"="              {  return OP_EQ; }
+"<="             {  return OP_LE; }
+">="             {  return OP_GE; }
+"!="             {  return OP_NE; }
+
 "SELECT"         {  return KW_SELECT; }
 "FROM"           {  return KW_FROM; }
 "INSERT"         {  return KW_INSERT; }
@@ -40,6 +52,7 @@ STRING    \'([^\\\n]|(\\.))*\'
 "NUMBER"         {  return KW_NUMBER_T; }
 "NULL"           {  return KW_NULL; }
 "NOT"            {  return KW_NOT; }
+"IS"             {  return KW_IS; }
 "UNIQUE"         {  return KW_UNIQUE; }
 "DEFAULT"        {  return KW_DEFAULT; }
 "("              {  return LPAREN; }
