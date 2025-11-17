@@ -47,14 +47,14 @@
 
 /* Tell Bison how to free semantic values if it discards them. */
 /* TODO: revisit this for syntax errors with update, delete, insert */
-%destructor { delete $$; } <str>
-%destructor { delete $$; } <strList>
+%destructor { delete $$; $$ = nullptr; } <str>
+%destructor { delete $$; $$ = nullptr; } <strList>
 
 %destructor {
-  for (auto p : *$$) {
-    delete p;
+  for (auto &p : *$$) {
+    delete p; p = nullptr;
   }
-  delete $$;
+  delete $$; $$ = nullptr;
 } <nodeList>
 
 
@@ -108,7 +108,7 @@ statement
 tabl_update
   : KW_UPDATE IDENTIFIER KW_SET assignment_list opt_where_statement {
       $$ = new UpdateNode(*$2, $4, $5);
-      delete $2;
+      delete $2; $2 = nullptr;
     }
   ;
 
@@ -141,16 +141,15 @@ tabl_delete
 tabl_crea
   : KW_CREATE KW_UNTYPED KW_TABLE IDENTIFIER LPAREN untyped_col_defs RPAREN {
       $$ = new CreateUntypedTableNode(*$4, *$6);
-      delete $4; delete $6;
-      $4 = nullptr; $6 = nullptr;
+      delete $4; $4 = nullptr; 
+      delete $6; $6 = nullptr;
     }
   ;
 
 tabl_drop
   : KW_DROP KW_TABLE IDENTIFIER {
       $$ = new DropTableNode(*$3);
-      delete $3;
-      $3 = nullptr;
+      delete $3; $3 = nullptr;
     }
   ;
 
@@ -183,8 +182,7 @@ opt_col_modifiers
   | opt_col_modifiers col_modifier {
       $1->push_back(*$2);
       $$ = $1;
-      delete $2;
-      $2 = nullptr;
+      delete $2; $2 = nullptr;
     }
   ;
 
@@ -310,8 +308,8 @@ literal_list
 
 literal_value
   : /* empty */    { $$ = new LiteralNode(LiteralNode::Type::EMPTY, ""); }
-  | LITERAL_NUMBER { $$ = new LiteralNode(LiteralNode::Type::NUMBER, *$1); delete $1; }
-  | LITERAL_STRING { $$ = new LiteralNode(LiteralNode::Type::STRING, *$1); delete $1; }
+  | LITERAL_NUMBER { $$ = new LiteralNode(LiteralNode::Type::NUMBER, *$1); delete $1; $1 = nullptr; }
+  | LITERAL_STRING { $$ = new LiteralNode(LiteralNode::Type::STRING, *$1); delete $1; $1 = nullptr; }
   | KW_NULL        { $$ = new LiteralNode(LiteralNode::Type::NULLVAL, "NULL"); }
   | KW_TRUE        { $$ = new LiteralNode(LiteralNode::Type::TRUEVAL, "TRUE"); }
   | KW_FALSE       { $$ = new LiteralNode(LiteralNode::Type::FALSEVAL, "FALSE"); }

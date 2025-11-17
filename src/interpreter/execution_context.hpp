@@ -1,43 +1,35 @@
 #pragma once
-#include <unordered_map>
-#include <string>
-#include <vector>
 #include "../parser/ast.hpp"
 #include <filesystem>
 #include <fstream>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 // Singleton
-struct ExecutionContext
-{
-  std::unordered_map<std::string, std::vector<UntypedColumnDefNode *>> untyped_tables;
+struct ExecutionContext {
+  std::unordered_map<std::string, std::vector<UntypedColumnDefNode*>> untyped_tables;
 
-  void init()
-  {
+  void init() {
     std::string base_dir = "../src/schema/metadata";
-    if (!std::filesystem::exists(base_dir))
-    {
+    if (!std::filesystem::exists(base_dir)) {
       std::cerr << "No schema metadata found at " << base_dir << "\n";
       return;
     }
 
-    for (auto &entry : std::filesystem::directory_iterator(base_dir))
-    {
-      if (entry.is_directory())
-      {
+    for (auto& entry : std::filesystem::directory_iterator(base_dir)) {
+      if (entry.is_directory()) {
         std::string tableName = entry.path().filename().string();
         std::string metadata_path = entry.path().string() + "/metadata.txt";
 
-        if (!std::filesystem::exists(metadata_path))
-          continue;
+        if (!std::filesystem::exists(metadata_path)) continue;
 
         std::ifstream file(metadata_path);
-        if (!file.is_open())
-          continue;
+        if (!file.is_open()) continue;
 
-        std::vector<UntypedColumnDefNode *> schema;
+        std::vector<UntypedColumnDefNode*> schema;
         std::string line;
-        while (std::getline(file, line))
-        {
+        while (std::getline(file, line)) {
           // Example format: "id PRIMARY KEY,NOT NULL"
           std::istringstream iss(line);
           std::string colName;
@@ -47,14 +39,11 @@ struct ExecutionContext
           std::getline(iss, modifiersPart); // rest of line
           std::vector<std::string> modifiers;
 
-          if (!modifiersPart.empty())
-          {
+          if (!modifiersPart.empty()) {
             std::stringstream ss(modifiersPart);
             std::string mod;
-            while (std::getline(ss, mod, ','))
-            {
-              if (!mod.empty())
-                modifiers.push_back(mod);
+            while (std::getline(ss, mod, ',')) {
+              if (!mod.empty()) modifiers.push_back(mod);
             }
           }
 
@@ -68,14 +57,14 @@ struct ExecutionContext
     }
   }
 
-  ~ExecutionContext()
-  {
-    for (auto &it : untyped_tables)
-    {
-      for (auto &node : it.second)
-      {
-        if (node)
-          delete node;
+  ~ExecutionContext() {
+    for (auto& it : untyped_tables) {
+      for (UntypedColumnDefNode*& node : it.second) {
+        if (node) {
+          // clang-format off
+          delete node; node = nullptr;
+          // clang-format on
+        }
       }
     }
   }

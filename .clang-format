@@ -1,0 +1,21 @@
+Language: Cpp
+
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+
+# Keep your chosen line length
+ColumnLimit: 120   # (or whatever you prefer)
+
+# Important: KEEP multi-statement lines untouched
+AllowAllStatementsOnSingleLine: true
+
+# Optional but recommended for “don’t split short things” style:
+AllowShortIfStatementsOnASingleLine: true
+AllowShortFunctionsOnASingleLine: All
+AllowShortLoopsOnASingleLine: true
+AllowShortBlocksOnASingleLine: Always
+
+BreakBeforeBraces: Attach
+PointerAlignment: Left
+SpaceBeforeParens: ControlStatements

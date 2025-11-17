@@ -1,7 +1,7 @@
 #pragma once
+#include <iostream>
 #include <string>
 #include <vector>
-#include <iostream>
 
 struct ProgramNode;
 struct CreateUntypedTableNode;
@@ -26,171 +26,154 @@ struct AssignmentNode;
 struct AssignmentListNode;
 struct UpdateNode;
 
-struct ASTVisitor
-{
-  virtual void visit(ProgramNode &node) = 0;
-  virtual void visit(ComparatorNode &node) = 0;
-  virtual void visit(ConditionNode &node) = 0;
-  virtual void visit(ConditionListNode &node) = 0;
-  virtual void visit(WhereNode &node) = 0;
+struct ASTVisitor {
+  virtual void visit(ProgramNode& node) = 0;
+  virtual void visit(ComparatorNode& node) = 0;
+  virtual void visit(ConditionNode& node) = 0;
+  virtual void visit(ConditionListNode& node) = 0;
+  virtual void visit(WhereNode& node) = 0;
 
-  virtual void visit(DeleteNode &node) = 0;
+  virtual void visit(DeleteNode& node) = 0;
 
-  virtual void visit(AssignmentNode &node) = 0;
-  virtual void visit(AssignmentListNode &node) = 0;
-  virtual void visit(UpdateNode &node) = 0;
+  virtual void visit(AssignmentNode& node) = 0;
+  virtual void visit(AssignmentListNode& node) = 0;
+  virtual void visit(UpdateNode& node) = 0;
 
-  virtual void visit(CreateUntypedTableNode &node) = 0;
-  virtual void visit(UntypedColumnDefNode &node) = 0;
-  virtual void visit(DropTableNode &node) = 0;
-  virtual void visit(InsertNode &node) = 0;
-  virtual void visit(ColumnListNode &node) = 0;
-  virtual void visit(LiteralNode &node) = 0;
-  virtual void visit(ValueRecordNode &node) = 0;
-  virtual void visit(ValuesListNode &node) = 0;
-  virtual void visit(SelectNode &node) = 0;
+  virtual void visit(CreateUntypedTableNode& node) = 0;
+  virtual void visit(UntypedColumnDefNode& node) = 0;
+  virtual void visit(DropTableNode& node) = 0;
+  virtual void visit(InsertNode& node) = 0;
+  virtual void visit(ColumnListNode& node) = 0;
+  virtual void visit(LiteralNode& node) = 0;
+  virtual void visit(ValueRecordNode& node) = 0;
+  virtual void visit(ValuesListNode& node) = 0;
+  virtual void visit(SelectNode& node) = 0;
 
   virtual ~ASTVisitor() = default;
 };
 
-struct ASTNode
-{
+struct ASTNode {
   virtual ~ASTNode() = default;
-  virtual void accept(ASTVisitor &v) = 0;
+  virtual void accept(ASTVisitor& v) = 0;
 };
 
-struct ProgramNode : ASTNode
-{
-  std::vector<ASTNode *> statements;
+struct ProgramNode : ASTNode {
+  std::vector<ASTNode*> statements;
 
-  void accept(ASTVisitor &v) override
-  {
-    v.visit(*this);
-  }
+  void accept(ASTVisitor& v) override { v.visit(*this); }
 
-  ~ProgramNode() override
-  {
+  ~ProgramNode() override {
     std::cout << "ProgramNode destructor called!\n";
-    for (auto &s : statements)
-    {
-      if (s)
-      {
-        delete s;
+    for (auto& s : statements) {
+      if (s) {
+        // clang-format off
+        delete s; s = nullptr;
+        // clang-format on
       }
     }
   }
 };
 
-struct CreateUntypedTableNode : ASTNode
-{
+struct CreateUntypedTableNode : ASTNode {
   std::string tableName;
-  std::vector<ASTNode *> columns;
+  std::vector<ASTNode*> columns;
 
-  CreateUntypedTableNode(std::string &tableName, std::vector<ASTNode *> &columns)
+  CreateUntypedTableNode(std::string& tableName, std::vector<ASTNode*>& columns)
       : tableName(std::move(tableName)), columns(std::move(columns)) {}
 
-  void accept(ASTVisitor &v) override { v.visit(*this); }
+  void accept(ASTVisitor& v) override { v.visit(*this); }
 
-  ~CreateUntypedTableNode() override
-  {
-    for (auto c : columns)
-      if (c)
-        delete c;
+  ~CreateUntypedTableNode() override {
+    for (auto& c : columns) {
+      if (c) {
+        // clang-format off
+        delete c; c = nullptr;
+        // clang-format on
+      }
+    }
   }
 };
 
-struct UntypedColumnDefNode : ASTNode
-{
+struct UntypedColumnDefNode : ASTNode {
   std::string name;
   std::vector<std::string> modifiers;
 
-  UntypedColumnDefNode(std::string &name, std::vector<std::string> &modifiers)
-      : name(std::move(name)), modifiers(std::move(modifiers))
-  {
-  }
+  UntypedColumnDefNode(std::string& name, std::vector<std::string>& modifiers)
+      : name(std::move(name)), modifiers(std::move(modifiers)) {}
 
-  UntypedColumnDefNode(const UntypedColumnDefNode &other)
-  {
+  UntypedColumnDefNode(const UntypedColumnDefNode& other) {
     this->name = other.name;
     this->modifiers = other.modifiers;
   }
 
-  void accept(ASTVisitor &v) override { v.visit(*this); }
+  void accept(ASTVisitor& v) override { v.visit(*this); }
 };
 
-struct DropTableNode : ASTNode
-{
+struct DropTableNode : ASTNode {
   std::string tableName;
 
-  DropTableNode(std::string &tableName) : tableName(std::move(tableName)) {}
+  DropTableNode(std::string& tableName) : tableName(std::move(tableName)) {}
 
-  void accept(ASTVisitor &v) override
-  {
-    v.visit(*this);
-  }
+  void accept(ASTVisitor& v) override { v.visit(*this); }
 };
 
 // Literal values (strings, numbers, nulls, booleans, etc.)
-struct LiteralNode : ASTNode
-{
-  enum class Type
-  {
-    EMPTY,
-    STRING,
-    NUMBER,
-    NULLVAL,
-    TRUEVAL,
-    FALSEVAL
-  };
+struct LiteralNode : ASTNode {
+  enum class Type { EMPTY, STRING, NUMBER, NULLVAL, TRUEVAL, FALSEVAL };
 
   Type type;
   std::string value; // e.g. "123", "John Doe" (for numbers too, store as string first)
 
-  LiteralNode(Type t, const std::string &val) : type(t), value(val) {}
+  LiteralNode(Type t, const std::string& val) : type(t), value(val) {}
 
-  void accept(ASTVisitor &v) override { v.visit(*this); };
+  void accept(ASTVisitor& v) override { v.visit(*this); };
 };
 
 // A list of literal values = one row/record in VALUES
-struct ValueRecordNode : ASTNode
-{
-  std::vector<LiteralNode *> values;
+struct ValueRecordNode : ASTNode {
+  std::vector<LiteralNode*> values;
 
-  ValueRecordNode(std::vector<LiteralNode *> vals) : values(std::move(vals)) {}
+  ValueRecordNode(std::vector<LiteralNode*> vals) : values(std::move(vals)) {}
 
-  ~ValueRecordNode()
-  {
-    for (auto v : values)
-      delete v;
+  ~ValueRecordNode() {
+    for (auto& v : values) {
+      if (v) {
+        // clang-format off
+        delete v; v = nullptr;
+        // clang-format on
+      }
+    }
   }
 
-  void accept(ASTVisitor &v) override { v.visit(*this); };
+  void accept(ASTVisitor& v) override { v.visit(*this); };
 };
 
 // The full VALUES (...) , (...) , (...) part
-struct ValuesListNode : ASTNode
-{
-  std::vector<ValueRecordNode *> records;
+struct ValuesListNode : ASTNode {
+  std::vector<ValueRecordNode*> records;
 
-  ValuesListNode(std::vector<ValueRecordNode *> recs) : records(std::move(recs)) {}
+  ValuesListNode(std::vector<ValueRecordNode*> recs) : records(std::move(recs)) {}
 
-  ~ValuesListNode()
-  {
-    for (auto r : records)
-      delete r;
+  ~ValuesListNode() {
+    for (auto& r : records) {
+      if (r) {
+        // clang-format off
+        delete r; r = nullptr;
+        // clang-format on
+      }
+    }
   }
 
-  void accept(ASTVisitor &v) override { v.visit(*this); };
+  void accept(ASTVisitor& v) override { v.visit(*this); };
 };
 
 // Column list: (id, name, age)
-struct ColumnListNode : ASTNode
-{
+struct ColumnListNode : ASTNode {
   std::vector<std::string> columns;
 
   ColumnListNode(std::vector<std::string> cols) : columns(std::move(cols)) {}
 
-  void accept(ASTVisitor &v) override { v.visit(*this); };
+  void accept(ASTVisitor& v) override { v.visit(*this); };
 };
 
 /**
@@ -201,29 +184,32 @@ struct ColumnListNode : ASTNode
  * @param columns ColumnListNode*
  * @param values ValuesListNode*
  */
-struct InsertNode : ASTNode
-{
+struct InsertNode : ASTNode {
   std::string tableName;
-  ColumnListNode *columns; // optional (nullptr if not provided)
-  ValuesListNode *values;  // must exist
+  ColumnListNode* columns; // optional (nullptr if not provided)
+  ValuesListNode* values;  // must exist
 
-  InsertNode(const std::string &t, ColumnListNode *c, ValuesListNode *v)
-      : tableName(t), columns(c), values(v) {}
+  InsertNode(const std::string& t, ColumnListNode* c, ValuesListNode* v) : tableName(t), columns(c), values(v) {}
 
-  ~InsertNode()
-  {
-    delete columns;
-    delete values;
+  ~InsertNode() {
+    if (columns) {
+      // clang-format off
+      delete columns; columns = nullptr;
+      // clang-format on
+    }
+    if (values) {
+      // clang-format off
+      delete values; values = nullptr;
+      // clang-format on
+    }
   }
 
-  void accept(ASTVisitor &v) override { v.visit(*this); };
+  void accept(ASTVisitor& v) override { v.visit(*this); };
 };
 
-struct ComparatorNode : ASTNode
-{
+struct ComparatorNode : ASTNode {
 
-  enum class Type
-  {
+  enum class Type {
     IS,
     IS_NOT,
     LIKE,
@@ -240,157 +226,163 @@ struct ComparatorNode : ASTNode
 
   ComparatorNode(Type type) : type(type) {}
 
-  void accept(ASTVisitor &v) override { v.visit(*this); };
+  void accept(ASTVisitor& v) override { v.visit(*this); };
 };
 
-struct ConditionNode : ASTNode
-{
+struct ConditionNode : ASTNode {
   std::string col_name;
-  ComparatorNode *cmp_node;
-  LiteralNode *literal_value;
+  ComparatorNode* cmp_node;
+  LiteralNode* literal_value;
 
-  ConditionNode(const std::string &s, ComparatorNode *n, LiteralNode *l)
-      : col_name(s), cmp_node(n), literal_value(l) {}
+  ConditionNode(const std::string& s, ComparatorNode* n, LiteralNode* l) : col_name(s), cmp_node(n), literal_value(l) {}
 
-  void accept(ASTVisitor &v) override { v.visit(*this); };
+  void accept(ASTVisitor& v) override { v.visit(*this); };
 
-  ~ConditionNode()
-  {
-    delete cmp_node;
-    delete literal_value;
-  }
-};
-
-struct ConditionListNode : ASTNode
-{
-  std::vector<ConditionNode *> conditions;
-
-  ConditionListNode(std::vector<ConditionNode *> v)
-      : conditions(std::move(v)) {}
-
-  void accept(ASTVisitor &v) override { v.visit(*this); };
-
-  ~ConditionListNode()
-  {
-    for (auto cond : conditions)
-    {
-      delete cond;
+  ~ConditionNode() {
+    if (cmp_node) {
+      // clang-format off
+      delete cmp_node; cmp_node = nullptr;
+      // clang-format on
+    }
+    if (literal_value) {
+      // clang-format off
+      delete literal_value; literal_value = nullptr;
+      // clang-format on
     }
   }
 };
 
-struct WhereNode : ASTNode
-{
+struct ConditionListNode : ASTNode {
+  std::vector<ConditionNode*> conditions;
 
-  ConditionListNode *conditions_list_node;
+  ConditionListNode(std::vector<ConditionNode*> v) : conditions(std::move(v)) {}
 
-  WhereNode(ConditionListNode *cndl) : conditions_list_node(cndl) {}
+  void accept(ASTVisitor& v) override { v.visit(*this); };
 
-  void accept(ASTVisitor &v) override { v.visit(*this); };
-
-  ~WhereNode()
-  {
-    delete conditions_list_node;
+  ~ConditionListNode() {
+    for (auto& cond : conditions) {
+      if (cond) {
+        // clang-format off
+        delete cond; cond = nullptr;
+        // clang-format on
+      }
+    }
   }
 };
 
-struct SelectNode : ASTNode
-{
-  ColumnListNode *columns; // optional (nullptr if not provided)
+struct WhereNode : ASTNode {
+
+  ConditionListNode* conditions_list_node;
+
+  WhereNode(ConditionListNode* cndl) : conditions_list_node(cndl) {}
+
+  void accept(ASTVisitor& v) override { v.visit(*this); };
+
+  ~WhereNode() {
+    if (conditions_list_node) {
+      // clang-format off
+      delete conditions_list_node; conditions_list_node = nullptr;
+      // clang-format on
+    }
+  }
+};
+
+struct SelectNode : ASTNode {
+  ColumnListNode* columns; // optional (nullptr if not provided)
   std::string tableName;
-  WhereNode *opt_where_node; // nullptr if not provided
+  WhereNode* opt_where_node; // nullptr if not provided
 
-  SelectNode(ColumnListNode *c, std::string &t, WhereNode *wheren)
-      : tableName(t), columns(c), opt_where_node(wheren) {}
+  SelectNode(ColumnListNode* c, std::string& t, WhereNode* wheren) : tableName(t), columns(c), opt_where_node(wheren) {}
 
-  ~SelectNode()
-  {
-    if (columns)
-      delete columns;
+  ~SelectNode() {
+    if (columns) {
+      // clang-format off
+      delete columns; columns = nullptr;
+      // clang-format on
+    }
 
-    if (opt_where_node)
-      delete opt_where_node;
+    if (opt_where_node) {
+      // clang-format off
+      delete opt_where_node; opt_where_node = nullptr;
+      // clang-format on
+    }
   }
 
-  void accept(ASTVisitor &v) override { v.visit(*this); };
+  void accept(ASTVisitor& v) override { v.visit(*this); };
 };
 
-struct DeleteNode : ASTNode
-{
+struct DeleteNode : ASTNode {
   std::string table_name;
-  WhereNode *opt_where_node; // nullptr if not provided
+  WhereNode* opt_where_node; // nullptr if not provided
 
-  DeleteNode(std::string &tname, WhereNode *wnode) : table_name(tname), opt_where_node(wnode) {}
+  DeleteNode(std::string& tname, WhereNode* wnode) : table_name(tname), opt_where_node(wnode) {}
 
-  ~DeleteNode()
-  {
-    if (opt_where_node)
-    {
-      delete opt_where_node;
+  ~DeleteNode() {
+    if (opt_where_node) {
+      // clang-format off
+      delete opt_where_node; opt_where_node = nullptr;
+      // clang-format on
     }
   }
 
-  void accept(ASTVisitor &v) override { v.visit(*this); };
+  void accept(ASTVisitor& v) override { v.visit(*this); };
 };
 
-struct AssignmentNode : ASTNode
-{
+struct AssignmentNode : ASTNode {
   std::string col_name;
-  LiteralNode *literal_node;
+  LiteralNode* literal_node;
 
-  AssignmentNode(std::string &cname, LiteralNode *lnode) : col_name(cname), literal_node(lnode) {}
+  AssignmentNode(std::string& cname, LiteralNode* lnode) : col_name(cname), literal_node(lnode) {}
 
-  ~AssignmentNode()
-  {
-    if (literal_node)
-    {
-      delete literal_node;
+  ~AssignmentNode() {
+    if (literal_node) {
+      // clang-format off
+      delete literal_node; literal_node = nullptr;
+      // clang-format on
     }
   }
 
-  void accept(ASTVisitor &v) override { v.visit(*this); };
+  void accept(ASTVisitor& v) override { v.visit(*this); };
 };
 
-struct AssignmentListNode : ASTNode
-{
-  std::vector<AssignmentNode *> assignments;
+struct AssignmentListNode : ASTNode {
+  std::vector<AssignmentNode*> assignments;
 
-  AssignmentListNode(std::vector<AssignmentNode *> av) : assignments(std::move(av)) {}
+  AssignmentListNode(std::vector<AssignmentNode*> av) : assignments(std::move(av)) {}
 
-  ~AssignmentListNode()
-  {
-    for (auto &node_p : assignments)
-    {
-      if (node_p)
-      {
-        delete node_p;
+  ~AssignmentListNode() {
+    for (auto& node_p : assignments) {
+      if (node_p) {
+        // clang-format off
+        delete node_p; node_p = nullptr;
+        // clang-format on
       }
     }
   }
 
-  void accept(ASTVisitor &v) override { v.visit(*this); };
+  void accept(ASTVisitor& v) override { v.visit(*this); };
 };
 
-struct UpdateNode : ASTNode
-{
+struct UpdateNode : ASTNode {
   std::string table_name;
-  AssignmentListNode *assignment_list_node;
-  WhereNode *where_node; // optional, nullptr if not provided
+  AssignmentListNode* assignment_list_node;
+  WhereNode* where_node; // optional, nullptr if not provided
 
-  UpdateNode(std::string &tn, AssignmentListNode *aln_p, WhereNode *wn_p)
+  UpdateNode(std::string& tn, AssignmentListNode* aln_p, WhereNode* wn_p)
       : table_name(tn), assignment_list_node(aln_p), where_node(wn_p) {}
 
-  ~UpdateNode()
-  {
-    if (assignment_list_node)
-    {
-      delete assignment_list_node;
+  ~UpdateNode() {
+    if (assignment_list_node) {
+      // clang-format off
+      delete assignment_list_node; assignment_list_node = nullptr;
+      // clang-format on
     }
-    if (where_node)
-    {
-      delete where_node;
+    if (where_node) {
+      // clang-format off
+      delete where_node; where_node = nullptr;
+      // clang-format on
     }
   }
 
-  void accept(ASTVisitor &v) override { v.visit(*this); };
+  void accept(ASTVisitor& v) override { v.visit(*this); };
 };
