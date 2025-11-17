@@ -44,6 +44,7 @@ STRING    \'([^\\\n]|(\\.))*\'
 "FROM"           {  return KW_FROM; }
 "INSERT"         {  return KW_INSERT; }
 "INTO"           {  return KW_INTO; }
+
 "FALSE"          {  return KW_FALSE; }
 "TRUE"           {  return KW_TRUE; }
 "VALUES"         {  return KW_VALUES; }
@@ -58,6 +59,7 @@ STRING    \'([^\\\n]|(\\.))*\'
 "IS"             {  return KW_IS; }
 "UNIQUE"         {  return KW_UNIQUE; }
 "DEFAULT"        {  return KW_DEFAULT; }
+
 "("              {  return LPAREN; }
 ")"              {  return RPAREN; }
 ";"              {  return SEMICOLON; }
