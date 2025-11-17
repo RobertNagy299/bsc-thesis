@@ -19,7 +19,8 @@ int main()
   // const char *sql = "INSERT INTO users VALUES (1,4);";
   // const char *sql = "SELECT id, name FROM users WHERE id IS NOT NULL;";
   // const char *sql = "INSERT INTO users(id, name) VALUES (1,'Manfred'), (2, 'Albert');";
-  const char *sql = "DELETE FROM users WHERE id >= 1;";
+  // const char *sql = "DELETE FROM users WHERE id >= 1;";
+  const char *sql = "UPDATE users SET name = 'retro', age = 76 WHERE id = 1;";
 
   // Open SQL string as input
   FILE *f = fmemopen((void *)sql, strlen(sql), "r");

@@ -82,6 +82,21 @@ public:
     }
   }
 
+  void visit(UpdateNode &node) override
+  {
+    std::cout << "Update node visited" << '\n';
+  }
+
+  void visit(AssignmentNode &node) override
+  {
+    std::cout << "assignment node visited" << '\n';
+  }
+
+  void visit(AssignmentListNode &node) override
+  {
+    std::cout << "assignment list node visited" << '\n';
+  }
+
   void visit(DeleteNode &node) override
   {
     std::cout << "Delete node visited" << '\n';

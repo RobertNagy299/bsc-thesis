@@ -39,7 +39,8 @@ STRING    \'([^\\\n]|(\\.))*\'
 
 "SELECT"         {  return KW_SELECT; }
 "DELETE"         {  return KW_DELETE; }
-
+"UPDATE"         {  return KW_UPDATE; }
+"SET"            {  return KW_SET; }
 "FROM"           {  return KW_FROM; }
 "INSERT"         {  return KW_INSERT; }
 "INTO"           {  return KW_INTO; }

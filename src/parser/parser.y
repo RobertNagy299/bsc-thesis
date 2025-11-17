@@ -38,6 +38,8 @@
     ValueRecordNode* valRecord;
     WhereNode* whereNode;
     ComparatorNode* comparatorNode;
+    AssignmentNode* assignmentNode;
+    AssignmentListNode* assignmentListNode;
     ConditionListNode* conditionListNode;
     std::vector<LiteralNode*>* litList;
     LiteralNode* literal;
@@ -58,12 +60,12 @@
 %token SEMICOLON LPAREN RPAREN COMMA ASTERISK
 %token KW_CREATE KW_UNTYPED KW_TABLE KW_NOT KW_KEY KW_PRIMARY KW_DEFAULT KW_UNIQUE KW_DROP
 %token KW_INSERT KW_INTO KW_NUMBER_T KW_VALUES KW_TRUE KW_NULL KW_FALSE KW_SELECT KW_FROM KW_DELETE
-%token KW_WHERE KW_LIKE KW_IS KW_AND KW_OR
+%token KW_WHERE KW_LIKE KW_IS KW_AND KW_OR KW_SET KW_UPDATE
 %token OP_EQ OP_GE OP_GT OP_LE OP_LT OP_NE
 
 %token <str> IDENTIFIER LITERAL_STRING LITERAL_NUMBER
 
-%type <node> program statement tabl_crea untyped_col_def tabl_drop tabl_insert tabl_select tabl_delete
+%type <node> program statement tabl_crea untyped_col_def tabl_drop tabl_insert tabl_select tabl_delete tabl_update
 %type <whereNode> opt_where_statement where_statement
 %type <comparatorNode> comparator
 %type <conditionListNode> condition_list
@@ -75,6 +77,8 @@
 %type <valRecord> value_record
 %type <valuesList> values_list
 %type <colList> opt_col_list col_list selection_col_statement
+%type <assignmentNode> assignment
+%type <assignmentListNode> assignment_list
 
 %%
 program
@@ -97,13 +101,39 @@ statement
     | tabl_insert { $$ = $1; }
     | tabl_select { $$ = $1; }
     | tabl_delete { $$ = $1; }
+    | tabl_update { $$ = $1; }
     ;
+
+tabl_update
+  : KW_UPDATE IDENTIFIER KW_SET assignment_list opt_where_statement {
+    $$ = new UpdateNode(*$2, $4, $5);
+    delete $2;
+  }
+  ;
+
+assignment_list
+  : assignment {
+    auto assignment_vector = std::vector<AssignmentNode*>();
+    assignment_vector.push_back($1);
+    $$ = new AssignmentListNode(std::move(assignment_vector));
+  } | assignment_list COMMA assignment {
+    $1->assignments.push_back($3);
+    $$ = $1;
+  }
+  ;
+
+assignment
+  : IDENTIFIER OP_EQ literal_value {
+    $$ = new AssignmentNode(*$1, $3);
+    delete $1; $1 = nullptr;
+  }
 
 tabl_delete
   : KW_DELETE KW_FROM IDENTIFIER opt_where_statement {
     $$ = new DeleteNode(*$3, $4);
     delete $3;
   }
+  ;
 
 tabl_crea
     : KW_CREATE KW_UNTYPED KW_TABLE IDENTIFIER LPAREN untyped_col_defs RPAREN {

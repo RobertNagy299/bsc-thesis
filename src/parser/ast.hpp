@@ -22,6 +22,10 @@ struct WhereNode;
 
 struct DeleteNode;
 
+struct AssignmentNode;
+struct AssignmentListNode;
+struct UpdateNode;
+
 struct ASTVisitor
 {
   virtual void visit(ProgramNode &node) = 0;
@@ -31,6 +35,10 @@ struct ASTVisitor
   virtual void visit(WhereNode &node) = 0;
 
   virtual void visit(DeleteNode &node) = 0;
+
+  virtual void visit(AssignmentNode &node) = 0;
+  virtual void visit(AssignmentListNode &node) = 0;
+  virtual void visit(UpdateNode &node) = 0;
 
   virtual void visit(CreateUntypedTableNode &node) = 0;
   virtual void visit(UntypedColumnDefNode &node) = 0;
@@ -58,7 +66,6 @@ struct ProgramNode : ASTNode
   void accept(ASTVisitor &v) override
   {
     v.visit(*this);
-    // delete this; -- this causes a segfault - TODO investigate
   }
 
   ~ProgramNode() override
@@ -320,6 +327,68 @@ struct DeleteNode : ASTNode
     if (opt_where_node)
     {
       delete opt_where_node;
+    }
+  }
+
+  void accept(ASTVisitor &v) override { v.visit(*this); };
+};
+
+struct AssignmentNode : ASTNode
+{
+  std::string col_name;
+  LiteralNode *literal_node;
+
+  AssignmentNode(std::string &cname, LiteralNode *lnode) : col_name(cname), literal_node(lnode) {}
+
+  ~AssignmentNode()
+  {
+    if (literal_node)
+    {
+      delete literal_node;
+    }
+  }
+
+  void accept(ASTVisitor &v) override { v.visit(*this); };
+};
+
+struct AssignmentListNode : ASTNode
+{
+  std::vector<AssignmentNode *> assignments;
+
+  AssignmentListNode(std::vector<AssignmentNode *> av) : assignments(std::move(av)) {}
+
+  ~AssignmentListNode()
+  {
+    for (auto &node_p : assignments)
+    {
+      if (node_p)
+      {
+        delete node_p;
+      }
+    }
+  }
+
+  void accept(ASTVisitor &v) override { v.visit(*this); };
+};
+
+struct UpdateNode : ASTNode
+{
+  std::string table_name;
+  AssignmentListNode *assignment_list_node;
+  WhereNode *where_node; // optional, nullptr if not provided
+
+  UpdateNode(std::string &tn, AssignmentListNode *aln_p, WhereNode *wn_p)
+      : table_name(tn), assignment_list_node(aln_p), where_node(wn_p) {}
+
+  ~UpdateNode()
+  {
+    if (assignment_list_node)
+    {
+      delete assignment_list_node;
+    }
+    if (where_node)
+    {
+      delete where_node;
     }
   }
 
