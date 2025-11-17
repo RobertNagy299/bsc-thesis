@@ -20,6 +20,8 @@ struct ConditionNode;
 struct ConditionListNode;
 struct WhereNode;
 
+struct DeleteNode;
+
 struct ASTVisitor
 {
   virtual void visit(ProgramNode &node) = 0;
@@ -27,6 +29,8 @@ struct ASTVisitor
   virtual void visit(ConditionNode &node) = 0;
   virtual void visit(ConditionListNode &node) = 0;
   virtual void visit(WhereNode &node) = 0;
+
+  virtual void visit(DeleteNode &node) = 0;
 
   virtual void visit(CreateUntypedTableNode &node) = 0;
   virtual void visit(UntypedColumnDefNode &node) = 0;
@@ -299,6 +303,24 @@ struct SelectNode : ASTNode
 
     if (opt_where_node)
       delete opt_where_node;
+  }
+
+  void accept(ASTVisitor &v) override { v.visit(*this); };
+};
+
+struct DeleteNode : ASTNode
+{
+  std::string table_name;
+  WhereNode *opt_where_node; // nullptr if not provided
+
+  DeleteNode(std::string &tname, WhereNode *wnode) : table_name(tname), opt_where_node(wnode) {}
+
+  ~DeleteNode()
+  {
+    if (opt_where_node)
+    {
+      delete opt_where_node;
+    }
   }
 
   void accept(ASTVisitor &v) override { v.visit(*this); };

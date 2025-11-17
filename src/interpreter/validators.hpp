@@ -107,8 +107,17 @@ struct SemanticValidator
     // So we only need to check if the given columns actually exist in the table
     if (node.columns)
     {
-      return Utilities::ColumnUtils::columnsExistInTable(node.columns, current_table);
+      if (!Utilities::ColumnUtils::columnsExistInTable(node.columns, current_table))
+      {
+        return false;
+      };
     }
+
+    if (node.opt_where_node)
+    {
+      // TODO
+    }
+
     return true;
   }
 };

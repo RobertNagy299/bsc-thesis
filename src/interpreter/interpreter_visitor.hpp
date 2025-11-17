@@ -82,6 +82,11 @@ public:
     }
   }
 
+  void visit(DeleteNode &node) override
+  {
+    std::cout << "Delete node visited" << '\n';
+  }
+
   void visit(WhereNode &node) override
   {
     std::cout << "Where node visited" << '\n';

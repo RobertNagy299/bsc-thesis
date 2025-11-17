@@ -38,6 +38,8 @@ STRING    \'([^\\\n]|(\\.))*\'
 "!="             {  return OP_NE; }
 
 "SELECT"         {  return KW_SELECT; }
+"DELETE"         {  return KW_DELETE; }
+
 "FROM"           {  return KW_FROM; }
 "INSERT"         {  return KW_INSERT; }
 "INTO"           {  return KW_INTO; }

@@ -57,13 +57,13 @@
 
 %token SEMICOLON LPAREN RPAREN COMMA ASTERISK
 %token KW_CREATE KW_UNTYPED KW_TABLE KW_NOT KW_KEY KW_PRIMARY KW_DEFAULT KW_UNIQUE KW_DROP
-%token KW_INSERT KW_INTO KW_NUMBER_T KW_VALUES KW_TRUE KW_NULL KW_FALSE KW_SELECT KW_FROM
+%token KW_INSERT KW_INTO KW_NUMBER_T KW_VALUES KW_TRUE KW_NULL KW_FALSE KW_SELECT KW_FROM KW_DELETE
 %token KW_WHERE KW_LIKE KW_IS KW_AND KW_OR
 %token OP_EQ OP_GE OP_GT OP_LE OP_LT OP_NE
 
 %token <str> IDENTIFIER LITERAL_STRING LITERAL_NUMBER
 
-%type <node> program statement tabl_crea untyped_col_def tabl_drop tabl_insert tabl_select
+%type <node> program statement tabl_crea untyped_col_def tabl_drop tabl_insert tabl_select tabl_delete
 %type <whereNode> opt_where_statement where_statement
 %type <comparatorNode> comparator
 %type <conditionListNode> condition_list
@@ -96,7 +96,14 @@ statement
     | tabl_drop { $$ = $1; }
     | tabl_insert { $$ = $1; }
     | tabl_select { $$ = $1; }
+    | tabl_delete { $$ = $1; }
     ;
+
+tabl_delete
+  : KW_DELETE KW_FROM IDENTIFIER opt_where_statement {
+    $$ = new DeleteNode(*$3, $4);
+    delete $3;
+  }
 
 tabl_crea
     : KW_CREATE KW_UNTYPED KW_TABLE IDENTIFIER LPAREN untyped_col_defs RPAREN {
