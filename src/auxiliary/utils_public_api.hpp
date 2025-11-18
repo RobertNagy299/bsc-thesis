@@ -1,4 +1,5 @@
 #pragma once
+#include "../DBEngine/services/logger/public_api.hpp"
 #include "../parser/ast.hpp"
 #include <unordered_map>
 #include <vector>

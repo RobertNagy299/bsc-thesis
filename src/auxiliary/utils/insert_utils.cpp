@@ -26,14 +26,16 @@ const ColModifierChecklist Utilities::InsertUtils::getModifiers(const std::vecto
  *  */
 const bool Utilities::InsertUtils::hasEmptyLiteralRuleViolations(const ColModifierChecklist& modifiers_checklist) {
   if (modifiers_checklist.primary_key) {
-    std::cerr << "Error (Code: INSRT-0003) - Primary Key cannot be empty value.\n"
-              << "\n coming from file : " + std::string(__FILE__) + " Line : #" + std::to_string(__LINE__) << std::endl;
+    LoggerService::ErrorLogger::printAsStandardError("Error (Code: INSRT-0003) - Primary Key cannot be empty value.\n" +
+                                                     std::string(" coming from file : ") + std::string(__FILE__) +
+                                                     " Line : #" + std::to_string(__LINE__));
     return true;
   }
   if (modifiers_checklist.not_null && !modifiers_checklist.has_default) {
-    std::cerr << "Error (Code: INSRT-0002) - cannot insert empty literal into column marked as NOT NULL without "
-                 "explicit DEFAULT value\n"
-              << "\n coming from file : " + std::string(__FILE__) + " Line : #" + std::to_string(__LINE__) << std::endl;
+    LoggerService::ErrorLogger::printAsStandardError(
+        "Error (Code: INSRT-0002) - cannot insert empty literal into column marked as NOT NULL without " +
+        std::string("explicit DEFAULT value\n") + "\n coming from file : " + std::string(__FILE__) + " Line : #" +
+        std::to_string(__LINE__));
     return true;
   }
   return false;

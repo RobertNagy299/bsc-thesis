@@ -1,4 +1,5 @@
 #pragma once
+#include "../DBEngine/services/logger/public_api.hpp"
 #include "../parser/ast.hpp"
 #include <filesystem>
 #include <fstream>
@@ -13,10 +14,12 @@ struct ExecutionContext {
   void init() {
     std::string base_dir = "../src/schema/metadata";
     if (!std::filesystem::exists(base_dir)) {
-      std::cerr << "No schema metadata found at " << base_dir << "\n";
+      LoggerService::ErrorLogger::printAsStandardError("No schema metadata found at " + base_dir +
+                                                       ".\n Error source: " + __FILE__ + " Line " +
+                                                       std::to_string(__LINE__));
       return;
     }
-
+    LoggerService::StatusLogger::printAsStandardOutput("Initializing Execution Context...\nReading table metadata...");
     for (auto& entry : std::filesystem::directory_iterator(base_dir)) {
       if (entry.is_directory()) {
         std::string tableName = entry.path().filename().string();
@@ -52,7 +55,8 @@ struct ExecutionContext {
 
         file.close();
         untyped_tables[tableName] = schema;
-        std::cout << "Recognized table " + tableName + " with " + std::to_string(schema.size()) + " columns.\n";
+        LoggerService::StatusLogger::printAsStandardOutput("Recognized table " + tableName + " with " +
+                                                           std::to_string(schema.size()) + " columns.");
       }
     }
   }

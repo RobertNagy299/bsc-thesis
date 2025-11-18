@@ -54,6 +54,10 @@ add_executable(MainApp
 )
 
 
+# defines / adds the  ErrorLogger shared lib (.so / .dll)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/services/logger)
+
+
 # defines / adds the  Utils shared lib (.so / .dll)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/auxiliary)
 
@@ -63,7 +67,12 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/services/semantic_vali
 
 
 # Link the executable with the shared libraries
-target_link_libraries(MainApp SQLCore Utils SemanticValidator)
+target_link_libraries(MainApp 
+  SQLCore 
+  Utils 
+  SemanticValidator 
+  ErrorLogger
+)
 
 
 # Enable tests

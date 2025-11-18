@@ -3,7 +3,7 @@
 const bool SemanticValidator::validateSelectSemantics(SelectNode& node, ExecutionContext& ctx) {
   const auto& current_table = ctx.untyped_tables.find(node.tableName);
   if (current_table == ctx.untyped_tables.end()) {
-    std::cerr << "Table " << node.tableName << " does not exist.";
+    LoggerService::ErrorLogger::printAsStandardError("Table " + node.tableName + " does not exist.");
     return false;
   }
 

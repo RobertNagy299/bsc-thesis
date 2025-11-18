@@ -1,5 +1,6 @@
 #pragma once
 #include "../DBEngine/engine.hpp"
+#include "../DBEngine/services/logger/public_api.hpp"
 #include "../DBEngine/services/semantic_validator/public_api.hpp"
 #include "../auxiliary/utils_public_api.hpp"
 #include "../parser/ast.hpp"
@@ -28,8 +29,8 @@ public:
   void visit(InsertNode& node) override {
     // Semantic validation - ensure proper literal values, types, etc.
     if (!SemanticValidator::validateInsertSemantics(node, ctx)) {
-      std::cerr << "Insert statement is semantically invalid! The engine will not perform any file operations."
-                << std::endl;
+      LoggerService::ErrorLogger::printAsStandardError(
+          "Insert statement is semantically invalid! The engine will not perform any file operations.");
       return;
     }
 
@@ -40,8 +41,8 @@ public:
   void visit(SelectNode& node) override {
     // TODO validate semantics for WHERE clause
     if (!SemanticValidator::validateSelectSemantics(node, ctx)) {
-      std::cerr << "Select statement is semantically invalid! The engine will not perform any file operations."
-                << std::endl;
+      LoggerService::ErrorLogger::printAsStandardError(
+          "Select statement is semantically invalid! The engine will not perform any file operations.");
       return;
     }
     std::cout << "Select node detected, tableName = " << node.tableName << '\n' << "col list = ";
