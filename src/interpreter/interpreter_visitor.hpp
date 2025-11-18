@@ -1,8 +1,8 @@
 #pragma once
 #include "../DBEngine/engine.hpp"
+#include "../auxiliary/utils_public_api.hpp"
 #include "../parser/ast.hpp"
 #include "execution_context.hpp"
-#include "utils.hpp"
 #include "validators.hpp"
 #include <algorithm>
 #include <filesystem>
@@ -50,15 +50,7 @@ public:
       return;
     }
     for (auto col : node.columns->columns) { std ::cout << col; }
-    if (node.opt_where_node) {
-      for (auto& cond : node.opt_where_node->conditions_list_node->conditions) {
-        if (cond) {
-          std::cout << "WHERE clause with: col name = ";
-          std::cout << cond->col_name;
-          std::cout << " literal: " << cond->literal_value->value << std::endl;
-        }
-      }
-    }
+    if (node.opt_where_node) {}
   }
 
   void visit(UpdateNode& node) override { std::cout << "Update node visited" << '\n'; }

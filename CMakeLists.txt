@@ -32,13 +32,21 @@ add_library(SQLCore SHARED
 )
 # add_library(DBEngine SHARED src/DBEngine/engine.hpp)
 
+add_library(Utils SHARED
+  src/auxiliary/utils/string_utils.cpp
+  src/auxiliary/utils/column_utils.cpp
+  src/auxiliary/utils/insert_utils.cpp
+
+  src/auxiliary/utils_public_api.hpp
+)
+
 # Tell the compiler to look in the binary dir for the generated header
 include_directories(${CMAKE_BINARY_DIR})
 
 # Include headers
 target_include_directories(
-  SQLCore 
-  PUBLIC 
+  SQLCore
+  PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/parser     # <- to find ast.hpp
     ${CMAKE_CURRENT_BINARY_DIR}                # <- to find parser.hpp (generated)
@@ -54,7 +62,8 @@ add_executable(MainApp
 )
 
 # Link the executable with the shared lib
-target_link_libraries(MainApp SQLCore)
+target_link_libraries(MainApp SQLCore Utils)
+
 
 # Enable tests
 enable_testing()

@@ -1,7 +1,7 @@
 #pragma once
+#include "../auxiliary/utils_public_api.hpp"
 #include "../parser/ast.hpp"
 #include "execution_context.hpp"
-#include "utils.hpp"
 #include <iostream>
 #include <string>
 #include <unordered_set>
