@@ -1,9 +1,9 @@
 #pragma once
 #include "../DBEngine/engine.hpp"
+#include "../DBEngine/services/semantic_validator/public_api.hpp"
 #include "../auxiliary/utils_public_api.hpp"
 #include "../parser/ast.hpp"
 #include "execution_context.hpp"
-#include "validators.hpp"
 #include <algorithm>
 #include <filesystem>
 #include <fstream>

@@ -32,14 +32,6 @@ add_library(SQLCore SHARED
 )
 # add_library(DBEngine SHARED src/DBEngine/engine.hpp)
 
-add_library(Utils SHARED
-  src/auxiliary/utils/string_utils.cpp
-  src/auxiliary/utils/column_utils.cpp
-  src/auxiliary/utils/insert_utils.cpp
-
-  src/auxiliary/utils_public_api.hpp
-)
-
 # Tell the compiler to look in the binary dir for the generated header
 include_directories(${CMAKE_BINARY_DIR})
 
@@ -61,8 +53,17 @@ add_executable(MainApp
   ${FLEX_Lexer_OUTPUTS}  
 )
 
-# Link the executable with the shared lib
-target_link_libraries(MainApp SQLCore Utils)
+
+# defines / adds the  Utils shared lib (.so / .dll)
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/auxiliary)
+
+
+# defines / adds the SemanticValidator shared lib
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/services/semantic_validator)
+
+
+# Link the executable with the shared libraries
+target_link_libraries(MainApp SQLCore Utils SemanticValidator)
 
 
 # Enable tests
