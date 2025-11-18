@@ -1,0 +1,36 @@
+#include "../public_api.hpp"
+
+void FileHandler::dropTable(DropTableNode& node, ExecutionContext& ctx) {
+  std::string table_metadata_directory = FileHandler::METADATA_BASE_DIRECTORY + "/" + node.tableName;
+
+  if (!std::filesystem::exists(table_metadata_directory)) {
+    LoggerService::ErrorLogger::printAsStandardError("Error: metadata for table \"" + node.tableName +
+                                                     "\" does not exist on disk. source: " + __FILE__ +
+                                                     " line: " + std::to_string(__LINE__));
+
+    return;
+  }
+
+  try {
+    // Remove directory and all metadata
+    std::filesystem::remove_all(table_metadata_directory);
+    // TODO Remove datastorage files
+
+    // Now remove from execution context if it exists
+    auto it = ctx.untyped_tables.find(node.tableName);
+    if (it != ctx.untyped_tables.end()) {
+      // free the schema memory before erasing
+      for (UntypedColumnDefNode*& col : it->second) {
+        // clang-format off
+            delete col; col = nullptr;
+        // clang-format on
+      }
+      ctx.untyped_tables.erase(it);
+    }
+    LoggerService::StatusLogger::printAsStandardOutput("Table \"" + node.tableName + "\" dropped successfully.");
+
+  } catch (const std::filesystem::filesystem_error& e) {
+    LoggerService::ErrorLogger::printAsStandardError("Filesystem error while dropping table: ");
+    LoggerService::ErrorLogger::printAsStandardError(e.what());
+  }
+}

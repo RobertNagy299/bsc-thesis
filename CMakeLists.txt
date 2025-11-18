@@ -28,9 +28,8 @@ add_library(SQLCore SHARED
     src/parser/ast.cpp
     ${BISON_Parser_OUTPUTS}
     ${FLEX_Lexer_OUTPUTS}
-    src/DBEngine/engine.hpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/filehandler
 )
-# add_library(DBEngine SHARED src/DBEngine/engine.hpp)
 
 # Tell the compiler to look in the binary dir for the generated header
 include_directories(${CMAKE_BINARY_DIR})
@@ -53,16 +52,18 @@ add_executable(MainApp
   ${FLEX_Lexer_OUTPUTS}  
 )
 
+### Shared libs (.so / .dll)
 
-# defines / adds the  ErrorLogger shared lib (.so / .dll)
+# defines LoggerService
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/services/logger)
 
-
-# defines / adds the  Utils shared lib (.so / .dll)
+# defines Utils
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/auxiliary)
 
+# defines FileHandler
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/filehandler)
 
-# defines / adds the SemanticValidator shared lib
+# defines SemanticValidator 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/services/semantic_validator)
 
 
@@ -71,7 +72,8 @@ target_link_libraries(MainApp
   SQLCore 
   Utils 
   SemanticValidator 
-  ErrorLogger
+  LoggerService
+  FileHandler
 )
 
 

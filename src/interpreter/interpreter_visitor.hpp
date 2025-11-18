@@ -1,5 +1,5 @@
 #pragma once
-#include "../DBEngine/engine.hpp"
+#include "../DBEngine/filehandler/public_api.hpp"
 #include "../DBEngine/services/logger/public_api.hpp"
 #include "../DBEngine/services/semantic_validator/public_api.hpp"
 #include "../auxiliary/utils_public_api.hpp"
@@ -22,9 +22,9 @@ public:
     for (auto stmt : node.statements) { stmt->accept(*this); }
   }
 
-  void visit(CreateUntypedTableNode& node) override { DBEngine::FileHandler::createUntypedTable(node, ctx); }
+  void visit(CreateUntypedTableNode& node) override { FileHandler::createUntypedTable(node, ctx); }
 
-  void visit(DropTableNode& node) override { DBEngine::FileHandler::dropTable(node, ctx); }
+  void visit(DropTableNode& node) override { FileHandler::dropTable(node, ctx); }
 
   void visit(InsertNode& node) override {
     // Semantic validation - ensure proper literal values, types, etc.
@@ -35,7 +35,7 @@ public:
     }
 
     // Command is semantically valid, perform file operations
-    DBEngine::FileHandler::insertData(node, ctx);
+    FileHandler::insertData(node, ctx);
   }
 
   void visit(SelectNode& node) override {
