@@ -1,3 +1,4 @@
+#include "../types/types.hpp"
 #include "../utils_public_api.hpp"
 #include <iostream>
 #include <string>
@@ -8,8 +9,8 @@
  * This class is intended to be a `static` method container, do not instantiate it!
  */
 
-const ColModifierChecklist Utilities::InsertUtils::getModifiers(const std::vector<std::string>& current_modifiers) {
-  ColModifierChecklist answer = ColModifierChecklist();
+const colmodifiers_t Utilities::InsertUtils::getModifiers(const std::vector<std::string>& current_modifiers) {
+  auto answer = colmodifiers_t();
   for (size_t k = 0; k < current_modifiers.size(); ++k) {
     const std::string& current_modifier = Utilities::StringUtils::trim(current_modifiers.at(k));
     if (current_modifier.find("DEFAULT") != std::string::npos) { answer.has_default = 1; }
@@ -20,11 +21,11 @@ const ColModifierChecklist Utilities::InsertUtils::getModifiers(const std::vecto
 }
 
 /**
- * @param modifiers_checklist > ColModifierChecklist
+ * @param modifiers_checklist > colmodifiers_t
  *
  * @returns `true` if empty literal rule violations were found.
  *  */
-const bool Utilities::InsertUtils::hasEmptyLiteralRuleViolations(const ColModifierChecklist& modifiers_checklist) {
+const bool Utilities::InsertUtils::hasEmptyLiteralRuleViolations(const colmodifiers_t& modifiers_checklist) {
   if (modifiers_checklist.primary_key) {
     LoggerService::ErrorLogger::printAsStandardError("Error (Code: INSRT-0003) - Primary Key cannot be empty value.\n" +
                                                      std::string(" coming from file : ") + std::string(__FILE__) +

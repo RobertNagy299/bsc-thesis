@@ -7,12 +7,6 @@
 #include <unordered_set>
 #include <vector>
 
-struct ColModifierChecklist {
-  bool has_default : 1;
-  bool primary_key : 1;
-  bool not_null : 1;
-};
-
 struct Utilities {
 
   // Delete the default constructor to prevent instantiation
@@ -56,7 +50,7 @@ struct Utilities {
     InsertUtils(const InsertUtils&) = delete;
     InsertUtils& operator=(const InsertUtils&) = delete;
 
-    static const ColModifierChecklist getModifiers(const std::vector<std::string>& current_modifiers);
-    static const bool hasEmptyLiteralRuleViolations(const ColModifierChecklist& modifiers_checklist);
+    static const colmodifiers_t getModifiers(const std::vector<std::string>& current_modifiers);
+    static const bool hasEmptyLiteralRuleViolations(const colmodifiers_t& modifiers_checklist);
   };
 };

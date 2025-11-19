@@ -1,3 +1,4 @@
+#include "../../../../auxiliary/types/types.hpp"
 #include "../public_api.hpp"
 
 /**
@@ -35,7 +36,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, Executio
       }
       for (size_t j = 0; j < table_cols_length; ++j) {
         const std::vector<std::string>& current_modifiers = table_columns.at(j)->modifiers;
-        const ColModifierChecklist& modifiers_checklist = Utilities::InsertUtils::getModifiers(current_modifiers);
+        const colmodifiers_t modifiers_checklist = Utilities::InsertUtils::getModifiers(current_modifiers);
 
         // check the provided literal nodes in the value record
         // otherwise, use defaults
