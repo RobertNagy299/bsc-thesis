@@ -60,6 +60,9 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/services/logger)
 # defines Utils
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/auxiliary)
 
+# defines ExecutionContext
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/execution_context)
+
 # defines FileHandler
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/filehandler)
 
@@ -74,6 +77,7 @@ target_link_libraries(MainApp
   SemanticValidator 
   LoggerService
   FileHandler
+  ExecutionContext
 )
 
 

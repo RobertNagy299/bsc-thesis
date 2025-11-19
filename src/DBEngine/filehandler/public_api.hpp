@@ -1,6 +1,6 @@
 #pragma once
-#include "../../interpreter/execution_context.hpp"
 #include "../../parser/ast.hpp"
+#include "../execution_context/public_api.hpp"
 #include "../services/logger/public_api.hpp"
 #include <filesystem>
 #include <fstream>

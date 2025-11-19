@@ -1,4 +1,4 @@
-#include "interpreter/execution_context.hpp"
+#include "DBEngine/execution_context/public_api.hpp"
 #include "interpreter/interpreter_visitor.hpp"
 #include "parser/ast.hpp"
 #include <cstring>

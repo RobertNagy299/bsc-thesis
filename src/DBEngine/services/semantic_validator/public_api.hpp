@@ -1,7 +1,7 @@
 #pragma once
 #include "../../../auxiliary/utils_public_api.hpp"
-#include "../../../interpreter/execution_context.hpp"
 #include "../../../parser/ast.hpp"
+#include "../../execution_context/public_api.hpp"
 #include "../logger/public_api.hpp"
 #include <iostream>
 #include <string>

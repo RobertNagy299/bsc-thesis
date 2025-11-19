@@ -1,10 +1,10 @@
 #pragma once
+#include "../DBEngine/execution_context/public_api.hpp"
 #include "../DBEngine/filehandler/public_api.hpp"
 #include "../DBEngine/services/logger/public_api.hpp"
 #include "../DBEngine/services/semantic_validator/public_api.hpp"
 #include "../auxiliary/utils_public_api.hpp"
 #include "../parser/ast.hpp"
-#include "execution_context.hpp"
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
