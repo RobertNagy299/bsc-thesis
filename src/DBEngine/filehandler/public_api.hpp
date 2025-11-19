@@ -23,5 +23,5 @@ struct FileHandler {
   // methods
   static void createUntypedTable(CreateUntypedTableNode& node, ExecutionContext& ctx);
   static void dropTable(DropTableNode& node, ExecutionContext& ctx);
-  static void insertData(InsertNode& node, ExecutionContext& ctx);
+  static void insertData(InsertNode& node, const ExecutionContext& ctx);
 };

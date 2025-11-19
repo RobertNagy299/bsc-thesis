@@ -1,6 +1,6 @@
 #include "../public_api.hpp"
 
-void ExecutionContext::init() {
+ExecutionContext::ExecutionContext() {
   if (!std::filesystem::exists(metadata_base_dir)) {
     LoggerService::ErrorLogger::printAsStandardError("No schema metadata found at " + metadata_base_dir +
                                                      ".\n Error source: " + __FILE__ + " Line " +

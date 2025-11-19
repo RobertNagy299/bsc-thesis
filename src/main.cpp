@@ -31,8 +31,7 @@ int main() {
   yylex_destroy();
 
   if (root) {
-    ExecutionContext ctx;
-    ctx.init();
+    ExecutionContext& ctx = ExecutionContext::getInstance();
 
     InterpreterVisitor visitor(ctx);
     root->accept(visitor); // Run the program via visitor
@@ -41,6 +40,7 @@ int main() {
     // clang-format off
     delete root; root = nullptr;
     // clang-format on
+    ExecutionContext::destroyInstance();
   } else {
     std::cerr << "Parsing failed.\n";
   }

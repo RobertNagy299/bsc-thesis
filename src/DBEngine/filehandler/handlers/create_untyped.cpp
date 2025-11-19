@@ -1,24 +1,27 @@
 #include "../public_api.hpp"
 
 void FileHandler::createUntypedTable(CreateUntypedTableNode& node, ExecutionContext& ctx) {
-  if (ctx.untyped_tables.find(node.tableName) != ctx.untyped_tables.end()) {
-    LoggerService::ErrorLogger::printAsStandardError("Error: Table " + node.tableName + " already exists.");
+  auto untyped_tables = ctx.getUntypedTables();
+  const std::string table_name = node.tableName;
+
+  if (untyped_tables.find(table_name) != untyped_tables.end()) {
+    LoggerService::ErrorLogger::printAsStandardError("Error: Table " + table_name + " already exists.");
     return;
   }
+
   // Store metadata on disk
   // Base directory for schema
   std::filesystem::create_directories(FileHandler::METADATA_BASE_DIRECTORY); // ensures parents exist
 
   // Path for this table
-  std::string table_path = FileHandler::METADATA_BASE_DIRECTORY + "/" + node.tableName;
+  std::string table_path = FileHandler::METADATA_BASE_DIRECTORY + "/" + table_name;
   std::filesystem::create_directories(table_path);
 
   // Write metadata file
   std::string metadata_path = table_path + "/metadata.txt";
   std::ofstream file(metadata_path);
   if (!file.is_open()) {
-    LoggerService::ErrorLogger::printAsStandardError("Error: Could not create metadata file for table " +
-                                                     node.tableName);
+    LoggerService::ErrorLogger::printAsStandardError("Error: Could not create metadata file for table " + table_name);
     return;
   }
 
@@ -45,8 +48,7 @@ void FileHandler::createUntypedTable(CreateUntypedTableNode& node, ExecutionCont
       cols.push_back(new UntypedColumnDefNode(*casted_col)); // deep copy
     }
   }
-  LoggerService::StatusLogger::printAsStandardOutput("Created table " + node.tableName + " with " +
+  LoggerService::StatusLogger::printAsStandardOutput("Created table " + table_name + " with " +
                                                      std::to_string(cols.size()) + " columns");
-
-  ctx.untyped_tables[node.tableName] = std::move(cols);
+  ctx.setUntypedTable(table_name, cols);
 }

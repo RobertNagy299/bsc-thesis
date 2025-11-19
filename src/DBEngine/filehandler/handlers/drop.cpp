@@ -17,15 +17,16 @@ void FileHandler::dropTable(DropTableNode& node, ExecutionContext& ctx) {
     // TODO Remove datastorage files
 
     // Now remove from execution context if it exists
-    auto it = ctx.untyped_tables.find(node.tableName);
-    if (it != ctx.untyped_tables.end()) {
+    auto untyped_tables = ctx.getUntypedTables();
+    auto it = untyped_tables.find(node.tableName);
+    if (it != untyped_tables.end()) {
       // free the schema memory before erasing
       for (UntypedColumnDefNode*& col : it->second) {
         // clang-format off
             delete col; col = nullptr;
         // clang-format on
       }
-      ctx.untyped_tables.erase(it);
+      ctx.eraseTable(it);
     }
     LoggerService::StatusLogger::printAsStandardOutput("Table \"" + node.tableName + "\" dropped successfully.");
 

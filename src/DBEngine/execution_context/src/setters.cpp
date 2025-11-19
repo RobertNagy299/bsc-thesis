@@ -1,0 +1,6 @@
+#include "../public_api.hpp"
+
+void ExecutionContext::setUntypedTable(const std::string& table_name,
+                                       const std::vector<UntypedColumnDefNode*>& coldefs) {
+  this->untyped_tables[table_name] = std::move(coldefs);
+}

@@ -7,8 +7,9 @@
  * @returns `true` if the insertion Node is semantically valid, `false` otherwise
  */
 const bool SemanticValidator::validateInsertSemantics(InsertNode& node, ExecutionContext& ctx) {
-  const auto& current_table = ctx.untyped_tables.find(node.tableName);
-  if (current_table == ctx.untyped_tables.end()) {
+  auto untyped_tables = ctx.getUntypedTables();
+  const auto& current_table = untyped_tables.find(node.tableName);
+  if (current_table == untyped_tables.end()) {
     LoggerService::ErrorLogger::printAsStandardError("Table " + node.tableName + " does not exist.");
     return false;
   }

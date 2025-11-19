@@ -11,3 +11,12 @@ ExecutionContext::~ExecutionContext() {
     }
   }
 }
+
+void ExecutionContext::destroyInstance() {
+  if (instance) {
+    LoggerService::StatusLogger::printAsStandardOutput("Destroying execution context...");
+    // clang-format off
+      delete instance; instance = nullptr;
+    // clang-format on
+  }
+}

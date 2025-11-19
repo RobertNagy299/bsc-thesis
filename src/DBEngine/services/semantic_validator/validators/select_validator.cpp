@@ -1,8 +1,9 @@
 #include "../public_api.hpp"
 
 const bool SemanticValidator::validateSelectSemantics(SelectNode& node, ExecutionContext& ctx) {
-  const auto& current_table = ctx.untyped_tables.find(node.tableName);
-  if (current_table == ctx.untyped_tables.end()) {
+  auto untyped_tables = ctx.getUntypedTables();
+  const auto& current_table = untyped_tables.find(node.tableName);
+  if (current_table == untyped_tables.end()) {
     LoggerService::ErrorLogger::printAsStandardError("Table " + node.tableName + " does not exist.");
     return false;
   }
