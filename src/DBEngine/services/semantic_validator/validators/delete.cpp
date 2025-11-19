@@ -1,7 +1,7 @@
 #include "../../../../auxiliary/types/types.hpp"
 #include "../public_api.hpp"
 
-const bool SemanticValidator::validateDeleteSemantics(DeleteNode& node, ExecutionContext& ctx) {
+const bool SemanticValidator::validateDeleteSemantics(DeleteNode& node, const ExecutionContext& ctx) {
   // check if table exists
   const auto& untyped_tables = ctx.getUntypedTables();
   const auto& current_table = untyped_tables.find(node.table_name);

@@ -1,6 +1,6 @@
 #include "../public_api.hpp"
 
-const bool SemanticValidator::validateSelectSemantics(SelectNode& node, ExecutionContext& ctx) {
+const bool SemanticValidator::validateSelectSemantics(SelectNode& node, const ExecutionContext& ctx) {
   auto untyped_tables = ctx.getUntypedTables();
   const auto& current_table = untyped_tables.find(node.tableName);
   if (current_table == untyped_tables.end()) {
@@ -14,9 +14,5 @@ const bool SemanticValidator::validateSelectSemantics(SelectNode& node, Executio
     if (!Utilities::ColumnUtils::columnsExistInTable(node.columns, current_table)) { return false; };
   }
 
-  if (node.opt_where_node) {
-    // TODO
-  }
-
-  return true;
+  return SemanticValidator::validateWhereClauseSemantics(current_table, node.opt_where_node);
 }

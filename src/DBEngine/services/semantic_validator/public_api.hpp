@@ -23,7 +23,8 @@ private:
   SemanticValidator& operator=(const SemanticValidator&) = delete;
 
 public:
-  static const bool validateInsertSemantics(InsertNode& node, ExecutionContext& ctx);
-  static const bool validateSelectSemantics(SelectNode& node, ExecutionContext& ctx);
-  static const bool validateDeleteSemantics(DeleteNode& node, ExecutionContext& ctx);
+  static const bool validateInsertSemantics(InsertNode& node, const ExecutionContext& ctx);
+  static const bool validateSelectSemantics(SelectNode& node, const ExecutionContext& ctx);
+  static const bool validateDeleteSemantics(DeleteNode& node, const ExecutionContext& ctx);
+  static const bool validateUpdateSemantics(UpdateNode& node, const ExecutionContext& ctx);
 };

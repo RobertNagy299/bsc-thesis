@@ -54,7 +54,15 @@ public:
     if (node.opt_where_node) {}
   }
 
-  void visit(UpdateNode& node) override { std::cout << "Update node visited" << '\n'; }
+  void visit(UpdateNode& node) override {
+    if (!SemanticValidator::validateUpdateSemantics(node, ctx)) {
+      LoggerService::ErrorLogger::printAsStandardError(
+          "Update statement is invalid. the Engine won't perform any file operations.");
+      return;
+    }
+    // TODO file operations and testing
+    std::cout << "Update node visited" << '\n';
+  }
 
   void visit(AssignmentNode& node) override { std::cout << "assignment node visited" << '\n'; }
 

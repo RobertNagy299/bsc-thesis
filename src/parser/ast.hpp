@@ -366,10 +366,10 @@ struct AssignmentListNode : ASTNode {
 struct UpdateNode : ASTNode {
   std::string table_name;
   AssignmentListNode* assignment_list_node;
-  WhereNode* where_node; // optional, nullptr if not provided
+  WhereNode* opt_where_node; // optional, nullptr if not provided
 
   UpdateNode(std::string& tn, AssignmentListNode* aln_p, WhereNode* wn_p)
-      : table_name(tn), assignment_list_node(aln_p), where_node(wn_p) {}
+      : table_name(tn), assignment_list_node(aln_p), opt_where_node(wn_p) {}
 
   ~UpdateNode() {
     if (assignment_list_node) {
@@ -377,9 +377,9 @@ struct UpdateNode : ASTNode {
       delete assignment_list_node; assignment_list_node = nullptr;
       // clang-format on
     }
-    if (where_node) {
+    if (opt_where_node) {
       // clang-format off
-      delete where_node; where_node = nullptr;
+      delete opt_where_node; opt_where_node = nullptr;
       // clang-format on
     }
   }
