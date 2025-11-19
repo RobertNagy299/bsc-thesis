@@ -1,4 +1,5 @@
 #pragma once
+#include "../../auxiliary/types/types.hpp"
 #include "../../parser/ast.hpp"
 #include "../services/logger/public_api.hpp"
 #include <filesystem>
@@ -7,8 +8,6 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
-
-typedef std::unordered_map<std::string, std::vector<UntypedColumnDefNode*>> untyped_table_t;
 
 /**
  * Stateful Singleton
@@ -25,7 +24,8 @@ private:
 
   untyped_table_t untyped_tables;
   std::string metadata_base_dir = "../src/schema/metadata";
-  static std::mutex m_mutex;
+  // TODO : implement thread safety
+  mutable std::mutex m_mutex;
   static inline ExecutionContext* instance = nullptr;
 
 public:

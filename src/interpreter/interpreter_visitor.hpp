@@ -60,7 +60,15 @@ public:
 
   void visit(AssignmentListNode& node) override { std::cout << "assignment list node visited" << '\n'; }
 
-  void visit(DeleteNode& node) override { std::cout << "Delete node visited" << '\n'; }
+  void visit(DeleteNode& node) override {
+    // Validate semantics
+    if (!SemanticValidator::validateDeleteSemantics(node, ctx)) {
+      LoggerService::ErrorLogger::printAsStandardError(
+          "Delete statement is invalid, the Engine won't perform file operations.");
+      return;
+    }
+    // TODO semantically valid, perform file ops.
+  }
 
   void visit(WhereNode& node) override { std::cout << "Where node visited" << '\n'; }
 

@@ -1,8 +1,10 @@
 
 
 add_library(SemanticValidator SHARED
-  ${CMAKE_CURRENT_SOURCE_DIR}/validators/insert_validator.cpp
-  ${CMAKE_CURRENT_SOURCE_DIR}/validators/select_validator.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/validators/where.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/validators/insert.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/validators/select.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/validators/delete.cpp
 
   ${CMAKE_CURRENT_SOURCE_DIR}/public_api.hpp
 )

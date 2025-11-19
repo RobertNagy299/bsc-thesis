@@ -16,6 +16,8 @@ AllowShortFunctionsOnASingleLine: All
 AllowShortLoopsOnASingleLine: true
 AllowShortBlocksOnASingleLine: Always
 
+IndentCaseLabels: true
+
 BreakBeforeBraces: Attach
 PointerAlignment: Left
 SpaceBeforeParens: ControlStatements

@@ -13,6 +13,8 @@
  * This class is intended to be a `static` method container, do not instantiate it!
  */
 struct SemanticValidator {
+private:
+  static const bool validateWhereClauseSemantics(const untyped_table_t::const_iterator& table, WhereNode* node);
   // Delete the default constructor to prevent instantiation
   SemanticValidator() = delete;
 
@@ -20,6 +22,8 @@ struct SemanticValidator {
   SemanticValidator(const SemanticValidator&) = delete;
   SemanticValidator& operator=(const SemanticValidator&) = delete;
 
+public:
   static const bool validateInsertSemantics(InsertNode& node, ExecutionContext& ctx);
   static const bool validateSelectSemantics(SelectNode& node, ExecutionContext& ctx);
+  static const bool validateDeleteSemantics(DeleteNode& node, ExecutionContext& ctx);
 };

@@ -1,7 +1,10 @@
 #pragma once
 #include "../DBEngine/services/logger/public_api.hpp"
 #include "../parser/ast.hpp"
+#include "types/types.hpp"
+#include <memory>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 struct ColModifierChecklist {
@@ -28,9 +31,9 @@ struct Utilities {
     ColumnUtils(const ColumnUtils&) = delete;
     ColumnUtils& operator=(const ColumnUtils&) = delete;
 
-    static const bool
-    columnsExistInTable(ColumnListNode*& node,
-                        const std::unordered_map<std::string, std::vector<UntypedColumnDefNode*>>::iterator& table);
+    static const bool columnsExistInTable(ColumnListNode*& node, const untyped_table_t::const_iterator& table);
+    static std::unique_ptr<std::unordered_set<std::string>>
+    extractColumnNamesFromTable(const untyped_table_t::const_iterator& table);
   };
 
   struct StringUtils {
