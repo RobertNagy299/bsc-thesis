@@ -48,6 +48,7 @@
 /* Tell Bison how to free semantic values if it discards them. */
 /* TODO: revisit this for syntax errors with update, delete, insert */
 %destructor { delete $$; $$ = nullptr; } <str>
+/* TODO: command withouth semicolon causes leak  %destructor { if($$) {delete $$; $$ = nullptr;} } <node> */
 %destructor { delete $$; $$ = nullptr; } <strList>
 
 %destructor {
