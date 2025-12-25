@@ -21,6 +21,7 @@ const colmodifiers_t Utilities::InsertUtils::getModifiers(const std::vector<std:
 }
 
 /**
+ * @brief this function is called when we already know that the current literal is empty
  * @param modifiers_checklist > colmodifiers_t
  *
  * @returns `true` if empty literal rule violations were found.

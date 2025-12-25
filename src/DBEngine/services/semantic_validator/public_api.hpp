@@ -3,11 +3,11 @@
 #include "../../../parser/ast.hpp"
 #include "../../execution_context/public_api.hpp"
 #include "../logger/public_api.hpp"
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <unordered_set>
 #include <vector>
-
 /**
  * @brief
  * This class is intended to be a `static` method container, do not instantiate it!

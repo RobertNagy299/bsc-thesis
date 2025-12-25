@@ -50,13 +50,39 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
         }
       }
     }
-
+    // no need to check if cols exist because none were given
     return true;
   } else {
     // In this case, the column list exists - validate null constaints
     const auto col_list_length = node.columns->columns.size();
-    // TODO : Get the modifiers for the columns
+    // Check if we have given more column names than there are columns in the table
+    if (col_list_length > table_cols_length) {
+      LoggerService::ErrorLogger::printAsStandardError(
+          "ERROR (Code: INSRT-0006): Table " + node.tableName + " has " + std::to_string(table_cols_length) +
+          " columns, but you tried to insert " + std::to_string(col_list_length) + " columns." +
+          " Error Source: " + __FILE__ + " line #" + std::to_string(__LINE__));
+      return false;
+    }
+    // colname - modifiers map
+    std::unordered_map<std::string, colmodifiers_t> col_modifiers;
+    // Check if the specified columns exist in the table and get their modifiers
+    for (const auto& col_name : node.columns->columns) {
+      auto it = std::find_if(table_columns.begin(), table_columns.end(),
+                             [&col_name](auto& col_node) { return col_node->name == col_name; });
+      if (it == table_columns.end()) {
+        LoggerService::ErrorLogger::printAsStandardError("Error (code: INSRT-0004): Column " + col_name +
+                                                         " Does not exist in table " + node.tableName);
+        return false;
+      }
+
+      const std::vector<std::string>& current_modifiers = (*it)->modifiers;
+      const colmodifiers_t modifiers_checklist = Utilities::InsertUtils::getModifiers(current_modifiers);
+      col_modifiers[col_name] = modifiers_checklist;
+    }
+    // iterate through the literal record and search for empty literals
     for (size_t i = 0; i < value_record_length; ++i) {
+      // lazy eval, only get literal nodes list when we are sure there are no errors so far (hence this part is 'code
+      // duplication')
       const std::vector<LiteralNode*>& literal_nodes_list = value_list.at(i)->values;
       const size_t current_literal_values_length = literal_nodes_list.size();
       // if there are more value nodes in a value record than in the table, throw an error
@@ -71,18 +97,33 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       // is invalid
       if (current_literal_values_length > col_list_length) {
         LoggerService::ErrorLogger::printAsStandardError(
-            "Error (code: INSRT-0003): Column list only specifies " + std::to_string(col_list_length) +
+            "Error (code: INSRT-0005): Column list only specifies " + std::to_string(col_list_length) +
             +" columns, but you tried to insert " + std::to_string(current_literal_values_length) +
             " values in a row.");
         return false;
-      } else {
-        // Second case: column list specifies a column with the NOT NULL constraint
-        // but the value record does not provide a value there
-        // TODO
+      }
+      /****
+       * Second case: column list specifies a column with the 'NOT NULL' / 'PK' constraint
+       * but the value record does not provide a value there
+       * */
+
+      // Check explicit and implicit empty literals in a single for loop
+      for (size_t j = 0; j < col_list_length; ++j) {
+        const std::string current_colname = node.columns->columns.at(j);
+        const auto& current_modifier_checklist = col_modifiers.at(current_colname);
+        if (j >= current_literal_values_length) {
+          // at this point, we know we have an implicit empty literal
+          if (Utilities::InsertUtils::hasEmptyLiteralRuleViolations(current_modifier_checklist)) { return false; }
+          continue;
+        }
+        // here, we have to deal with an explicit empty literal
+        const auto& current_literal_node = literal_nodes_list.at(j);
+        if (current_literal_node->type == LiteralNode::Type::EMPTY) {
+          if (Utilities::InsertUtils::hasEmptyLiteralRuleViolations(current_modifier_checklist)) { return false; }
+        }
       }
     }
   }
 
-  // TODO (WIP) : INSERT INTO table(col1, col2_notnull) VALUES (col1) - invalid state, currently not controlled for!
   return Utilities::ColumnUtils::columnsExistInTable(node.columns, current_table);
 }
