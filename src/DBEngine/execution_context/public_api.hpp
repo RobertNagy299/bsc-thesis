@@ -24,7 +24,7 @@ private:
 
   untyped_table_t untyped_tables;
   std::string metadata_base_dir = "../src/schema/metadata";
-  // TODO : implement thread safety
+  // TODO : implement thread safety (NVM: Implement GIL instead if you have time)
   mutable std::mutex m_mutex;
   static inline ExecutionContext* instance = nullptr;
 

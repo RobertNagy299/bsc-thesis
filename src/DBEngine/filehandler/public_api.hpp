@@ -2,6 +2,7 @@
 #include "../../parser/ast.hpp"
 #include "../execution_context/public_api.hpp"
 #include "../services/logger/public_api.hpp"
+#include <chrono>
 #include <filesystem>
 #include <fstream>
 
@@ -24,4 +25,5 @@ struct FileHandler {
   static void createUntypedTable(CreateUntypedTableNode& node, ExecutionContext& ctx);
   static void dropTable(DropTableNode& node, ExecutionContext& ctx);
   static void insertData(InsertNode& node, const ExecutionContext& ctx);
+  static void ensureTableFileExists(const std::string& table_name);
 };
