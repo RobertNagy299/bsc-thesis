@@ -6,26 +6,13 @@ void FileHandler::insertData(InsertNode& node, const ExecutionContext& ctx) {
   auto start = std::chrono::steady_clock::now();
   FileHandler::ensureTableFileExists(node.tableName);
 
+  auto& current_table = ctx.getUntypedTables().at(node.tableName);
+  // command is valid, so we must check for missing literals and get their default values
+  // 2 distinct cases: 1. the column list is specified. 2. it is not.
+  // we need to iterate through each value record, calculate its length, and create the header
+
   auto end = std::chrono::steady_clock::now();
   std::chrono::duration<double, std::milli> double_duration = end - start;
   LoggerService::StatusLogger::printAsStandardOutput("Insertion finished in " +
                                                      std::to_string(double_duration.count()) + " ms");
-}
-
-void FileHandler::ensureTableFileExists(const std::string& table_name) {
-  // ensures parent exists
-  std::filesystem::create_directories(FileHandler::DATASTORAGE_BASE_DIRECTORY);
-  // Path for this table
-  const std::string table_datastorage_dir = FileHandler::DATASTORAGE_BASE_DIRECTORY + "/" + table_name;
-  std::filesystem::create_directories(table_datastorage_dir);
-
-  const std::string table_datastorage_file = table_datastorage_dir + "/" + table_name + ".bin";
-  if (!std::filesystem::exists(std::filesystem::path(table_datastorage_file))) {
-    std::ofstream table_file(table_datastorage_file);
-    if (table_file.is_open()) {
-      table_file.close();
-    } else {
-      LoggerService::ErrorLogger::printAsStandardError("ERROR: Could not create file: " + table_datastorage_file);
-    }
-  }
 }
