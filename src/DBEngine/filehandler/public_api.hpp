@@ -34,6 +34,9 @@ private:
    * Utils
    */
   static void ensureTableFileExists(const std::string& table_name);
+  static const std::string getTableFilePath(const std::string& table_name);
+  static const std::string getTableFolderPath(const std::string& table_name);
+
   template <typename T> static void writeToBinaryFile(std::ofstream& outFile, const T& payload);
   // Specialization for std::string to handle variable length strings correctly
   void writeToBinaryFile(std::ofstream& outFile, const std::string& data);

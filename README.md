@@ -61,3 +61,9 @@ uint64_t offset;
 ```
 
 ColumnOffset is used to speed up the evaluation of Where conditions for columns without an index 
+
+`[payload]` is:
+
+`[size][data][size][data]...` where each `[size][data]` pair corresponds to a single cell in the row
+
+size is used for reading the exact number of bytes needed to get the data, data will be deserialized into an std::string

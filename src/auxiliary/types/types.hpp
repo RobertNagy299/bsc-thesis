@@ -1,9 +1,12 @@
 #pragma once
 #include "../../parser/ast.hpp"
+#include <memory>
 #include <unordered_map>
 #include <vector>
 
 typedef std::unordered_map<std::string, std::vector<UntypedColumnDefNode*>> untyped_table_t;
+typedef std::unordered_map<std::string, uint8_t> colname_colcode_map_t;
+typedef std::unordered_map<std::string, std::unique_ptr<colname_colcode_map_t>> table_colcode_map_t;
 
 typedef struct ColModifierChecklist {
   bool has_default : 1;

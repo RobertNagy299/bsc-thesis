@@ -9,6 +9,7 @@
  */
 const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const ExecutionContext& ctx) {
   auto untyped_tables = ctx.getUntypedTables();
+  // use find instead of at because we do not know if it is actually present
   const auto& current_table = untyped_tables.find(node.tableName);
   if (current_table == untyped_tables.end()) {
     LoggerService::ErrorLogger::printAsStandardError("Table " + node.tableName + " does not exist.");
@@ -38,7 +39,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       for (size_t j = 0; j < table_cols_length; ++j) {
         const std::vector<std::string>& current_modifiers = table_columns.at(j)->modifiers;
         const colmodifiers_t modifiers_checklist = Utilities::InsertUtils::getModifiers(current_modifiers);
-
+        // TODO check for primary key and unique constraint violations after implementing indeces
         // check the provided literal nodes in the value record
         // otherwise, use defaults
         if (j < current_literal_values_length) {

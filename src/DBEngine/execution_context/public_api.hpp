@@ -23,13 +23,19 @@ private:
   ~ExecutionContext();
 
   untyped_table_t untyped_tables;
-  std::string metadata_base_dir = "../src/schema/metadata";
+  table_colcode_map_t table_colcodes;
+  static inline const std::string METADATA_BASE_DIR = "../src/schema/metadata";
   // TODO : implement thread safety (NVM: Implement GIL instead if you have time)
   mutable std::mutex m_mutex;
   static inline ExecutionContext* instance = nullptr;
 
+  // private methods
+  void initializeColumnEncodingMap();
+  void initializeUntypedTableMetadata();
+
 public:
   const untyped_table_t& getUntypedTables() const;
+  const table_colcode_map_t& getTableColcodeMap() const;
   void setUntypedTable(const std::string& table_name, const std::vector<UntypedColumnDefNode*>& coldefs);
 
   void eraseTable(const untyped_table_t::iterator&);
