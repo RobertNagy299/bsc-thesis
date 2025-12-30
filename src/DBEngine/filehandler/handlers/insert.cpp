@@ -8,10 +8,8 @@ void FileHandler::insertData(InsertNode& node, const ExecutionContext& ctx) {
   const std::string table_file_path = FileHandler::getTableFilePath(node.tableName);
   std::ofstream table_file(table_file_path, std::ios::app | std::ios::binary);
 
-  const std::vector<UntypedColumnDefNode*>& current_table_columns = ctx.getUntypedTables().at(node.tableName);
   const std::vector<ValueRecordNode*>& value_record_list = node.values->records;
   const size_t value_record_list_len = value_record_list.size();
-  const size_t number_of_table_cols = current_table_columns.size();
   // command is valid, so we must check for missing literals and get their default values
   // 2 distinct cases: 1. the column list is specified. 2. it is not.
   // we need to iterate through each value record, calculate its length, and create the header
@@ -20,9 +18,10 @@ void FileHandler::insertData(InsertNode& node, const ExecutionContext& ctx) {
     // TODO: Implement in-memory index in ctx.init();
     for (size_t i = 0; i < value_record_list_len; ++i) {
       // construct record header
+      const auto& literal_values = node.values->records.at(i);
       if (table_file.is_open()) {
-        const RecordType record_type = RecordType::INSERT;
-        // TODO construct other header info - column code map, etc.
+        FileHandler::serializeRecordWithoutColList(ctx, node.tableName, literal_values, table_file, RecordType::INSERT,
+                                                   true);
       }
     }
   } else {

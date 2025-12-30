@@ -13,9 +13,22 @@ const colmodifiers_t Utilities::InsertUtils::getModifiers(const std::vector<std:
   auto answer = colmodifiers_t();
   for (size_t k = 0; k < current_modifiers.size(); ++k) {
     const std::string& current_modifier = Utilities::StringUtils::trim(current_modifiers.at(k));
-    if (current_modifier.find("DEFAULT") != std::string::npos) { answer.has_default = 1; }
-    if (current_modifier == "PRIMARY KEY") { answer.primary_key = 1; }
-    if (current_modifier == "NOT NULL") { answer.not_null = 1; }
+    if (current_modifier.find("DEFAULT") != std::string::npos) {
+      answer.has_default = 1;
+      continue;
+    }
+    if (current_modifier == "PRIMARY KEY") {
+      answer.primary_key = 1;
+      continue;
+    }
+    if (current_modifier == "NOT NULL") {
+      answer.not_null = 1;
+      continue;
+    }
+    if (current_modifier == "UNIQUE") {
+      answer.unique = 1;
+      continue;
+    }
   }
   return answer;
 }
@@ -41,4 +54,13 @@ const bool Utilities::InsertUtils::hasEmptyLiteralRuleViolations(const colmodifi
     return true;
   }
   return false;
+}
+
+const std::string Utilities::InsertUtils::getDefaultValue(const std::vector<std::string>& current_modifiers) {
+  for (size_t k = 0; k < current_modifiers.size(); ++k) {
+    const std::string& current_modifier = Utilities::StringUtils::trim(current_modifiers.at(k));
+    if (current_modifier.find("DEFAULT") != std::string::npos) {
+      return Utilities::StringUtils::removeOuterQuotes(current_modifier.substr(8));
+    }
+  }
 }

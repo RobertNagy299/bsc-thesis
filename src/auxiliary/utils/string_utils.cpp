@@ -34,3 +34,20 @@ std::vector<std::string> Utilities::StringUtils::splitString(const std::string& 
 
   return tokens;
 }
+
+std::string Utilities::StringUtils::removeOuterQuotes(std::string str) {
+  if (str.length() >= 2) {
+    // Check for double quotes
+    if (str.front() == '"' && str.back() == '"') {
+      // Remove the first and the last character
+      return str.substr(1, str.length() - 2);
+    }
+    // Check for single quotes
+    if (str.front() == '\'' && str.back() == '\'') {
+      // Remove the first and the last character
+      return str.substr(1, str.length() - 2);
+    }
+  }
+  // Return the original string if no matching quotes were found
+  return str;
+}

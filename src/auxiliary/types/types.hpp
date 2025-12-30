@@ -12,6 +12,7 @@ typedef struct ColModifierChecklist {
   bool has_default : 1;
   bool primary_key : 1;
   bool not_null : 1;
+  bool unique : 1;
 } colmodifiers_t;
 
 // anonymous indeces - only create indeces for columns
@@ -35,9 +36,10 @@ typedef struct TableFileHeader {
   uint64_t reserved;
 } table_file_header_t;
 
+// size is 16 bytes due to padding
 typedef struct ColumnOffset {
-  uint8_t col_id;
   uint64_t offset;
+  uint8_t col_id;
 } column_offset_t;
 
 // 8 bytes of length - used for file seeking

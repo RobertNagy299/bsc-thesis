@@ -2,25 +2,29 @@
 #include <iostream>
 #include <string>
 // Static method and module container
-struct LoggerService {
+namespace LoggerService {
 
-  LoggerService() = delete;
-  LoggerService(const LoggerService&) = delete;
-  LoggerService& operator=(const LoggerService&) = delete;
+// LoggerService() = delete;
+/// LoggerService(const LoggerService&) = delete;
+// LoggerService& operator=(const LoggerService&) = delete;
 
-  struct ErrorLogger {
-    ErrorLogger() = delete;
-    ErrorLogger(const ErrorLogger&) = delete;
-    ErrorLogger& operator=(const ErrorLogger&) = delete;
+namespace ErrorLogger {
+// ErrorLogger() = delete;
+// ErrorLogger(const ErrorLogger&) = delete;
+// ErrorLogger& operator=(const ErrorLogger&) = delete;
 
-    static void printAsStandardError(const std::string& error_msg);
-  };
+void printAsStandardError(const std::string& error_msg);
+}; // namespace ErrorLogger
 
-  struct StatusLogger {
-    StatusLogger() = delete;
-    StatusLogger(const StatusLogger&) = delete;
-    StatusLogger& operator=(const StatusLogger&) = delete;
+namespace StatusLogger {
+// StatusLogger() = delete;
+// StatusLogger(const StatusLogger&) = delete;
+// StatusLogger& operator=(const StatusLogger&) = delete;
 
-    static void printAsStandardOutput(const std::string& status_msg);
-  };
-};
+void printAsStandardOutput(const std::string& status_msg);
+}; // namespace StatusLogger
+
+namespace WarningLogger {
+void printAsStandardOutput(const std::string& warning_msg);
+}
+}; // namespace LoggerService

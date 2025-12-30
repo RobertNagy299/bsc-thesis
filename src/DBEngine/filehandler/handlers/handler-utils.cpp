@@ -8,10 +8,6 @@ void FileHandler::writeToBinaryFile(std::ofstream& outFile, const std::string& d
   outFile.write(data.data(), size);
 }
 
-template <typename T> void FileHandler::writeToBinaryFile(std::ofstream& outFile, const T& data) {
-  outFile.write(reinterpret_cast<const char*>(&data), sizeof(T));
-}
-
 const std::string FileHandler::getTableFolderPath(const std::string& table_name) {
   return FileHandler::DATASTORAGE_BASE_DIRECTORY + "/" + table_name;
 }

@@ -40,6 +40,7 @@ struct Utilities {
 
     static std::string trim(const std::string& str);
     static std::vector<std::string> splitString(const std::string& s, const std::string& delimiter);
+    static std::string removeOuterQuotes(std::string str);
   };
 
   struct InsertUtils {
@@ -52,5 +53,6 @@ struct Utilities {
 
     static const colmodifiers_t getModifiers(const std::vector<std::string>& current_modifiers);
     static const bool hasEmptyLiteralRuleViolations(const colmodifiers_t& modifiers_checklist);
+    static const std::string getDefaultValue(const std::vector<std::string>& current_modifiers);
   };
 };

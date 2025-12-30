@@ -1,3 +1,4 @@
+#include "../../filehandler/public_api.hpp"
 #include "../public_api.hpp"
 
 void ExecutionContext::initializeUntypedTableMetadata() {
@@ -69,5 +70,60 @@ void ExecutionContext::initializeColumnEncodingMap() {
     }
     // transfer ownership to member variable
     this->table_colcodes[table_name] = std::move(map_ptr);
+  }
+}
+
+void ExecutionContext::initializePrimaryKeyIndeces() {
+  // TODO;
+  for (const auto& table : this->getUntypedTables()) {
+    const std::string& table_name = table.first;
+    FileHandler::ensureTableFileExists(table_name);
+    const std::string& table_path = FileHandler::getTableFilePath(table_name);
+    if (table_name != "users") { continue; }
+    std::ifstream table_file(table_path, std::ios::binary | std::ios::in);
+    if (table_file.is_open()) {
+      table_file_header_t file_header;
+      table_file.read(reinterpret_cast<char*>(&file_header), sizeof(file_header));
+      if (file_header.magic != FileHandler::DB_MAGIC) {
+        LoggerService::ErrorLogger::printAsStandardError(
+            "FATAL ERROR: (Code: FILE-OPS-0002) Unknown table file format.");
+        exit(1);
+      }
+      if (file_header.version != FileHandler::DB_VERSION) {
+        LoggerService::ErrorLogger::printAsStandardError(
+            "Warning: (Code: FILE-OPS-0001W) Table file was created with a different version of the DB engine. Expect "
+            "undefined behavior.");
+      }
+      uint64_t rec_len;
+      RecordType rec_type;
+      table_file.read(reinterpret_cast<char*>(&rec_len), sizeof(rec_len));
+      table_file.read(reinterpret_cast<char*>(&rec_type), sizeof(rec_type));
+      std::cout << "Record length = " + std::to_string(rec_len) << '\n';
+      std::vector<column_offset_t> offsets;
+      column_offset_t offset;
+      column_offset_t offset2;
+
+      table_file.read(reinterpret_cast<char*>(&offset), sizeof(offset));
+      offsets.push_back(offset);
+      table_file.read(reinterpret_cast<char*>(&offset2), sizeof(offset2));
+      offsets.push_back(offset2);
+      uint64_t pk_len;
+      table_file.read(reinterpret_cast<char*>(&pk_len), sizeof(pk_len));
+      std::string pk_val;
+      std::cout << "RETARD PK LENGTH = " + std::to_string(pk_len) << '\n';
+      pk_val.resize(pk_len);
+      table_file.read(&pk_val[0], pk_len);
+      std::cout << "RETARD PK  = " + pk_val + '\n';
+
+      uint64_t first_column_value_length;
+      table_file.read(reinterpret_cast<char*>(&first_column_value_length), sizeof(first_column_value_length));
+      std::string first_column_val;
+      std::cout << "first column value length = " + std::to_string(first_column_value_length) << '\n';
+      first_column_val.resize(first_column_value_length);
+      table_file.read(&first_column_val[0], first_column_value_length);
+      std::cout << "FIRST COLUMN VAL = " + first_column_val << '\n';
+    }
+
+    if (table_file.is_open()) { table_file.close(); }
   }
 }

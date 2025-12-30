@@ -32,6 +32,7 @@ private:
   // private methods
   void initializeColumnEncodingMap();
   void initializeUntypedTableMetadata();
+  void initializePrimaryKeyIndeces();
 
 public:
   const untyped_table_t& getUntypedTables() const;
