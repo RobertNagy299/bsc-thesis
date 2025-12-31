@@ -48,7 +48,7 @@ and [record] looks like this:
 ```
 uint64_t record_len;
 RecordType record_type; // sizeof(uint8_t)
-column_offset_t column_offset_map; // (# of cols) * sizeof(ColumnOffset) 
+column_offset_t column_offset_map; // (# of cols - 1) * sizeof(ColumnOffset) 
 primary_key_t primary_key; // variable length
 std::string payload; // variable length
 ```
@@ -67,3 +67,5 @@ ColumnOffset is used to speed up the evaluation of Where conditions for columns 
 `[size][data][size][data]...` where each `[size][data]` pair corresponds to a single cell in the row
 
 size is used for reading the exact number of bytes needed to get the data, data will be deserialized into an std::string
+
+`primary_key` is `[size][data]` as well

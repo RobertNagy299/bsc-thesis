@@ -42,20 +42,24 @@ void FileHandler::serializeRecordWithoutColList(const ExecutionContext& ctx, con
   for (size_t i = 0; i < current_table_columns.size(); ++i) {
     if (i == pk_idx) { continue; }
 
-    std::string final_literal = "";
+    std::string final_literal;
     // right hand side contains implicit empty literals
     if (i >= record->values.size()) {
       // get default value for empty literal
       final_literal = Utilities::InsertUtils::getDefaultValue(current_table_columns.at(i)->modifiers);
+      std::cout << "Empty implicit literal, final value = " << final_literal << '\n';
     } else {
       // left hand side (either explicit empty literal, or non-empty literal)
       // get default value for empty literal
       if (record->values.at(i)->type == LiteralNode::Type::EMPTY) {
         final_literal = Utilities::InsertUtils::getDefaultValue(current_table_columns.at(i)->modifiers);
+        std::cout << "Found explicit empty literal, default final value = " << final_literal << '\n';
       } else {
-        final_literal = record->values.at(i)->value.size();
+        final_literal = Utilities::StringUtils::removeOuterQuotes(record->values.at(i)->value);
+        std::cout << "Found actual literal, final value = " << final_literal << '\n';
       }
     }
+    std::cout << "final literal = " << final_literal << '\n';
     // final literal is known, we can calculate offsets
     const std::string& current_colname = current_table_columns.at(i)->name;
     const uint8_t& colcode = colcode_map->at(current_colname);
@@ -78,10 +82,13 @@ void FileHandler::serializeRecordWithoutColList(const ExecutionContext& ctx, con
   // critical region - file operations
   try {
     FileHandler::writeToBinaryFile(table_file, record_length);
+    std::cout << "Record length (bytes) = " << std::to_string(record_length) << '\n';
     FileHandler::writeToBinaryFile(table_file, type);
     for (const auto& offset_record : column_offsets) { FileHandler::writeToBinaryFile(table_file, offset_record); }
     FileHandler::writeToBinaryFile(table_file, pk_literal_str);
     for (const std::string& literal_payload : literals_to_be_written_to_disk) {
+      std::cout << "Literal payload = " << literal_payload
+                << " With size (Bytes) = " << std::to_string(literal_payload.size()) << '\n';
       FileHandler::writeToBinaryFile(table_file, literal_payload);
     }
 

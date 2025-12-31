@@ -2,6 +2,7 @@
 #include "../../parser/ast.hpp"
 #include <memory>
 #include <unordered_map>
+#include <variant>
 #include <vector>
 
 typedef std::unordered_map<std::string, std::vector<UntypedColumnDefNode*>> untyped_table_t;
@@ -15,13 +16,32 @@ typedef struct ColModifierChecklist {
   bool unique : 1;
 } colmodifiers_t;
 
-// anonymous indeces - only create indeces for columns
-// stores pairs of "primary key value" - "offset" or "unique value" - "offset"
+/**
+ * Index structure:
+ * map<[table_name]-->map<[col_name]-->map<[literal]-->[offset]>>>
+ */
+// anonymous indices - only create indices for columns
+// stores pairs of "primary key value" - "offset" or "unique value" - "offset" eg. "123 -> 432 bytes"
+// offset is the absolute offset from the beginning of the record region to the start of the col offset region
+
+// [literal] --> [offset]
 typedef std::unordered_map<std::string, uint64_t> index_t;
-// stores "table name" - "indeces"
-typedef std::unordered_map<std::string, std::vector<index_t>> indeces_t;
+typedef std::unique_ptr<index_t> index_ptr_t;
+
+// [colname] --> map<[literal] --> [offset]>
+typedef std::unordered_map<std::string, index_ptr_t> colname_literal_offset_map_t;
+typedef std::unique_ptr<colname_literal_offset_map_t> colname_literal_offset_map_ptr_t;
+// [table_name] --> map<[colname] --> map<[literal --> [offset]]>>
+typedef std::unordered_map<std::string, colname_literal_offset_map_ptr_t> tablename_idxmap_map_t;
+typedef std::unique_ptr<tablename_idxmap_map_t> indices_ptr_t;
 
 enum class RecordType : uint8_t { INSERT, DELETE, UPDATE, UNUSED };
+enum class TableFileDeserializationIndicator : uint8_t {
+  ENDOFTABLE = 0xFFU,
+  IOERROR = 0xFEU,
+  TOMBSTONE = 0xFDU,
+  LIVE = 0xFCU
+};
 
 typedef struct PrimaryKeyPayload {
   uint64_t pk_len;

@@ -26,6 +26,7 @@ struct Utilities {
     ColumnUtils& operator=(const ColumnUtils&) = delete;
 
     static const bool columnsExistInTable(ColumnListNode*& node, const untyped_table_t::const_iterator& table);
+    static const std::string& extractPrimaryKeyColumn(const std::vector<UntypedColumnDefNode*>& columns);
     static std::unique_ptr<std::unordered_set<std::string>>
     extractColumnNamesFromTable(const untyped_table_t::const_iterator& table);
   };

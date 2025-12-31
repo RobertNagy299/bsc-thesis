@@ -17,7 +17,7 @@ Utilities::ColumnUtils::extractColumnNamesFromTable(const untyped_table_t::const
     const std::string& col_name = col_node->name;
     auxiliary_colname_hashmap->insert(col_name);
   }
-  return auxiliary_colname_hashmap;
+  return std::move(auxiliary_colname_hashmap);
 }
 
 const bool Utilities::ColumnUtils::columnsExistInTable(ColumnListNode*& node,
@@ -37,4 +37,13 @@ const bool Utilities::ColumnUtils::columnsExistInTable(ColumnListNode*& node,
     }
   }
   return true;
+}
+
+const std::string& Utilities::ColumnUtils::extractPrimaryKeyColumn(const std::vector<UntypedColumnDefNode*> &columns){
+  for(const auto& col : columns) {
+    if(Utilities::InsertUtils::getModifiers(col->modifiers).primary_key) {
+      return col->name;
+    }
+  }
+  // TODO account for tables without a primary key
 }

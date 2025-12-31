@@ -74,13 +74,23 @@ void ExecutionContext::initializeColumnEncodingMap() {
 }
 
 void ExecutionContext::initializePrimaryKeyIndeces() {
-  // TODO;
   for (const auto& table : this->getUntypedTables()) {
     const std::string& table_name = table.first;
     FileHandler::ensureTableFileExists(table_name);
     const std::string& table_path = FileHandler::getTableFilePath(table_name);
-    if (table_name != "users") { continue; }
+    // insert the pointer to this table's column - indeces map
+    if (this != nullptr && this->indices != nullptr) {
+      this->indices->insert(std::pair<std::string, colname_literal_offset_map_ptr_t>(
+          table_name, std::make_unique<colname_literal_offset_map_t>()));
+    } else {
+      LoggerService::ErrorLogger::printAsStandardError(
+          "FATAL ERROR (Code: NULLPTR-0001) - One of the pointers responsible for primary key indexing was nullptr.");
+      exit(1);
+    }
+
     std::ifstream table_file(table_path, std::ios::binary | std::ios::in);
+    // store the index as a "pk" -> "offset" pair where pk is the string representation of the pk
+    // and the offset is the relative offset from the start of the record to the start of the data tuple region
     if (table_file.is_open()) {
       table_file_header_t file_header;
       table_file.read(reinterpret_cast<char*>(&file_header), sizeof(file_header));
@@ -90,38 +100,25 @@ void ExecutionContext::initializePrimaryKeyIndeces() {
         exit(1);
       }
       if (file_header.version != FileHandler::DB_VERSION) {
-        LoggerService::ErrorLogger::printAsStandardError(
+        LoggerService::WarningLogger::printAsStandardOutput(
             "Warning: (Code: FILE-OPS-0001W) Table file was created with a different version of the DB engine. Expect "
             "undefined behavior.");
       }
-      uint64_t rec_len;
-      RecordType rec_type;
-      table_file.read(reinterpret_cast<char*>(&rec_len), sizeof(rec_len));
-      table_file.read(reinterpret_cast<char*>(&rec_type), sizeof(rec_type));
-      std::cout << "Record length = " + std::to_string(rec_len) << '\n';
-      std::vector<column_offset_t> offsets;
-      column_offset_t offset;
-      column_offset_t offset2;
-
-      table_file.read(reinterpret_cast<char*>(&offset), sizeof(offset));
-      offsets.push_back(offset);
-      table_file.read(reinterpret_cast<char*>(&offset2), sizeof(offset2));
-      offsets.push_back(offset2);
-      uint64_t pk_len;
-      table_file.read(reinterpret_cast<char*>(&pk_len), sizeof(pk_len));
-      std::string pk_val;
-      std::cout << "RETARD PK LENGTH = " + std::to_string(pk_len) << '\n';
-      pk_val.resize(pk_len);
-      table_file.read(&pk_val[0], pk_len);
-      std::cout << "RETARD PK  = " + pk_val + '\n';
-
-      uint64_t first_column_value_length;
-      table_file.read(reinterpret_cast<char*>(&first_column_value_length), sizeof(first_column_value_length));
-      std::string first_column_val;
-      std::cout << "first column value length = " + std::to_string(first_column_value_length) << '\n';
-      first_column_val.resize(first_column_value_length);
-      table_file.read(&first_column_val[0], first_column_value_length);
-      std::cout << "FIRST COLUMN VAL = " + first_column_val << '\n';
+      // perform deserialization logic
+      const std::string& pk_col_name = Utilities::ColumnUtils::extractPrimaryKeyColumn(table.second);
+      if (this != nullptr && this->indices != nullptr && this->indices->at(table_name) != nullptr) {
+        this->indices->at(table_name)
+            ->insert(std::pair<std::string, index_ptr_t>(
+                pk_col_name, FileHandler::extractPrimaryKeysIndex(table_file, table.second.size() - 1UL)));
+        // TODO remove debugging logs
+        for (const auto& rec : *(this->indices->at(table_name)->at(pk_col_name))) {
+          std::cout << " in index, pk val = " << rec.first << " Offset = " << std::to_string(rec.second) << '\n';
+        }
+      } else {
+        LoggerService::ErrorLogger::printAsStandardError(
+            "FATAL ERROR (Code: NULLPTR-0001) - One of the pointers responsible for primary key indexing was nullptr.");
+        exit(1);
+      }
     }
 
     if (table_file.is_open()) { table_file.close(); }

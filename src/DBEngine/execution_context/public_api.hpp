@@ -4,6 +4,7 @@
 #include "../services/logger/public_api.hpp"
 #include <filesystem>
 #include <fstream>
+#include <memory>
 #include <mutex> // For thread-safe implementation
 #include <string>
 #include <unordered_map>
@@ -24,6 +25,8 @@ private:
 
   untyped_table_t untyped_tables;
   table_colcode_map_t table_colcodes;
+  indices_ptr_t indices = std::make_unique<tablename_idxmap_map_t>();
+
   static inline const std::string METADATA_BASE_DIR = "../src/schema/metadata";
   // TODO : implement thread safety (NVM: Implement GIL instead if you have time)
   mutable std::mutex m_mutex;
