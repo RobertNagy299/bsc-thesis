@@ -73,7 +73,7 @@ void ExecutionContext::initializeColumnEncodingMap() {
   }
 }
 
-void ExecutionContext::initializePrimaryKeyIndeces() {
+void ExecutionContext::initializePrimaryKeyIndices() {
   for (const auto& table : this->getUntypedTables()) {
     const std::string& table_name = table.first;
     FileHandler::ensureTableFileExists(table_name);

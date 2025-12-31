@@ -5,11 +5,10 @@
 TableFileDeserializationIndicator FileHandler::deserializeNextPrimaryKey(std::ifstream& table_file,
                                                                          std::string& out_pk_val,
                                                                          std::uint64_t& out_offset,
-                                                                         std::uint64_t& out_next_offset_start,
                                                                          const size_t number_of_columns_without_pk) {
-  std::size_t record_length;
+  std::uint64_t record_length;
   // 1. Attempt to read the length indicator
-  if (!table_file.read(reinterpret_cast<char*>(&record_length), sizeof(std::size_t))) {
+  if (!table_file.read(reinterpret_cast<char*>(&record_length), sizeof(record_length))) {
     // If read fails (e.g., end of file reached or an error), return eof
     return TableFileDeserializationIndicator::ENDOFTABLE;
   }
@@ -19,23 +18,28 @@ TableFileDeserializationIndicator FileHandler::deserializeNextPrimaryKey(std::if
   if (!table_file.read(reinterpret_cast<char*>(&record_type), sizeof(record_type))) {
     return TableFileDeserializationIndicator::IOERROR;
   }
-  size_t offset_delta = sizeof(record_length) + sizeof(RecordType);
+
+  // at the start of the scanning of the record, reposition the offset
+  // tellg will include the 32 bytes long file header and the 9 bytes long record len and type info
+  // our binary file format ensures that the column offset region starts right after the record_type byte.
+
+  // cast away the ambiguity caused by the "long - unsigned long" subtraction
+  out_offset = static_cast<std::uint64_t>(table_file.tellg()) - static_cast<std::uint64_t>(sizeof(table_file_header_t));
 
   // if it is a tombstone record, skip it
   if (record_type == RecordType::DELETE || record_type == RecordType::UNUSED) {
     // adjust the seekg pointer -- we are already 9 bytes into the record, and record length does not contain itself,
-    // so we need to jump forward by [record_length - 1] bytes
-    table_file.seekg(record_length - 1UL, std::ios::cur);
-    // adjust the offsets
-    out_offset += offset_delta;
-    out_next_offset_start = record_length - offset_delta;
+    // so we need to jump forward by [record_length - sizeof(record_type)] bytes
+    table_file.seekg(record_length - sizeof(RecordType), std::ios::cur);
     return TableFileDeserializationIndicator::TOMBSTONE;
   }
+  uint64_t col_offset_region_length = number_of_columns_without_pk * sizeof(column_offset_t);
   // at this point, this is a valid insert / update record. Let's skip through the col offset region
-  table_file.seekg(number_of_columns_without_pk * sizeof(column_offset_t), std::ios::cur);
+  table_file.seekg(col_offset_region_length, std::ios::cur);
   // get the primary key
-  size_t pk_len;
+  uint64_t pk_len;
   if (!table_file.read(reinterpret_cast<char*>(&pk_len), sizeof(pk_len))) {
+    // TODO handle error, exit(1)
     return TableFileDeserializationIndicator::IOERROR;
   }
   // 2. Resize the string to hold the upcoming data
@@ -45,11 +49,14 @@ TableFileDeserializationIndicator FileHandler::deserializeNextPrimaryKey(std::if
   if (!table_file.read(&out_pk_val[0], pk_len)) {
     // If data read fails, handle the error (optional: resize back or clear)
     out_pk_val.clear();
+    // TODO error handling
     return TableFileDeserializationIndicator::IOERROR;
   }
-  // calculate the offsets after we are certain that we managed to process a live record without IO errors
-  out_offset += offset_delta;
-  out_next_offset_start = record_length - offset_delta;
+  // move seekg to the start of the next record
+  // we are currently at the beginning of the data tuple region
+  uint64_t remaining_bytes =
+      record_length - (sizeof(RecordType) + col_offset_region_length + sizeof(pk_len) + out_pk_val.size());
+  table_file.seekg(remaining_bytes, std::ios::cur);
   return TableFileDeserializationIndicator::LIVE;
 }
 // table header was already read by this point, so the seekg pointer is 32 bytes ahead of file.beg
@@ -62,15 +69,15 @@ index_ptr_t FileHandler::extractPrimaryKeysIndex(std::ifstream& table_file, cons
   auto result = std::make_unique<index_t>();
   std::string pk_val;
   std::uint64_t offset = 0ul;
-  std::uint64_t next_offset_start = 0ul;
-  auto serialization_indicator_result = FileHandler::deserializeNextPrimaryKey(
-      table_file, pk_val, offset, next_offset_start, number_of_columns_without_pk);
+  auto serialization_indicator_result =
+      FileHandler::deserializeNextPrimaryKey(table_file, pk_val, offset, number_of_columns_without_pk);
   // iterate through every record in the file and read the primary key
   while (serialization_indicator_result != TableFileDeserializationIndicator::ENDOFTABLE) {
-    result->insert(std::pair<std::string, std::uint64_t>(pk_val, offset));
-    offset += next_offset_start;
-    serialization_indicator_result = FileHandler::deserializeNextPrimaryKey(
-        table_file, pk_val, offset, next_offset_start, number_of_columns_without_pk);
+    if (serialization_indicator_result == TableFileDeserializationIndicator::LIVE) {
+      result->insert(std::pair<std::string, std::uint64_t>(pk_val, offset));
+    }
+    serialization_indicator_result =
+        FileHandler::deserializeNextPrimaryKey(table_file, pk_val, offset, number_of_columns_without_pk);
   }
 
   return std::move(result);

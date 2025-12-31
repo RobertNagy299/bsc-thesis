@@ -40,7 +40,6 @@ private:
    */
   static TableFileDeserializationIndicator deserializeNextPrimaryKey(std::ifstream& ifs, std::string& out_pk_val,
                                                                      std::uint64_t& out_offset,
-                                                                     std::uint64_t& out_next_offset_start,
                                                                      const size_t number_of_columns);
   template <typename T> static void writeToBinaryFile(std::ofstream& outFile, const T& data) {
     outFile.write(reinterpret_cast<const char*>(&data), sizeof(T));

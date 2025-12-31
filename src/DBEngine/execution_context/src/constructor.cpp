@@ -6,7 +6,7 @@ ExecutionContext::ExecutionContext() {
 
   ExecutionContext::initializeUntypedTableMetadata();
   ExecutionContext::initializeColumnEncodingMap();
-  ExecutionContext::initializePrimaryKeyIndeces();
+  ExecutionContext::initializePrimaryKeyIndices();
   //  TODO initialize indeces
 
   auto end = std::chrono::steady_clock::now();
