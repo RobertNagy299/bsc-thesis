@@ -5,6 +5,8 @@
 #include <variant>
 #include <vector>
 
+namespace DB_Types {
+
 typedef std::unordered_map<std::string, std::vector<UntypedColumnDefNode*>> untyped_table_t;
 typedef std::unordered_map<std::string, uint8_t> colname_colcode_map_t;
 typedef std::unordered_map<std::string, std::unique_ptr<colname_colcode_map_t>> table_colcode_map_t;
@@ -70,3 +72,5 @@ typedef struct RecordPayload {
   primary_key_t primary_key;                      // variable length, depends on the size of the key
   std::string payload;
 } record_t;
+
+}; // namespace DB_Types

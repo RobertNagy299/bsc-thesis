@@ -1,7 +1,7 @@
 #include "../../../../auxiliary/types/types.hpp"
 #include "../public_api.hpp"
 
-const bool SemanticValidator::validateWhereClauseSemantics(const untyped_table_t::const_iterator& table,
+const bool SemanticValidator::validateWhereClauseSemantics(const DB_Types::untyped_table_t::const_iterator& table,
                                                            WhereNode* where_node) {
 
   // Empty where clause is correct

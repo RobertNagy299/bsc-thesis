@@ -9,8 +9,8 @@
  * This class is intended to be a `static` method container, do not instantiate it!
  */
 
-const colmodifiers_t Utilities::InsertUtils::getModifiers(const std::vector<std::string>& current_modifiers) {
-  auto answer = colmodifiers_t();
+const DB_Types::colmodifiers_t Utilities::InsertUtils::getModifiers(const std::vector<std::string>& current_modifiers) {
+  auto answer = DB_Types::colmodifiers_t();
   for (size_t k = 0; k < current_modifiers.size(); ++k) {
     const std::string& current_modifier = Utilities::StringUtils::trim(current_modifiers.at(k));
     if (current_modifier.find("DEFAULT") != std::string::npos) {
@@ -35,11 +35,11 @@ const colmodifiers_t Utilities::InsertUtils::getModifiers(const std::vector<std:
 
 /**
  * @brief this function is called when we already know that the current literal is empty
- * @param modifiers_checklist > colmodifiers_t
+ * @param modifiers_checklist > DB_Types::colmodifiers_t
  *
  * @returns `true` if empty literal rule violations were found.
  *  */
-const bool Utilities::InsertUtils::hasEmptyLiteralRuleViolations(const colmodifiers_t& modifiers_checklist) {
+const bool Utilities::InsertUtils::hasEmptyLiteralRuleViolations(const DB_Types::colmodifiers_t& modifiers_checklist) {
   if (modifiers_checklist.primary_key) {
     LoggerService::ErrorLogger::printAsStandardError("Error (Code: INSRT-0003) - Primary Key cannot be empty value.\n" +
                                                      std::string(" coming from file : ") + std::string(__FILE__) +
@@ -56,6 +56,11 @@ const bool Utilities::InsertUtils::hasEmptyLiteralRuleViolations(const colmodifi
   return false;
 }
 
+/**
+ * @brief this function should only be called once we are 100% sure that the column has a default value, because the
+ * control reaches the end of this non-void function and doesn't return anything if it can't find a default value. this
+ * is actually by design - perhaps a poor design choice by me. - Author.
+ */
 const std::string Utilities::InsertUtils::getDefaultValue(const std::vector<std::string>& current_modifiers) {
   for (size_t k = 0; k < current_modifiers.size(); ++k) {
     const std::string& current_modifier = Utilities::StringUtils::trim(current_modifiers.at(k));

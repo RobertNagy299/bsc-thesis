@@ -25,10 +25,11 @@ struct Utilities {
     ColumnUtils(const ColumnUtils&) = delete;
     ColumnUtils& operator=(const ColumnUtils&) = delete;
 
-    static const bool columnsExistInTable(ColumnListNode*& node, const untyped_table_t::const_iterator& table);
+    static const bool columnsExistInTable(ColumnListNode*& node,
+                                          const DB_Types::untyped_table_t::const_iterator& table);
     static const std::string& extractPrimaryKeyColumn(const std::vector<UntypedColumnDefNode*>& columns);
     static std::unique_ptr<std::unordered_set<std::string>>
-    extractColumnNamesFromTable(const untyped_table_t::const_iterator& table);
+    extractColumnNamesFromTable(const DB_Types::untyped_table_t::const_iterator& table);
   };
 
   struct StringUtils {
@@ -52,8 +53,8 @@ struct Utilities {
     InsertUtils(const InsertUtils&) = delete;
     InsertUtils& operator=(const InsertUtils&) = delete;
 
-    static const colmodifiers_t getModifiers(const std::vector<std::string>& current_modifiers);
-    static const bool hasEmptyLiteralRuleViolations(const colmodifiers_t& modifiers_checklist);
+    static const DB_Types::colmodifiers_t getModifiers(const std::vector<std::string>& current_modifiers);
+    static const bool hasEmptyLiteralRuleViolations(const DB_Types::colmodifiers_t& modifiers_checklist);
     static const std::string getDefaultValue(const std::vector<std::string>& current_modifiers);
   };
 };

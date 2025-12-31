@@ -8,7 +8,7 @@
 #include <unordered_set>
 
 std::unique_ptr<std::unordered_set<std::string>>
-Utilities::ColumnUtils::extractColumnNamesFromTable(const untyped_table_t::const_iterator& table) {
+Utilities::ColumnUtils::extractColumnNamesFromTable(const DB_Types::untyped_table_t::const_iterator& table) {
   // use a hash map for faster lookups
   auto auxiliary_colname_hashmap = std::make_unique<std::unordered_set<std::string>>();
   const auto table_cols = table->second;
@@ -21,7 +21,7 @@ Utilities::ColumnUtils::extractColumnNamesFromTable(const untyped_table_t::const
 }
 
 const bool Utilities::ColumnUtils::columnsExistInTable(ColumnListNode*& node,
-                                                       const untyped_table_t::const_iterator& table) {
+                                                       const DB_Types::untyped_table_t::const_iterator& table) {
 
   auto auxiliary_colname_hashmap = Utilities::ColumnUtils::extractColumnNamesFromTable(table);
   // check if the given cols exist

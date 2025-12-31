@@ -38,7 +38,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       }
       for (size_t j = 0; j < table_cols_length; ++j) {
         const std::vector<std::string>& current_modifiers = table_columns.at(j)->modifiers;
-        const colmodifiers_t modifiers_checklist = Utilities::InsertUtils::getModifiers(current_modifiers);
+        const DB_Types::colmodifiers_t modifiers_checklist = Utilities::InsertUtils::getModifiers(current_modifiers);
         // TODO check for primary key and unique constraint violations after implementing indeces
         // check the provided literal nodes in the value record
         // otherwise, use defaults
@@ -65,7 +65,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       return false;
     }
     // colname - modifiers map
-    std::unordered_map<std::string, colmodifiers_t> col_modifiers;
+    std::unordered_map<std::string, DB_Types::colmodifiers_t> col_modifiers;
     // Check if the specified columns exist in the table and get their modifiers
     for (const auto& col_name : node.columns->columns) {
       auto it = std::find_if(table_columns.begin(), table_columns.end(),
@@ -77,7 +77,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       }
 
       const std::vector<std::string>& current_modifiers = (*it)->modifiers;
-      const colmodifiers_t modifiers_checklist = Utilities::InsertUtils::getModifiers(current_modifiers);
+      const DB_Types::colmodifiers_t modifiers_checklist = Utilities::InsertUtils::getModifiers(current_modifiers);
       col_modifiers[col_name] = modifiers_checklist;
     }
     // iterate through the literal record and search for empty literals

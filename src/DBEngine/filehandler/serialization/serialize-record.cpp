@@ -2,7 +2,7 @@
 
 void FileHandler::serializeRecordWithoutColList(const ExecutionContext& ctx, const std::string& table_name,
                                                 const ValueRecordNode* const& record, std::ofstream& table_file,
-                                                const RecordType type, bool persist_to_disk) {
+                                                const DB_Types::RecordType type, bool persist_to_disk) {
 
   if (!persist_to_disk) {
     // TODO
@@ -12,7 +12,7 @@ void FileHandler::serializeRecordWithoutColList(const ExecutionContext& ctx, con
    * Calculate the record's length
    */
 
-  uint64_t record_length = sizeof(RecordType);
+  uint64_t record_length = sizeof(DB_Types::RecordType);
   const std::vector<UntypedColumnDefNode*>& current_table_columns = ctx.getUntypedTables().at(table_name);
   const size_t number_of_table_cols = current_table_columns.size();
   const auto& colcode_map = ctx.getTableColcodeMap().at(table_name);
@@ -32,7 +32,7 @@ void FileHandler::serializeRecordWithoutColList(const ExecutionContext& ctx, con
 
   // calculate the data payload length (without the PK)
   // while simultaneously calculating the col offset map with relative offsets
-  std::vector<column_offset_t> column_offsets;
+  std::vector<DB_Types::column_offset_t> column_offsets;
   std::vector<std::string> literals_to_be_written_to_disk;
   // subtract 1 because we don't store the primary key like this
   column_offsets.reserve(current_table_columns.size() - 1ul);
@@ -65,9 +65,9 @@ void FileHandler::serializeRecordWithoutColList(const ExecutionContext& ctx, con
     const uint8_t& colcode = colcode_map->at(current_colname);
 
     size_t remaining_col_offset_records = std::max(col_offset_region_length - col_offset_idx, 0);
-    uint64_t total_offset =
-        remaining_col_offset_records * sizeof(column_offset_t) + actual_coldata_offset_from_end_of_colcode_region;
-    column_offset_t col_offset_rec{total_offset, colcode};
+    uint64_t total_offset = remaining_col_offset_records * sizeof(DB_Types::column_offset_t) +
+                            actual_coldata_offset_from_end_of_colcode_region;
+    DB_Types::column_offset_t col_offset_rec{total_offset, colcode};
 
     column_offsets.push_back(col_offset_rec);
     literals_to_be_written_to_disk.push_back(final_literal);
@@ -77,7 +77,7 @@ void FileHandler::serializeRecordWithoutColList(const ExecutionContext& ctx, con
     actual_coldata_offset_from_end_of_colcode_region += (literal_data_size + sizeof(literal_data_size));
   }
   record_length +=
-      (actual_coldata_offset_from_end_of_colcode_region + col_offset_region_length * sizeof(column_offset_t));
+      (actual_coldata_offset_from_end_of_colcode_region + col_offset_region_length * sizeof(DB_Types::column_offset_t));
 
   // critical region - file operations
   try {

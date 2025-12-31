@@ -14,7 +14,8 @@
  */
 struct SemanticValidator {
 private:
-  static const bool validateWhereClauseSemantics(const untyped_table_t::const_iterator& table, WhereNode* node);
+  static const bool validateWhereClauseSemantics(const DB_Types::untyped_table_t::const_iterator& table,
+                                                 WhereNode* node);
   // Delete the default constructor to prevent instantiation
   SemanticValidator() = delete;
 

@@ -57,7 +57,7 @@ void ExecutionContext::initializeColumnEncodingMap() {
     const std::string& table_name = table.first;
     const auto& table_cols = table.second;
     uint8_t col_code = (uint8_t)0x0u;
-    auto map_ptr = std::make_unique<colname_colcode_map_t>();
+    auto map_ptr = std::make_unique<DB_Types::colname_colcode_map_t>();
     for (const auto& col : table_cols) {
       (*map_ptr)[col->name] = col_code;
       col_code += 0x1u;
@@ -80,8 +80,8 @@ void ExecutionContext::initializePrimaryKeyIndices() {
     const std::string& table_path = FileHandler::getTableFilePath(table_name);
     // insert the pointer to this table's column - indeces map
     if (this != nullptr && this->indices != nullptr) {
-      this->indices->insert(std::pair<std::string, colname_literal_offset_map_ptr_t>(
-          table_name, std::make_unique<colname_literal_offset_map_t>()));
+      this->indices->insert(std::pair<std::string, DB_Types::colname_literal_offset_map_ptr_t>(
+          table_name, std::make_unique<DB_Types::colname_literal_offset_map_t>()));
     } else {
       LoggerService::ErrorLogger::printAsStandardError(
           "FATAL ERROR (Code: NULLPTR-0001) - One of the pointers responsible for primary key indexing was nullptr.");
@@ -92,7 +92,7 @@ void ExecutionContext::initializePrimaryKeyIndices() {
     // store the index as a "pk" -> "offset" pair where pk is the string representation of the pk
     // and the offset is the relative offset from the start of the record to the start of the data tuple region
     if (table_file.is_open()) {
-      table_file_header_t file_header;
+      DB_Types::table_file_header_t file_header;
       table_file.read(reinterpret_cast<char*>(&file_header), sizeof(file_header));
       if (file_header.magic != FileHandler::DB_MAGIC) {
         LoggerService::ErrorLogger::printAsStandardError(
@@ -108,7 +108,7 @@ void ExecutionContext::initializePrimaryKeyIndices() {
       const std::string& pk_col_name = Utilities::ColumnUtils::extractPrimaryKeyColumn(table.second);
       if (this != nullptr && this->indices != nullptr && this->indices->at(table_name) != nullptr) {
         this->indices->at(table_name)
-            ->insert(std::pair<std::string, index_ptr_t>(
+            ->insert(std::pair<std::string, DB_Types::index_ptr_t>(
                 pk_col_name, FileHandler::extractPrimaryKeysIndex(table_file, table.second.size() - 1UL)));
         // TODO remove debugging logs
         for (const auto& rec : *(this->indices->at(table_name)->at(pk_col_name))) {

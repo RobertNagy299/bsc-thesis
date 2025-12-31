@@ -47,9 +47,9 @@ and [record] looks like this:
 
 ```
 uint64_t record_len;
-RecordType record_type; // sizeof(uint8_t)
-column_offset_t column_offset_map; // (# of cols - 1) * sizeof(ColumnOffset) 
-primary_key_t primary_key; // variable length
+DB_Types::RecordType record_type; // sizeof(uint8_t)
+DB_Types::column_offset_t column_offset_map; // (# of cols - 1) * sizeof(ColumnOffset) 
+DB_Types::primary_key_t primary_key; // variable length
 std::string payload; // variable length
 ```
 
