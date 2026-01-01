@@ -7,47 +7,41 @@
 #include <filesystem>
 #include <fstream>
 
-struct FileHandler {
-  // Delete the default constructor to prevent instantiation
-  FileHandler() = delete;
+namespace FileHandler {
+//  fields
+inline const std::string SCHEMA_BASE_DIRECTORY = "../src/schema";
+inline const std::string METADATA_BASE_DIRECTORY = FileHandler::SCHEMA_BASE_DIRECTORY + "/metadata";
+inline const std::string DATASTORAGE_BASE_DIRECTORY = FileHandler::SCHEMA_BASE_DIRECTORY + "/data";
+inline const std::uint64_t DB_MAGIC = 0x4A5353514C7631L;
+inline const std::uint64_t DB_VERSION = 0x01L;
+inline const std::uint64_t DB_FLAGS = 0x0L;
+inline const std::uint64_t DB_RESERVED = 0x0L;
+// methods
+void createUntypedTable(CreateUntypedTableNode& node, ExecutionContext& ctx);
+void dropTable(DropTableNode& node, ExecutionContext& ctx);
+void insertData(InsertNode& node, const ExecutionContext& ctx);
 
-  // Delete copy constructor and assignment operator to prevent copying
-  FileHandler(const FileHandler&) = delete;
-  FileHandler& operator=(const FileHandler&) = delete;
+void ensureTableFileExists(const std::string& table_name);
+const std::string getTableFilePath(const std::string& table_name);
+const std::string getTableFolderPath(const std::string& table_name);
+DB_Types::index_ptr_t extractPrimaryKeysIndex(std::ifstream& table_file, const std::size_t number_of_columns);
 
-  // static fields
-  static inline const std::string SCHEMA_BASE_DIRECTORY = "../src/schema";
-  static inline const std::string METADATA_BASE_DIRECTORY = FileHandler::SCHEMA_BASE_DIRECTORY + "/metadata";
-  static inline const std::string DATASTORAGE_BASE_DIRECTORY = FileHandler::SCHEMA_BASE_DIRECTORY + "/data";
-  static inline const std::uint64_t DB_MAGIC = 0x4A5353514C7631L;
-  static inline const std::uint64_t DB_VERSION = 0x01L;
-  // methods
-  static void createUntypedTable(CreateUntypedTableNode& node, ExecutionContext& ctx);
-  static void dropTable(DropTableNode& node, ExecutionContext& ctx);
-  static void insertData(InsertNode& node, const ExecutionContext& ctx);
+template <typename T> void writeToBinaryFile(std::ofstream& outFile, const T& data) {
+  outFile.write(reinterpret_cast<const char*>(&data), sizeof(T));
+}
+// Specialization for std::string to handle variable length strings correctly
+void writeToBinaryFile(std::ofstream& outFile, const std::string& data);
 
-  static void ensureTableFileExists(const std::string& table_name);
-  static const std::string getTableFilePath(const std::string& table_name);
-  static const std::string getTableFolderPath(const std::string& table_name);
-  static DB_Types::index_ptr_t extractPrimaryKeysIndex(std::ifstream& table_file, const std::size_t number_of_columns);
+namespace Serializer {
+  void serializeRecordWithoutColList(const ExecutionContext& ctx, const std::string& table_name,
+                                     const ValueRecordNode* const& record, std::ofstream& table_file,
+                                     const DB_Types::RecordType type, bool persist_to_disk);
 
-private:
-  static inline const std::uint64_t DB_FLAGS = 0x0L;
-  static inline const std::uint64_t DB_RESERVED = 0x0L;
+} // namespace Serializer
+namespace Deserializer {
+  DB_Types::TableFileDeserializationIndicator deserializeNextPrimaryKey(std::ifstream& ifs, std::string& out_pk_val,
+                                                                        std::uint64_t& out_offset,
+                                                                        const std::size_t number_of_columns);
+} // namespace Deserializer
 
-  /**
-   * Utils
-   */
-  static DB_Types::TableFileDeserializationIndicator deserializeNextPrimaryKey(std::ifstream& ifs,
-                                                                               std::string& out_pk_val,
-                                                                               std::uint64_t& out_offset,
-                                                                               const std::size_t number_of_columns);
-  template <typename T> static void writeToBinaryFile(std::ofstream& outFile, const T& data) {
-    outFile.write(reinterpret_cast<const char*>(&data), sizeof(T));
-  }
-  // Specialization for std::string to handle variable length strings correctly
-  static void writeToBinaryFile(std::ofstream& outFile, const std::string& data);
-  static void serializeRecordWithoutColList(const ExecutionContext& ctx, const std::string& table_name,
-                                            const ValueRecordNode* const& record, std::ofstream& table_file,
-                                            const DB_Types::RecordType type, bool persist_to_disk);
-};
+}; // namespace FileHandler

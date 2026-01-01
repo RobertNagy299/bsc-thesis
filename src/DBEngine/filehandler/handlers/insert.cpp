@@ -20,8 +20,8 @@ void FileHandler::insertData(InsertNode& node, const ExecutionContext& ctx) {
       // construct record header
       const auto& literal_values = node.values->records.at(i);
       if (table_file.is_open()) {
-        FileHandler::serializeRecordWithoutColList(ctx, node.tableName, literal_values, table_file,
-                                                   DB_Types::RecordType::INSERT, true);
+        FileHandler::Serializer::serializeRecordWithoutColList(ctx, node.tableName, literal_values, table_file,
+                                                               DB_Types::RecordType::INSERT, true);
       }
     }
   } else {

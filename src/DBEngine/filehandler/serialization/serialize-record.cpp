@@ -1,8 +1,9 @@
 #include "../public_api.hpp"
 
-void FileHandler::serializeRecordWithoutColList(const ExecutionContext& ctx, const std::string& table_name,
-                                                const ValueRecordNode* const& record, std::ofstream& table_file,
-                                                const DB_Types::RecordType type, bool persist_to_disk) {
+void FileHandler::Serializer::serializeRecordWithoutColList(const ExecutionContext& ctx, const std::string& table_name,
+                                                            const ValueRecordNode* const& record,
+                                                            std::ofstream& table_file, const DB_Types::RecordType type,
+                                                            bool persist_to_disk) {
 
   if (!persist_to_disk) {
     // TODO

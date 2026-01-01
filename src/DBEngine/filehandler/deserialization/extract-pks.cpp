@@ -3,8 +3,9 @@
 // offset is absolute - it does not include the table header - header will always be checked in the local function to
 // ensure format consistency
 DB_Types::TableFileDeserializationIndicator
-FileHandler::deserializeNextPrimaryKey(std::ifstream& table_file, std::string& out_pk_val, std::uint64_t& out_offset,
-                                       const std::size_t number_of_columns_without_pk) {
+FileHandler::Deserializer::deserializeNextPrimaryKey(std::ifstream& table_file, std::string& out_pk_val,
+                                                     std::uint64_t& out_offset,
+                                                     const std::size_t number_of_columns_without_pk) {
   std::uint64_t record_length;
   // 1. Attempt to read the length indicator
   if (!table_file.read(reinterpret_cast<char*>(&record_length), sizeof(record_length))) {
@@ -71,14 +72,14 @@ DB_Types::index_ptr_t FileHandler::extractPrimaryKeysIndex(std::ifstream& table_
   std::string pk_val;
   std::uint64_t offset = 0ul;
   auto serialization_indicator_result =
-      FileHandler::deserializeNextPrimaryKey(table_file, pk_val, offset, number_of_columns_without_pk);
+      FileHandler::Deserializer::deserializeNextPrimaryKey(table_file, pk_val, offset, number_of_columns_without_pk);
   // iterate through every record in the file and read the primary key
   while (serialization_indicator_result != DB_Types::TableFileDeserializationIndicator::ENDOFTABLE) {
     if (serialization_indicator_result == DB_Types::TableFileDeserializationIndicator::LIVE) {
       result->insert(std::pair<std::string, std::uint64_t>(pk_val, offset));
     }
     serialization_indicator_result =
-        FileHandler::deserializeNextPrimaryKey(table_file, pk_val, offset, number_of_columns_without_pk);
+        FileHandler::Deserializer::deserializeNextPrimaryKey(table_file, pk_val, offset, number_of_columns_without_pk);
   }
 
   return std::move(result);
