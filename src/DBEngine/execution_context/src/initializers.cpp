@@ -52,16 +52,16 @@ void ExecutionContext::initializeUntypedTableMetadata() {
 
 void ExecutionContext::initializeColumnEncodingMap() {
   LoggerService::StatusLogger::printAsStandardOutput(
-      "Constructing Column name - uint8_t encoding for binary file handling...");
+      "Constructing Column name - std::uint8_t encoding for binary file handling...");
   for (const auto& table : this->untyped_tables) {
     const std::string& table_name = table.first;
     const auto& table_cols = table.second;
-    uint8_t col_code = (uint8_t)0x0u;
+    std::uint8_t col_code = (std::uint8_t)0x0u;
     auto map_ptr = std::make_unique<DB_Types::colname_colcode_map_t>();
     for (const auto& col : table_cols) {
       (*map_ptr)[col->name] = col_code;
       col_code += 0x1u;
-      if (col_code == (uint8_t)0x0u) {
+      if (col_code == (std::uint8_t)0x0u) {
         LoggerService::ErrorLogger::printAsStandardError(
             "FATAL ERROR: (Code: OVRFLW-0001) Table " + table_name +
             " Has more than 256 columns, which is illegal. Terminating...");

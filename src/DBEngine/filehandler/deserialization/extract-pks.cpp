@@ -4,7 +4,7 @@
 // ensure format consistency
 DB_Types::TableFileDeserializationIndicator
 FileHandler::deserializeNextPrimaryKey(std::ifstream& table_file, std::string& out_pk_val, std::uint64_t& out_offset,
-                                       const size_t number_of_columns_without_pk) {
+                                       const std::size_t number_of_columns_without_pk) {
   std::uint64_t record_length;
   // 1. Attempt to read the length indicator
   if (!table_file.read(reinterpret_cast<char*>(&record_length), sizeof(record_length))) {
@@ -33,11 +33,11 @@ FileHandler::deserializeNextPrimaryKey(std::ifstream& table_file, std::string& o
     table_file.seekg(record_length - sizeof(DB_Types::RecordType), std::ios::cur);
     return DB_Types::TableFileDeserializationIndicator::TOMBSTONE;
   }
-  uint64_t col_offset_region_length = number_of_columns_without_pk * sizeof(DB_Types::column_offset_t);
+  std::uint64_t col_offset_region_length = number_of_columns_without_pk * sizeof(DB_Types::column_offset_t);
   // at this point, this is a valid insert / update record. Let's skip through the col offset region
   table_file.seekg(col_offset_region_length, std::ios::cur);
   // get the primary key
-  uint64_t pk_len;
+  std::uint64_t pk_len;
   if (!table_file.read(reinterpret_cast<char*>(&pk_len), sizeof(pk_len))) {
     // TODO handle error, exit(1)
     return DB_Types::TableFileDeserializationIndicator::IOERROR;
@@ -54,7 +54,7 @@ FileHandler::deserializeNextPrimaryKey(std::ifstream& table_file, std::string& o
   }
   // move seekg to the start of the next record
   // we are currently at the beginning of the data tuple region
-  uint64_t remaining_bytes =
+  std::uint64_t remaining_bytes =
       record_length - (sizeof(DB_Types::RecordType) + col_offset_region_length + sizeof(pk_len) + out_pk_val.size());
   table_file.seekg(remaining_bytes, std::ios::cur);
   return DB_Types::TableFileDeserializationIndicator::LIVE;
@@ -66,7 +66,7 @@ FileHandler::deserializeNextPrimaryKey(std::ifstream& table_file, std::string& o
  * @param table_file read only binary stream
  */
 DB_Types::index_ptr_t FileHandler::extractPrimaryKeysIndex(std::ifstream& table_file,
-                                                           const size_t number_of_columns_without_pk) {
+                                                           const std::size_t number_of_columns_without_pk) {
   auto result = std::make_unique<DB_Types::index_t>();
   std::string pk_val;
   std::uint64_t offset = 0ul;

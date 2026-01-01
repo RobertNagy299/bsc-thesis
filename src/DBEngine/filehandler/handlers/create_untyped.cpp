@@ -30,7 +30,7 @@ void FileHandler::createUntypedTable(CreateUntypedTableNode& node, ExecutionCont
     if (col) {
       file << col->name;
       if (!col->modifiers.empty()) file << " ";
-      for (size_t i = 0; i < col->modifiers.size(); ++i) {
+      for (std::size_t i = 0; i < col->modifiers.size(); ++i) {
         file << col->modifiers[i];
         if (i + 1 < col->modifiers.size()) file << ",";
       }

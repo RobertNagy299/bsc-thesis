@@ -23,7 +23,7 @@ SELECT * FROM table \
 
 # Limitations:
 
- - Maximum # of columns in a table: 256 (comes from the column offset map - col_id is of type uint8_t)
+ - Maximum # of columns in a table: 256 (comes from the column offset map - col_id is of type std::uint8_t)
  - Only one condition is allowed in the WHERE clause
 
 # Binary file structure:
@@ -35,10 +35,10 @@ Table.dat is a single binary file that looks like this:
 Where `[table header]` is 32 bytes and looks like this:
 `[magic][version][flags][reserved]`
 ``` 
-uint64_t magic; // unique file identifier
-uint64_t version;
-uint64_t flags;
-uint64_t reserved;
+std::uint64_t magic; // unique file identifier
+std::uint64_t version;
+std::uint64_t flags;
+std::uint64_t reserved;
 ```
 
 and [record] looks like this:
@@ -46,8 +46,8 @@ and [record] looks like this:
 `[record_len][record_type][col_offset_map][primary_key][payload]`
 
 ```
-uint64_t record_len;
-DB_Types::RecordType record_type; // sizeof(uint8_t)
+std::uint64_t record_len;
+DB_Types::RecordType record_type; // sizeof(std::uint8_t)
 DB_Types::column_offset_t column_offset_map; // (# of cols - 1) * sizeof(ColumnOffset) 
 DB_Types::primary_key_t primary_key; // variable length
 std::string payload; // variable length
@@ -56,8 +56,8 @@ std::string payload; // variable length
 ColumnOffset is `[column_id][offset]` which is stored like this:
 
 ```
-uint8_t col_id;
-uint64_t offset;
+std::uint8_t col_id;
+std::uint64_t offset;
 ```
 
 ColumnOffset is used to speed up the evaluation of Where conditions for columns without an index 

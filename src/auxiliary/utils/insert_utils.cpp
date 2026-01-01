@@ -11,7 +11,7 @@
 
 const DB_Types::colmodifiers_t Utilities::InsertUtils::getModifiers(const std::vector<std::string>& current_modifiers) {
   auto answer = DB_Types::colmodifiers_t();
-  for (size_t k = 0; k < current_modifiers.size(); ++k) {
+  for (std::size_t k = 0; k < current_modifiers.size(); ++k) {
     const std::string& current_modifier = Utilities::StringUtils::trim(current_modifiers.at(k));
     if (current_modifier.find("DEFAULT") != std::string::npos) {
       answer.has_default = 1;
@@ -62,7 +62,7 @@ const bool Utilities::InsertUtils::hasEmptyLiteralRuleViolations(const DB_Types:
  * is actually by design - perhaps a poor design choice by me. - Author.
  */
 const std::string Utilities::InsertUtils::getDefaultValue(const std::vector<std::string>& current_modifiers) {
-  for (size_t k = 0; k < current_modifiers.size(); ++k) {
+  for (std::size_t k = 0; k < current_modifiers.size(); ++k) {
     const std::string& current_modifier = Utilities::StringUtils::trim(current_modifiers.at(k));
     if (current_modifier.find("DEFAULT") != std::string::npos) {
       return Utilities::StringUtils::removeOuterQuotes(current_modifier.substr(8));

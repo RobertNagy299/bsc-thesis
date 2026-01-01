@@ -17,17 +17,17 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
   }
   const std::vector<ValueRecordNode*>& value_list = node.values->records;
   const std::vector<UntypedColumnDefNode*>& table_columns = current_table->second;
-  const size_t value_record_length = value_list.size();
-  const size_t table_cols_length = table_columns.size();
+  const std::size_t value_record_length = value_list.size();
+  const std::size_t table_cols_length = table_columns.size();
 
   // node.columns is optional - if does not exist, is nullptr
   if (!node.columns) {
 
     // if there are empty values, make sure the omited values either have a default value
     // or are nullable, otherwise throw an error.
-    for (size_t i = 0; i < value_record_length; ++i) {
+    for (std::size_t i = 0; i < value_record_length; ++i) {
       const std::vector<LiteralNode*>& literal_nodes_list = value_list.at(i)->values;
-      const size_t current_literal_values_length = literal_nodes_list.size();
+      const std::size_t current_literal_values_length = literal_nodes_list.size();
       // if there are more value nodes in a value record than in the table, throw an error
       if (current_literal_values_length > table_cols_length) {
         LoggerService::ErrorLogger::printAsStandardError(
@@ -36,7 +36,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
             " values in a row.");
         return false;
       }
-      for (size_t j = 0; j < table_cols_length; ++j) {
+      for (std::size_t j = 0; j < table_cols_length; ++j) {
         const std::vector<std::string>& current_modifiers = table_columns.at(j)->modifiers;
         const DB_Types::colmodifiers_t modifiers_checklist = Utilities::InsertUtils::getModifiers(current_modifiers);
         // TODO check for primary key and unique constraint violations after implementing indeces
@@ -81,11 +81,11 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       col_modifiers[col_name] = modifiers_checklist;
     }
     // iterate through the literal record and search for empty literals
-    for (size_t i = 0; i < value_record_length; ++i) {
+    for (std::size_t i = 0; i < value_record_length; ++i) {
       // lazy eval, only get literal nodes list when we are sure there are no errors so far (hence this part is 'code
       // duplication')
       const std::vector<LiteralNode*>& literal_nodes_list = value_list.at(i)->values;
-      const size_t current_literal_values_length = literal_nodes_list.size();
+      const std::size_t current_literal_values_length = literal_nodes_list.size();
       // if there are more value nodes in a value record than in the table, throw an error
       if (current_literal_values_length > table_cols_length) {
         LoggerService::ErrorLogger::printAsStandardError(
@@ -109,7 +109,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
        * */
 
       // Check explicit and implicit empty literals in a single for loop
-      for (size_t j = 0; j < col_list_length; ++j) {
+      for (std::size_t j = 0; j < col_list_length; ++j) {
         const std::string current_colname = node.columns->columns.at(j);
         const auto& current_modifier_checklist = col_modifiers.at(current_colname);
         if (j >= current_literal_values_length) {

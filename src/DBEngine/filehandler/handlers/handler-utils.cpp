@@ -2,7 +2,7 @@
 
 void FileHandler::writeToBinaryFile(std::ofstream& outFile, const std::string& data) {
   // First, write the size of the string so we know how many characters to read later
-  size_t size = data.size();
+  std::size_t size = data.size();
   outFile.write(reinterpret_cast<const char*>(&size), sizeof(size));
   // Then, write the actual string data
   outFile.write(data.data(), size);
