@@ -7,54 +7,28 @@
 #include <unordered_set>
 #include <vector>
 
-struct Utilities {
+namespace Utilities {
 
-  // Delete the default constructor to prevent instantiation
-  Utilities() = delete;
+// List all the utils submodules
+namespace ColumnUtils {
 
-  // Delete copy constructor and assignment operator to prevent copying
-  Utilities(const Utilities&) = delete;
-  Utilities& operator=(const Utilities&) = delete;
+  const bool columnsExistInTable(ColumnListNode*& node, const DB_Types::untyped_table_t::const_iterator& table);
+  const std::string& extractPrimaryKeyColumn(const std::vector<UntypedColumnDefNode*>& columns);
+  std::unique_ptr<std::unordered_set<std::string>>
+  extractColumnNamesFromTable(const DB_Types::untyped_table_t::const_iterator& table);
+}; // namespace ColumnUtils
 
-  // List all the utils submodules
-  struct ColumnUtils {
-    // Delete the default constructor to prevent instantiation
-    ColumnUtils() = delete;
+namespace StringUtils {
 
-    // Delete copy constructor and assignment operator to prevent copying
-    ColumnUtils(const ColumnUtils&) = delete;
-    ColumnUtils& operator=(const ColumnUtils&) = delete;
+  std::string trim(const std::string& str);
+  std::vector<std::string> splitString(const std::string& s, const std::string& delimiter);
+  std::string removeOuterQuotes(std::string str);
+}; // namespace StringUtils
 
-    static const bool columnsExistInTable(ColumnListNode*& node,
-                                          const DB_Types::untyped_table_t::const_iterator& table);
-    static const std::string& extractPrimaryKeyColumn(const std::vector<UntypedColumnDefNode*>& columns);
-    static std::unique_ptr<std::unordered_set<std::string>>
-    extractColumnNamesFromTable(const DB_Types::untyped_table_t::const_iterator& table);
-  };
+namespace InsertUtils {
 
-  struct StringUtils {
-    // Delete the default constructor to prevent instantiation
-    StringUtils() = delete;
-
-    // Delete copy constructor and assignment operator to prevent copying
-    StringUtils(const StringUtils&) = delete;
-    StringUtils& operator=(const StringUtils&) = delete;
-
-    static std::string trim(const std::string& str);
-    static std::vector<std::string> splitString(const std::string& s, const std::string& delimiter);
-    static std::string removeOuterQuotes(std::string str);
-  };
-
-  struct InsertUtils {
-    // Delete the default constructor to prevent instantiation
-    InsertUtils() = delete;
-
-    // Delete copy constructor and assignment operator to prevent copying
-    InsertUtils(const InsertUtils&) = delete;
-    InsertUtils& operator=(const InsertUtils&) = delete;
-
-    static const DB_Types::colmodifiers_t getModifiers(const std::vector<std::string>& current_modifiers);
-    static const bool hasEmptyLiteralRuleViolations(const DB_Types::colmodifiers_t& modifiers_checklist);
-    static const std::string getDefaultValue(const std::vector<std::string>& current_modifiers);
-  };
-};
+  const DB_Types::colmodifiers_t getModifiers(const std::vector<std::string>& current_modifiers);
+  const bool hasEmptyLiteralRuleViolations(const DB_Types::colmodifiers_t& modifiers_checklist);
+  const std::string getDefaultValue(const std::vector<std::string>& current_modifiers);
+}; // namespace InsertUtils
+}; // namespace Utilities

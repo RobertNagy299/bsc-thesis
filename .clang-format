@@ -21,3 +21,5 @@ IndentCaseLabels: true
 BreakBeforeBraces: Attach
 PointerAlignment: Left
 SpaceBeforeParens: ControlStatements
+
+NamespaceIndentation: Inner
