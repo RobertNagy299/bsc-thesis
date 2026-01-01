@@ -4,7 +4,8 @@ const bool SemanticValidator::validateSelectSemantics(SelectNode& node, const Ex
   auto untyped_tables = ctx.getUntypedTables();
   const auto& current_table = untyped_tables.find(node.tableName);
   if (current_table == untyped_tables.end()) {
-    LoggerService::ErrorLogger::printAsStandardError("Table " + node.tableName + " does not exist.");
+    LoggerService::ErrorLogger::printAsStandardError(StatusCode::ErrorCode::SEMVAL_TableDoesNotExist,
+                                                     std::vector<std::string>({node.tableName}));
     return false;
   }
 

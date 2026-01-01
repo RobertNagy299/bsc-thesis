@@ -1,6 +1,7 @@
 #pragma once
 #include "../../parser/ast.hpp"
 #include <memory>
+#include <optional>
 #include <unordered_map>
 #include <variant>
 #include <vector>
@@ -10,6 +11,8 @@ namespace DB_Types {
 typedef std::unordered_map<std::string, std::vector<UntypedColumnDefNode*>> untyped_table_t;
 typedef std::unordered_map<std::string, std::uint8_t> colname_colcode_map_t;
 typedef std::unordered_map<std::string, std::unique_ptr<colname_colcode_map_t>> table_colcode_map_t;
+
+typedef std::optional<std::vector<std::string>> status_context_t;
 
 typedef struct ColModifierChecklist {
   bool has_default : 1;

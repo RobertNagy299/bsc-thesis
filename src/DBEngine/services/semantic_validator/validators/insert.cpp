@@ -12,7 +12,8 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
   // use find instead of at because we do not know if it is actually present
   const auto& current_table = untyped_tables.find(node.tableName);
   if (current_table == untyped_tables.end()) {
-    LoggerService::ErrorLogger::printAsStandardError("Table " + node.tableName + " does not exist.");
+    LoggerService::ErrorLogger::printAsStandardError(StatusCode::ErrorCode::SEMVAL_TableDoesNotExist,
+                                                     std::vector<std::string>{node.tableName});
     return false;
   }
   const std::vector<ValueRecordNode*>& value_list = node.values->records;
@@ -22,7 +23,6 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
 
   // node.columns is optional - if does not exist, is nullptr
   if (!node.columns) {
-
     // if there are empty values, make sure the omited values either have a default value
     // or are nullable, otherwise throw an error.
     for (std::size_t i = 0; i < value_record_length; ++i) {
@@ -31,9 +31,9 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       // if there are more value nodes in a value record than in the table, throw an error
       if (current_literal_values_length > table_cols_length) {
         LoggerService::ErrorLogger::printAsStandardError(
-            "Error (code: INSRT-0001): " + node.tableName + " Only has " + std::to_string(table_cols_length) +
-            +" columns, but you tried to insert " + std::to_string(current_literal_values_length) +
-            " values in a row.");
+            StatusCode::ErrorCode::INSERT_MoreValuesThanColumnsInTable,
+            std::vector<std::string>{node.tableName, std::to_string(table_cols_length),
+                                     std::to_string(current_literal_values_length)});
         return false;
       }
       for (std::size_t j = 0; j < table_cols_length; ++j) {
@@ -59,9 +59,8 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
     // Check if we have given more column names than there are columns in the table
     if (col_list_length > table_cols_length) {
       LoggerService::ErrorLogger::printAsStandardError(
-          "ERROR (Code: INSRT-0006): Table " + node.tableName + " has " + std::to_string(table_cols_length) +
-          " columns, but you tried to insert " + std::to_string(col_list_length) + " columns." +
-          " Error Source: " + __FILE__ + " line #" + std::to_string(__LINE__));
+          StatusCode::ErrorCode::INSERT_MoreColumnsInColListThanInTable,
+          std::vector<std::string>{node.tableName, std::to_string(table_cols_length), std::to_string(col_list_length)});
       return false;
     }
     // colname - modifiers map
@@ -71,8 +70,8 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       auto it = std::find_if(table_columns.begin(), table_columns.end(),
                              [&col_name](auto& col_node) { return col_node->name == col_name; });
       if (it == table_columns.end()) {
-        LoggerService::ErrorLogger::printAsStandardError("Error (code: INSRT-0004): Column " + col_name +
-                                                         " Does not exist in table " + node.tableName);
+        LoggerService::ErrorLogger::printAsStandardError(StatusCode::ErrorCode::INSERT_ColumnDoesNotExistInTable,
+                                                         std::vector<std::string>{col_name, node.tableName});
         return false;
       }
 
@@ -89,18 +88,17 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       // if there are more value nodes in a value record than in the table, throw an error
       if (current_literal_values_length > table_cols_length) {
         LoggerService::ErrorLogger::printAsStandardError(
-            "Error (code: INSRT-0001): " + node.tableName + " Only has " + std::to_string(table_cols_length) +
-            +" columns, but you tried to insert " + std::to_string(current_literal_values_length) +
-            " values in a row.");
+            StatusCode::ErrorCode::INSERT_MoreValuesThanColumnsInTable,
+            std::vector<std::string>{node.tableName, std::to_string(table_cols_length),
+                                     std::to_string(current_literal_values_length)});
         return false;
       }
-      // First case: if there are more value nodes in the value record than columns in the col vector then the statement
-      // is invalid
+      // First case: if there are more value nodes in the value record than columns in the col vector then the
+      // statement is invalid
       if (current_literal_values_length > col_list_length) {
         LoggerService::ErrorLogger::printAsStandardError(
-            "Error (code: INSRT-0005): Column list only specifies " + std::to_string(col_list_length) +
-            +" columns, but you tried to insert " + std::to_string(current_literal_values_length) +
-            " values in a row.");
+            StatusCode::ErrorCode::INSERT_MoreValuesThanColumnsInColList,
+            std::vector<std::string>{std::to_string(col_list_length), std::to_string(current_literal_values_length)});
         return false;
       }
       /****

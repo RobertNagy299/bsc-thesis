@@ -94,9 +94,7 @@ void FileHandler::Serializer::serializeRecordWithoutColList(const ExecutionConte
     }
 
   } catch (const std::exception& exception) {
-    LoggerService::ErrorLogger::printAsStandardError(
-        "FATAL ERROR (Code: FILE-OPS-0001): " + std::string(exception.what()) + " Coming from " + __FILE__ + " Line " +
-        std::to_string(__LINE__));
-    exit(1);
+    LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::FILEOPS_GenericFileIOFailure,
+                                                 std::vector<std::string>{std::string(exception.what())});
   }
 }

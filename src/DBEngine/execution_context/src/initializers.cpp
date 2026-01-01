@@ -62,10 +62,9 @@ void ExecutionContext::initializeColumnEncodingMap() {
       (*map_ptr)[col->name] = col_code;
       col_code += 0x1u;
       if (col_code == (std::uint8_t)0x0u) {
-        LoggerService::ErrorLogger::printAsStandardError(
-            "FATAL ERROR: (Code: OVRFLW-0001) Table " + table_name +
-            " Has more than 256 columns, which is illegal. Terminating...");
-        exit(1);
+        LoggerService::ErrorLogger::handleFatalError(
+            StatusCode::FatalErrorCode::FILEOPS_ColOffsetRegionHasMoreColsThanAllowed,
+            std::vector<std::string>{table_name});
       }
     }
     // transfer ownership to member variable
@@ -83,9 +82,8 @@ void ExecutionContext::initializePrimaryKeyIndices() {
       this->indices->insert(std::pair<std::string, DB_Types::colname_literal_offset_map_ptr_t>(
           table_name, std::make_unique<DB_Types::colname_literal_offset_map_t>()));
     } else {
-      LoggerService::ErrorLogger::printAsStandardError(
-          "FATAL ERROR (Code: NULLPTR-0001) - One of the pointers responsible for primary key indexing was nullptr.");
-      exit(1);
+      LoggerService::ErrorLogger::handleFatalError(
+          StatusCode::FatalErrorCode::NOCONTX_NULLPTR_InMemoryPrimaryKeyHashMapInitializationFailure);
     }
 
     std::ifstream table_file(table_path, std::ios::binary | std::ios::in);
@@ -95,9 +93,8 @@ void ExecutionContext::initializePrimaryKeyIndices() {
       DB_Types::table_file_header_t file_header;
       table_file.read(reinterpret_cast<char*>(&file_header), sizeof(file_header));
       if (file_header.magic != FileHandler::DB_MAGIC) {
-        LoggerService::ErrorLogger::printAsStandardError(
-            "FATAL ERROR: (Code: FILE-OPS-0002) Unknown table file format.");
-        exit(1);
+        LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::FILEOPS_UnknownTableFileFormat,
+                                                     std::vector<std::string>{table_name});
       }
       if (file_header.version != FileHandler::DB_VERSION) {
         LoggerService::WarningLogger::printAsStandardOutput(
@@ -107,6 +104,7 @@ void ExecutionContext::initializePrimaryKeyIndices() {
       // perform deserialization logic
       const std::string& pk_col_name = Utilities::ColumnUtils::extractPrimaryKeyColumn(table.second);
       if (this != nullptr && this->indices != nullptr && this->indices->at(table_name) != nullptr) {
+        // subtract 1 from the col list size due to the exclusion of the PK from the col offset region
         this->indices->at(table_name)
             ->insert(std::pair<std::string, DB_Types::index_ptr_t>(
                 pk_col_name, FileHandler::extractPrimaryKeysIndex(table_file, table.second.size() - 1UL)));
@@ -115,9 +113,8 @@ void ExecutionContext::initializePrimaryKeyIndices() {
           std::cout << " in index, pk val = " << rec.first << " Offset = " << std::to_string(rec.second) << '\n';
         }
       } else {
-        LoggerService::ErrorLogger::printAsStandardError(
-            "FATAL ERROR (Code: NULLPTR-0001) - One of the pointers responsible for primary key indexing was nullptr.");
-        exit(1);
+        LoggerService::ErrorLogger::handleFatalError(
+            StatusCode::FatalErrorCode::NOCONTX_NULLPTR_InMemoryPrimaryKeyHashMapInitializationFailure);
       }
     }
 
