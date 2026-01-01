@@ -69,3 +69,52 @@ ColumnOffset is used to speed up the evaluation of Where conditions for columns 
 size is used for reading the exact number of bytes needed to get the data, data will be deserialized into an std::string
 
 `primary_key` is `[size][data]` as well
+
+# Contribution guide:
+
+## Branch naming
+
+If you want to contribute, you must create your own branch.
+Your branch name must adhere to the following pattern:
+
+`[project name]-[category]/[ticket number]`
+
+where 
+ - `project name` is `JSSQL`
+ - `category` is either `feat` or `bug`
+ - `ticket number` is the number of the issue / ticket that describes the feature or bug you're working on
+
+Example 1:
+
+IF there is a `bug ticket` with the number `542`
+THEN your branch name is `JSSQL-bug/542`
+
+## Commit message format:
+
+Abstract form: `[type]([domain]): [optional_ticket_number] [your_message]`
+
+Where
+ - type is either `feat` or `bug`
+ - domain is one of the following: 
+   - `parser` 
+   - `interpreter`
+   - `code quality`
+   - `file handling`
+   - `optimization`
+   - `memory safety`
+   - `documentation`
+   - or any other domains that are added to this list in the future. Try to keep the number of domains as low as possible.
+
+Example 1:
+
+IF a ticket or issue exists for the parser feature you're working on:
+ - `example-ticket` with ticket number `1352`
+THEN the commit message must be: `feat(parser): 1352 create AST node structs for the GROUP BY statement`
+
+Example 2:
+IF you are working on a memory-leak that has no ticket / issue
+THEN
+ - create a ticket / issue for it: `memory-leak-issue asdfgh`, ticket number = `123`
+ - add a description to the ticket - prefer verbosity and precision over ambiguity
+THEN create a commit like this:
+ - `bug(memory safety): 123 Add proper bison destructor for GROUP BY node in case of a syntax error`
