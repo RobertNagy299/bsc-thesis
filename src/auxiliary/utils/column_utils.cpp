@@ -28,22 +28,17 @@ const bool Utilities::ColumnUtils::columnsExistInTable(ColumnListNode*& node,
   for (const auto& col_name : node->columns) {
     // if col is not found, then the statement is invalid
     if (auxiliary_colname_hashmap->find(col_name) == auxiliary_colname_hashmap->end()) {
-      // clang-format off
-      LoggerService::ErrorLogger::printAsStandardError(
-          "Error (Code: COLUMN-VALIDATOR-0001): Column " + col_name + " does not exist in table " + table->first + '!' +
-          "\n coming from file : " + std::string(__FILE__) + " Line : #" + std::to_string(__LINE__));
-      // clang-format on 
+      LoggerService::ErrorLogger::printAsStandardError(StatusCode::ErrorCode::SEMVAL_ColumnDoesNotExistInTable,
+                                                       std::vector<std::string>{col_name, table->first});
       return false;
     }
   }
   return true;
 }
 
-const std::string& Utilities::ColumnUtils::extractPrimaryKeyColumn(const std::vector<UntypedColumnDefNode*> &columns){
-  for(const auto& col : columns) {
-    if(Utilities::InsertUtils::getModifiers(col->modifiers).primary_key) {
-      return col->name;
-    }
+const std::string& Utilities::ColumnUtils::extractPrimaryKeyColumn(const std::vector<UntypedColumnDefNode*>& columns) {
+  for (const auto& col : columns) {
+    if (Utilities::InsertUtils::getModifiers(col->modifiers).primary_key) { return col->name; }
   }
   // TODO account for tables without a primary key
 }

@@ -6,9 +6,8 @@ const bool SemanticValidator::validateDeleteSemantics(DeleteNode& node, const Ex
   const auto& untyped_tables = ctx.getUntypedTables();
   const auto& current_table = untyped_tables.find(node.table_name);
   if (current_table == untyped_tables.end()) {
-    LoggerService::ErrorLogger::printAsStandardError("Error: (Error code: DELETE-0001) - Table " + node.table_name +
-                                                     " Does not exist. Source: " + __FILE__ + " Line " +
-                                                     std::to_string(__LINE__));
+    LoggerService::ErrorLogger::printAsStandardError(StatusCode::ErrorCode::SEMVAL_TableDoesNotExist,
+                                                     std::vector<std::string>{node.table_name});
     return false;
   }
   // Table exists, validate the Where clause

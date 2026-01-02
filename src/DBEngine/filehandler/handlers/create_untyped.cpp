@@ -3,9 +3,10 @@
 void FileHandler::createUntypedTable(CreateUntypedTableNode& node, ExecutionContext& ctx) {
   auto untyped_tables = ctx.getUntypedTables();
   const std::string table_name = node.tableName;
-
+  // TODO move this to semantic validator maybe??
   if (untyped_tables.find(table_name) != untyped_tables.end()) {
-    LoggerService::ErrorLogger::printAsStandardError("Error: Table " + table_name + " already exists.");
+    LoggerService::ErrorLogger::printAsStandardError(StatusCode::ErrorCode::SEMVAL_CREATE_TableAlreadyExists,
+                                                     std::vector<std::string>{table_name});
     return;
   }
 
@@ -21,7 +22,8 @@ void FileHandler::createUntypedTable(CreateUntypedTableNode& node, ExecutionCont
   std::string metadata_path = table_path + "/metadata.txt";
   std::ofstream file(metadata_path);
   if (!file.is_open()) {
-    LoggerService::ErrorLogger::printAsStandardError("Error: Could not create metadata file for table " + table_name);
+    LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::METADAT_CouldNotCreateMetadataFileForTable,
+                                                 std::vector<std::string>{table_name});
     return;
   }
 

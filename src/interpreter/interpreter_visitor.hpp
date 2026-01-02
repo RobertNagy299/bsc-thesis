@@ -30,7 +30,7 @@ public:
     // Semantic validation - ensure proper literal values, types, etc.
     if (!SemanticValidator::validateInsertSemantics(node, ctx)) {
       LoggerService::ErrorLogger::printAsStandardError(
-          "Insert statement is semantically invalid! The engine will not perform any file operations.");
+          StatusCode::ErrorCode::NOCONTX_SEMVAL_INSERT_GenericInvalidStatement);
       return;
     }
 
@@ -42,7 +42,7 @@ public:
     // TODO validate semantics for WHERE clause
     if (!SemanticValidator::validateSelectSemantics(node, ctx)) {
       LoggerService::ErrorLogger::printAsStandardError(
-          "Select statement is semantically invalid! The engine will not perform any file operations.");
+          StatusCode::ErrorCode::NOCONTX_SEMVAL_SELECT_GenericInvalidStatement);
       return;
     }
     std::cout << "Select node detected, tableName = " << node.tableName << '\n' << "col list = ";
@@ -57,7 +57,7 @@ public:
   void visit(UpdateNode& node) override {
     if (!SemanticValidator::validateUpdateSemantics(node, ctx)) {
       LoggerService::ErrorLogger::printAsStandardError(
-          "Update statement is invalid. the Engine won't perform any file operations.");
+          StatusCode::ErrorCode::NOCONTX_SEMVAL_UPDATE_GenericInvalidStatement);
       return;
     }
     // TODO file operations and testing
@@ -72,7 +72,7 @@ public:
     // Validate semantics
     if (!SemanticValidator::validateDeleteSemantics(node, ctx)) {
       LoggerService::ErrorLogger::printAsStandardError(
-          "Delete statement is invalid, the Engine won't perform file operations.");
+          StatusCode::ErrorCode::NOCONTX_SEMVAL_DELETE_GenericInvalidStatement);
       return;
     }
     // TODO semantically valid, perform file ops.

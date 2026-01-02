@@ -3,9 +3,8 @@
 
 void ExecutionContext::initializeUntypedTableMetadata() {
   if (!std::filesystem::exists(ExecutionContext::METADATA_BASE_DIR)) {
-    LoggerService::ErrorLogger::printAsStandardError(
-        "No schema metadata found at " + ExecutionContext::METADATA_BASE_DIR + ".\n Error source: " + __FILE__ +
-        " Line " + std::to_string(__LINE__));
+    LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::METADAT_MetadataDirectoryDoesNotExist,
+                                                 std::vector<std::string>{ExecutionContext::METADATA_BASE_DIR});
     return;
   }
   LoggerService::StatusLogger::printAsStandardOutput("Reading schema metadata...");
@@ -98,8 +97,7 @@ void ExecutionContext::initializePrimaryKeyIndices() {
       }
       if (file_header.version != FileHandler::DB_VERSION) {
         LoggerService::WarningLogger::printAsStandardOutput(
-            "Warning: (Code: FILE-OPS-0001W) Table file was created with a different version of the DB engine. Expect "
-            "undefined behavior.");
+            StatusCode::WarningCode::FILEOPS_FileWasMadeWithDifferentDBVersion, std::vector<std::string>{table_name});
       }
       // perform deserialization logic
       const std::string& pk_col_name = Utilities::ColumnUtils::extractPrimaryKeyColumn(table.second);

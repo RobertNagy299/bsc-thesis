@@ -31,7 +31,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       // if there are more value nodes in a value record than in the table, throw an error
       if (current_literal_values_length > table_cols_length) {
         LoggerService::ErrorLogger::printAsStandardError(
-            StatusCode::ErrorCode::INSERT_MoreValuesThanColumnsInTable,
+            StatusCode::ErrorCode::SEMVAL_INSERT_MoreValuesThanColumnsInTable,
             std::vector<std::string>{node.tableName, std::to_string(table_cols_length),
                                      std::to_string(current_literal_values_length)});
         return false;
@@ -59,7 +59,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
     // Check if we have given more column names than there are columns in the table
     if (col_list_length > table_cols_length) {
       LoggerService::ErrorLogger::printAsStandardError(
-          StatusCode::ErrorCode::INSERT_MoreColumnsInColListThanInTable,
+          StatusCode::ErrorCode::SEMVAL_INSERT_MoreColumnsInColListThanInTable,
           std::vector<std::string>{node.tableName, std::to_string(table_cols_length), std::to_string(col_list_length)});
       return false;
     }
@@ -70,7 +70,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       auto it = std::find_if(table_columns.begin(), table_columns.end(),
                              [&col_name](auto& col_node) { return col_node->name == col_name; });
       if (it == table_columns.end()) {
-        LoggerService::ErrorLogger::printAsStandardError(StatusCode::ErrorCode::INSERT_ColumnDoesNotExistInTable,
+        LoggerService::ErrorLogger::printAsStandardError(StatusCode::ErrorCode::SEMVAL_INSERT_ColumnDoesNotExistInTable,
                                                          std::vector<std::string>{col_name, node.tableName});
         return false;
       }
@@ -88,7 +88,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       // if there are more value nodes in a value record than in the table, throw an error
       if (current_literal_values_length > table_cols_length) {
         LoggerService::ErrorLogger::printAsStandardError(
-            StatusCode::ErrorCode::INSERT_MoreValuesThanColumnsInTable,
+            StatusCode::ErrorCode::SEMVAL_INSERT_MoreValuesThanColumnsInTable,
             std::vector<std::string>{node.tableName, std::to_string(table_cols_length),
                                      std::to_string(current_literal_values_length)});
         return false;
@@ -97,7 +97,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       // statement is invalid
       if (current_literal_values_length > col_list_length) {
         LoggerService::ErrorLogger::printAsStandardError(
-            StatusCode::ErrorCode::INSERT_MoreValuesThanColumnsInColList,
+            StatusCode::ErrorCode::SEMVAL_INSERT_MoreValuesThanColumnsInColList,
             std::vector<std::string>{std::to_string(col_list_length), std::to_string(current_literal_values_length)});
         return false;
       }

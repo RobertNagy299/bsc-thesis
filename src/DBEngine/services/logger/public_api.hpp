@@ -15,12 +15,12 @@ namespace ErrorLogger {
 }; // namespace ErrorLogger
 
 namespace StatusLogger {
-
   void printAsStandardOutput(const std::string& status_msg);
 }; // namespace StatusLogger
 
 namespace WarningLogger {
-  void printAsStandardOutput(const std::string& warning_msg);
+  void printAsStandardOutput(const StatusCode::WarningCode& warning_code,
+                             DB_Types::status_context_t warning_context = std::nullopt);
 } // namespace WarningLogger
 
 }; // namespace LoggerService

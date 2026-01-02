@@ -4,11 +4,6 @@
 #include <string>
 #include <vector>
 
-/**
- * @brief
- * This class is intended to be a `static` method container, do not instantiate it!
- */
-
 const DB_Types::colmodifiers_t Utilities::InsertUtils::getModifiers(const std::vector<std::string>& current_modifiers) {
   auto answer = DB_Types::colmodifiers_t();
   for (std::size_t k = 0; k < current_modifiers.size(); ++k) {
@@ -41,16 +36,13 @@ const DB_Types::colmodifiers_t Utilities::InsertUtils::getModifiers(const std::v
  *  */
 const bool Utilities::InsertUtils::hasEmptyLiteralRuleViolations(const DB_Types::colmodifiers_t& modifiers_checklist) {
   if (modifiers_checklist.primary_key) {
-    LoggerService::ErrorLogger::printAsStandardError("Error (Code: INSRT-0003) - Primary Key cannot be empty value.\n" +
-                                                     std::string(" coming from file : ") + std::string(__FILE__) +
-                                                     " Line : #" + std::to_string(__LINE__));
+    LoggerService::ErrorLogger::printAsStandardError(
+        StatusCode::ErrorCode::NOCONTX_SEMVAL_INSERT_PrimaryKeyCannotBeEmpty);
     return true;
   }
   if (modifiers_checklist.not_null && !modifiers_checklist.has_default) {
     LoggerService::ErrorLogger::printAsStandardError(
-        "Error (Code: INSRT-0002) - cannot insert empty literal into column marked as NOT NULL without " +
-        std::string("explicit DEFAULT value\n") + "\n coming from file : " + std::string(__FILE__) + " Line : #" +
-        std::to_string(__LINE__));
+        StatusCode::ErrorCode::NOCONTX_SEMVAL_INSERT_NotNullNoDefaultViolation);
     return true;
   }
   return false;

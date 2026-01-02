@@ -4,9 +4,8 @@ void FileHandler::dropTable(DropTableNode& node, ExecutionContext& ctx) {
   std::string table_metadata_directory = FileHandler::METADATA_BASE_DIRECTORY + "/" + node.tableName;
 
   if (!std::filesystem::exists(table_metadata_directory)) {
-    LoggerService::ErrorLogger::printAsStandardError("Error: metadata for table \"" + node.tableName +
-                                                     "\" does not exist on disk. source: " + __FILE__ +
-                                                     " line: " + std::to_string(__LINE__));
+    LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::METADAT_TableMetadataDirectoryDoesNotExist,
+                                                 std::vector<std::string>{node.tableName});
 
     return;
   }
@@ -31,7 +30,7 @@ void FileHandler::dropTable(DropTableNode& node, ExecutionContext& ctx) {
     LoggerService::StatusLogger::printAsStandardOutput("Table \"" + node.tableName + "\" dropped successfully.");
 
   } catch (const std::filesystem::filesystem_error& e) {
-    LoggerService::ErrorLogger::printAsStandardError("Filesystem error while dropping table: ");
-    LoggerService::ErrorLogger::printAsStandardError(e.what());
+    LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::DROP_UnknownFileSystemError,
+                                                 std::vector<std::string>{node.tableName, e.what()});
   }
 }
