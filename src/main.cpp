@@ -11,19 +11,21 @@ extern int yylex_destroy(); // <-- from flex
 
 int main() {
   std::cout << "Parsing started from main.cpp!\n";
+  // clang-format off
   // Todo: investigate why YY_USER_ACTION runs twice - fix that
-  // const char *sql = "CREATE UNTYPED TABLE users(id PRIMARY KEY, name NOT NULL DEFAULT 'Gipsz jakab', age DEFAULT
-  // 18);"; const char *sql = "DROP TABLE users;"; const char *sql = "INSERT INTO users VALUES(6, 'Frankenstein', 19);";
+  // const char* sql = "CREATE UNTYPED TABLE users(id PRIMARY KEY, name NOT NULL DEFAULT 'Gipsz jakab', age DEFAULT 18);"; 
+  const char* sql = "DROP TABLE users;"; 
+  // const char *sql = "INSERT INTO users VALUES(6, 'Frankenstein', 19);";
   // const char* sql = "INSERT INTO users(id, pisa) VALUES (1,4);";
   // const char* sql = "SELECT id, kaka FROM users WHERE id IS NOT NULL;";
   // const char *sql = "INSERT INTO users(id, name) VALUES (1,'Manfred'), (2, 'Albert');";
   // const char* sql = "DELETE FROM users WHERE name = TRUE;";
-  const char* sql = "UPDATE users SET name = 'retro', agenotreal = 76 WHERE id = 1;";
+  // const char* sql = "UPDATE users SET name = 'retro', agenotreal = 76 WHERE id = 1;";
   // const char* sql = "INSERT INTO comments(id, content, timestamp) VALUES (141,'comment');";
 
   // TODO: Multiple inserts don't work?? they only insert the first row
-  // const char* sql = "INSERT INTO users VALUES (1432, 'Nick Freight', 28), (55, 'Jazz Lane', 21);";
-
+  // const char* sql = "INSERT INTO users VALUES ('1','Nick Freight', '28'), ('55', 'Jazz Lane', '21');";
+  // clang-format on
   // Open SQL string as input
   FILE* f = fmemopen((void*)sql, strlen(sql), "r");
 

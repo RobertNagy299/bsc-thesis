@@ -2,7 +2,7 @@
 
 void FileHandler::createUntypedTable(CreateUntypedTableNode& node, ExecutionContext& ctx) {
   auto untyped_tables = ctx.getUntypedTables();
-  const std::string table_name = node.tableName;
+  const std::string table_name = node.table_name;
   // TODO move this to semantic validator maybe??
   if (untyped_tables.find(table_name) != untyped_tables.end()) {
     LoggerService::ErrorLogger::printAsStandardError(StatusCode::ErrorCode::SEMVAL_CREATE_TableAlreadyExists,

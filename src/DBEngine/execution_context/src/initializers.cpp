@@ -10,7 +10,7 @@ void ExecutionContext::initializeUntypedTableMetadata() {
   LoggerService::StatusLogger::printAsStandardOutput("Reading schema metadata...");
   for (auto& entry : std::filesystem::directory_iterator(ExecutionContext::METADATA_BASE_DIR)) {
     if (entry.is_directory()) {
-      std::string tableName = entry.path().filename().string();
+      std::string table_name = entry.path().filename().string();
       std::string metadata_path = entry.path().string() + "/metadata.txt";
 
       if (!std::filesystem::exists(metadata_path)) continue;
@@ -42,8 +42,8 @@ void ExecutionContext::initializeUntypedTableMetadata() {
       }
 
       file.close();
-      this->untyped_tables[tableName] = schema;
-      LoggerService::StatusLogger::printAsStandardOutput("Recognized table " + tableName + " with " +
+      this->untyped_tables[table_name] = schema;
+      LoggerService::StatusLogger::printAsStandardOutput("Recognized table " + table_name + " with " +
                                                          std::to_string(schema.size()) + " columns.");
     }
   }

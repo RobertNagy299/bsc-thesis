@@ -10,17 +10,17 @@
 const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const ExecutionContext& ctx) {
   auto untyped_tables = ctx.getUntypedTables();
   // use find instead of at because we do not know if it is actually present
-  const auto& current_table = untyped_tables.find(node.tableName);
+  const auto& current_table = untyped_tables.find(node.table_name);
   if (current_table == untyped_tables.end()) {
     LoggerService::ErrorLogger::printAsStandardError(StatusCode::ErrorCode::SEMVAL_TableDoesNotExist,
-                                                     std::vector<std::string>{node.tableName});
+                                                     std::vector<std::string>{node.table_name});
     return false;
   }
   const std::vector<ValueRecordNode*>& value_list = node.values->records;
   const std::vector<UntypedColumnDefNode*>& table_columns = current_table->second;
   const std::size_t value_record_length = value_list.size();
   const std::size_t table_cols_length = table_columns.size();
-
+  std::cout << "Number of value records = " << std::to_string(value_record_length) << '\n';
   // node.columns is optional - if does not exist, is nullptr
   if (!node.columns) {
     // if there are empty values, make sure the omited values either have a default value
@@ -32,7 +32,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       if (current_literal_values_length > table_cols_length) {
         LoggerService::ErrorLogger::printAsStandardError(
             StatusCode::ErrorCode::SEMVAL_INSERT_MoreValuesThanColumnsInTable,
-            std::vector<std::string>{node.tableName, std::to_string(table_cols_length),
+            std::vector<std::string>{node.table_name, std::to_string(table_cols_length),
                                      std::to_string(current_literal_values_length)});
         return false;
       }
@@ -60,7 +60,8 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
     if (col_list_length > table_cols_length) {
       LoggerService::ErrorLogger::printAsStandardError(
           StatusCode::ErrorCode::SEMVAL_INSERT_MoreColumnsInColListThanInTable,
-          std::vector<std::string>{node.tableName, std::to_string(table_cols_length), std::to_string(col_list_length)});
+          std::vector<std::string>{node.table_name, std::to_string(table_cols_length),
+                                   std::to_string(col_list_length)});
       return false;
     }
     // colname - modifiers map
@@ -71,7 +72,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
                              [&col_name](auto& col_node) { return col_node->name == col_name; });
       if (it == table_columns.end()) {
         LoggerService::ErrorLogger::printAsStandardError(StatusCode::ErrorCode::SEMVAL_INSERT_ColumnDoesNotExistInTable,
-                                                         std::vector<std::string>{col_name, node.tableName});
+                                                         std::vector<std::string>{col_name, node.table_name});
         return false;
       }
 
@@ -89,7 +90,7 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
       if (current_literal_values_length > table_cols_length) {
         LoggerService::ErrorLogger::printAsStandardError(
             StatusCode::ErrorCode::SEMVAL_INSERT_MoreValuesThanColumnsInTable,
-            std::vector<std::string>{node.tableName, std::to_string(table_cols_length),
+            std::vector<std::string>{node.table_name, std::to_string(table_cols_length),
                                      std::to_string(current_literal_values_length)});
         return false;
       }

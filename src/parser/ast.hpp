@@ -75,11 +75,11 @@ struct ProgramNode : ASTNode {
 };
 
 struct CreateUntypedTableNode : ASTNode {
-  std::string tableName;
+  std::string table_name;
   std::vector<ASTNode*> columns;
 
-  CreateUntypedTableNode(std::string& tableName, std::vector<ASTNode*>& columns)
-      : tableName(std::move(tableName)), columns(std::move(columns)) {}
+  CreateUntypedTableNode(std::string& table_name, std::vector<ASTNode*>& columns)
+      : table_name(std::move(table_name)), columns(std::move(columns)) {}
 
   void accept(ASTVisitor& v) override { v.visit(*this); }
 
@@ -110,9 +110,9 @@ struct UntypedColumnDefNode : ASTNode {
 };
 
 struct DropTableNode : ASTNode {
-  std::string tableName;
+  std::string table_name;
 
-  DropTableNode(std::string& tableName) : tableName(std::move(tableName)) {}
+  DropTableNode(std::string& table_name) : table_name(std::move(table_name)) {}
 
   void accept(ASTVisitor& v) override { v.visit(*this); }
 };
@@ -180,16 +180,16 @@ struct ColumnListNode : ASTNode {
  * @brief Class used to represent an INSERT statement's Abstract Syntax Tree Node
  *
  *
- * @param tableName std::string
+ * @param table_name std::string
  * @param columns ColumnListNode*
  * @param values ValuesListNode*
  */
 struct InsertNode : ASTNode {
-  std::string tableName;
+  std::string table_name;
   ColumnListNode* columns; // optional (nullptr if not provided)
   ValuesListNode* values;  // must exist
 
-  InsertNode(const std::string& t, ColumnListNode* c, ValuesListNode* v) : tableName(t), columns(c), values(v) {}
+  InsertNode(const std::string& t, ColumnListNode* c, ValuesListNode* v) : table_name(t), columns(c), values(v) {}
 
   ~InsertNode() {
     if (columns) {
@@ -289,10 +289,11 @@ struct WhereNode : ASTNode {
 
 struct SelectNode : ASTNode {
   ColumnListNode* columns; // optional (nullptr if not provided)
-  std::string tableName;
+  std::string table_name;
   WhereNode* opt_where_node; // nullptr if not provided
 
-  SelectNode(ColumnListNode* c, std::string& t, WhereNode* wheren) : tableName(t), columns(c), opt_where_node(wheren) {}
+  SelectNode(ColumnListNode* c, std::string& t, WhereNode* wheren)
+      : table_name(t), columns(c), opt_where_node(wheren) {}
 
   ~SelectNode() {
     if (columns) {

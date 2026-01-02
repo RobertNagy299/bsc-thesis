@@ -57,6 +57,7 @@ enum class ErrorCode : std::uint16_t {
  * - `NULLPTR` - generic issue related to nullptr dereferencing
  * - `METADAT` - generic issue related to metadata handling
  * - `DROP` - specific issue related to dropping objects
+ * - `HASHIDX` - specific issue related to the in-memory hash-map index
  *
  */
 enum class FatalErrorCode : std::uint16_t {
@@ -65,6 +66,7 @@ enum class FatalErrorCode : std::uint16_t {
   FILEOPS_CouldNotCreateTableFile,
   FILEOPS_UnknownExceptionWhileCreatingTableFile,
   NOCONTX_NULLPTR_InMemoryPrimaryKeyHashMapInitializationFailure,
+  NOCONTX_HASHIDX_NULLPTR_GenericNullptrError,
   FILEOPS_UnknownTableFileFormat,
   METADAT_MetadataDirectoryDoesNotExist,
   METADAT_CouldNotCreateMetadataFileForTable,

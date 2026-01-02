@@ -45,7 +45,7 @@ public:
           StatusCode::ErrorCode::NOCONTX_SEMVAL_SELECT_GenericInvalidStatement);
       return;
     }
-    std::cout << "Select node detected, tableName = " << node.tableName << '\n' << "col list = ";
+    std::cout << "Select node detected, table_name = " << node.table_name << '\n' << "col list = ";
     if (!node.columns) {
       std::cout << " * ";
       return;

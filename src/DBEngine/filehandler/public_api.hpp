@@ -18,7 +18,7 @@ inline const std::uint64_t DB_FLAGS = 0x0L;
 inline const std::uint64_t DB_RESERVED = 0x0L;
 // methods
 void createUntypedTable(CreateUntypedTableNode& node, ExecutionContext& ctx);
-void dropTable(DropTableNode& node, ExecutionContext& ctx);
+void dropTable(const DropTableNode& node, ExecutionContext& ctx);
 void insertData(InsertNode& node, const ExecutionContext& ctx);
 
 void ensureTableFileExists(const std::string& table_name);

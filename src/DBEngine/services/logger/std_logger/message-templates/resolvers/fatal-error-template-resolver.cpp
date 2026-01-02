@@ -41,6 +41,9 @@ std::string MessageTemplateResolver::resolveFatalErrorMessageTemplate(const Stat
       return MessageTemplateResolver::injectContext(
           "Unknown exception while creating binary file for table '{}'. Error message: '{}'", resolved_context);
     }
+    case StatusCode::FatalErrorCode::NOCONTX_HASHIDX_NULLPTR_GenericNullptrError: {
+      return "Could not operate on the in-memory hash-map index due to nullptr error";
+    }
     default: {
       return "Unknown error";
     }

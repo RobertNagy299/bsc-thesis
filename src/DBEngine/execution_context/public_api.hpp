@@ -39,10 +39,14 @@ private:
 
 public:
   const DB_Types::untyped_table_t& getUntypedTables() const;
+  DB_Types::untyped_table_t& transferOwnershipOfUntypedTables();
   const DB_Types::table_colcode_map_t& getTableColcodeMap() const;
   void setUntypedTable(const std::string& table_name, const std::vector<UntypedColumnDefNode*>& coldefs);
 
   void eraseTable(const DB_Types::untyped_table_t::iterator&);
+  void eraseTable(const std::string& table_name);
+
+  void eraseInMemoryHashMapIndicesForTable(const std::string& table_name);
 
   static ExecutionContext& getInstance();
   static void destroyInstance();

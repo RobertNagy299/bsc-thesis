@@ -7,3 +7,5 @@ ExecutionContext& ExecutionContext::getInstance() {
   if (!instance) { instance = new ExecutionContext(); }
   return *instance;
 }
+
+DB_Types::untyped_table_t& ExecutionContext::transferOwnershipOfUntypedTables() { return this->untyped_tables; }

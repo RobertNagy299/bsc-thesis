@@ -28,7 +28,7 @@ void FileHandler::Serializer::serializeRecordWithoutColList(const ExecutionConte
   }
   // PK was verified to be non-empty by the semantic validator
   const auto& pk_literal_str = record->values.at(pk_idx)->value;
-  std::size_t pk_size = pk_literal_str.size();
+  std::uint64_t pk_size = pk_literal_str.size();
   record_length += (sizeof(pk_size) + pk_size);
 
   // calculate the data payload length (without the PK)
@@ -65,7 +65,7 @@ void FileHandler::Serializer::serializeRecordWithoutColList(const ExecutionConte
     const std::string& current_colname = current_table_columns.at(i)->name;
     const std::uint8_t& colcode = colcode_map->at(current_colname);
 
-    std::size_t remaining_col_offset_records = std::max(col_offset_region_length - col_offset_idx, 0);
+    std::uint64_t remaining_col_offset_records = std::max(col_offset_region_length - col_offset_idx, 0);
     std::uint64_t total_offset = remaining_col_offset_records * sizeof(DB_Types::column_offset_t) +
                                  actual_coldata_offset_from_end_of_colcode_region;
     DB_Types::column_offset_t col_offset_rec{total_offset, colcode};
@@ -74,7 +74,7 @@ void FileHandler::Serializer::serializeRecordWithoutColList(const ExecutionConte
     literals_to_be_written_to_disk.push_back(final_literal);
     // update the state
     col_offset_idx += 1u;
-    std::size_t literal_data_size = final_literal.size();
+    std::uint64_t literal_data_size = final_literal.size();
     actual_coldata_offset_from_end_of_colcode_region += (literal_data_size + sizeof(literal_data_size));
   }
   record_length +=
@@ -94,6 +94,7 @@ void FileHandler::Serializer::serializeRecordWithoutColList(const ExecutionConte
     }
 
   } catch (const std::exception& exception) {
+    // TODO clean up, close files, etc.
     LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::FILEOPS_GenericFileIOFailure,
                                                  std::vector<std::string>{std::string(exception.what())});
   }
