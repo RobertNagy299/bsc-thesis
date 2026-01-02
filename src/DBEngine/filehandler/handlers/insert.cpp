@@ -10,7 +10,6 @@ void FileHandler::insertData(InsertNode& node, const ExecutionContext& ctx) {
 
   const std::vector<ValueRecordNode*>& value_record_list = node.values->records;
   const std::size_t value_record_list_len = value_record_list.size();
-  std::cout << "Number of value records inside file handler: " << std::to_string(value_record_list_len) << '\n';
   // command is valid, so we must check for missing literals and get their default values
   // 2 distinct cases: 1. the column list is specified. 2. it is not.
   // we need to iterate through each value record, calculate its length, and create the header
@@ -19,7 +18,6 @@ void FileHandler::insertData(InsertNode& node, const ExecutionContext& ctx) {
     for (std::size_t i = 0; i < value_record_list_len; ++i) {
       // construct record header
       const auto& literal_values = node.values->records.at(i);
-      std::cout << "Inside loop in file handler iteration i = " << std::to_string(i) << '\n';
       if (table_file.is_open()) {
         FileHandler::Serializer::serializeRecordWithoutColList(ctx, node.table_name, literal_values, table_file,
                                                                DB_Types::RecordType::INSERT, true);

@@ -83,7 +83,6 @@ void FileHandler::Serializer::serializeRecordWithoutColList(const ExecutionConte
   // critical region - file operations
   try {
     FileHandler::writeToBinaryFile(table_file, record_length);
-    std::cout << "Record length (bytes) = " << std::to_string(record_length) << '\n';
     FileHandler::writeToBinaryFile(table_file, type);
     for (const auto& offset_record : column_offsets) { FileHandler::writeToBinaryFile(table_file, offset_record); }
     FileHandler::writeToBinaryFile(table_file, pk_literal_str);

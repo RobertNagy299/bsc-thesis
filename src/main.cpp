@@ -23,8 +23,12 @@ int main() {
   // const char* sql = "UPDATE users SET name = 'retro', agenotreal = 76 WHERE id = 1;";
   // const char* sql = "INSERT INTO comments(id, content, timestamp) VALUES (141,'comment');";
 
-  // TODO: Multiple inserts don't work?? they only insert the first row
   // const char* sql = "INSERT INTO users VALUES ('1','Nick Freight', '28'), ('55', 'Jazz Lane', '21');";
+
+  // TODO: find out why this is treated as a single record by the parser
+  // record in question is one single literal : final value = Nick Freight', 28), (55, 'Jazz Lane
+  // const char* sql = "INSERT INTO users VALUES (1, 'Nick Freight', 28), (55, 'Jazz Lane', 21);";
+
   // clang-format on
   // Open SQL string as input
   FILE* f = fmemopen((void*)sql, strlen(sql), "r");
