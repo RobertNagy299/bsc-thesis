@@ -59,7 +59,7 @@ enum class ErrorCode : std::uint16_t {
  * - `METADAT` - generic issue related to metadata handling
  * - `DROP` - specific issue related to dropping objects
  * - `HASHIDX` - specific issue related to the in-memory hash-map index
- *
+ * - `SEMNORM` - semantic normalization failure
  */
 enum class FatalErrorCode : std::uint16_t {
   FILEOPS_GenericFileIOFailure = 20000u,

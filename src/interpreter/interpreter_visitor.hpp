@@ -2,6 +2,7 @@
 #include "../DBEngine/execution_context/public_api.hpp"
 #include "../DBEngine/filehandler/public_api.hpp"
 #include "../DBEngine/services/logger/public_api.hpp"
+#include "../DBEngine/services/semantic_normalizer/public-api.hpp"
 #include "../DBEngine/services/semantic_validator/public_api.hpp"
 #include "../auxiliary/utils_public_api.hpp"
 #include "../parser/ast.hpp"
@@ -27,8 +28,9 @@ public:
   void visit(DropTableNode& node) override { FileHandler::dropTable(node, ctx); }
 
   void visit(InsertNode& node) override {
+
     // Semantic validation - ensure proper literal values, types, etc.
-    if (!SemanticValidator::validateInsertSemantics(node, ctx)) {
+    if (!SemanticNormalizer::normalizeInsert(node, ctx) || !SemanticValidator::validateInsertSemantics(node, ctx)) {
       LoggerService::ErrorLogger::printAsStandardError(
           StatusCode::ErrorCode::NOCONTX_SEMVAL_INSERT_GenericInvalidStatement);
       return;

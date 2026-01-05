@@ -45,7 +45,7 @@ std::string MessageTemplateResolver::resolveFatalErrorMessageTemplate(const Stat
       return "Could not operate on the in-memory hash-map index due to nullptr error";
     }
     default: {
-      return "Unknown error";
+      return "Unknown fatal error";
     }
   }
 }

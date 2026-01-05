@@ -186,8 +186,11 @@ struct ColumnListNode : ASTNode {
  */
 struct InsertNode : ASTNode {
   std::string table_name;
-  ColumnListNode* columns; // optional (nullptr if not provided)
+  ColumnListNode* columns; // optional (nullptr if not provided) - full after normalization
   ValuesListNode* values;  // must exist
+
+  std::vector<bool> projection_mask; // same length as schema
+  bool is_normalized = false;
 
   InsertNode(const std::string& t, ColumnListNode* c, ValuesListNode* v) : table_name(t), columns(c), values(v) {}
 

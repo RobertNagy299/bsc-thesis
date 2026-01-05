@@ -14,19 +14,17 @@ int main() {
   // clang-format off
   // Todo: investigate why YY_USER_ACTION runs twice - fix that
   // const char* sql = "CREATE UNTYPED TABLE users(id PRIMARY KEY, name NOT NULL DEFAULT 'Gipsz jakab', age DEFAULT 18);"; 
-  const char* sql = "DROP TABLE users;"; 
+  // const char* sql = "DROP TABLE users;"; 
   // const char *sql = "INSERT INTO users VALUES(6, 'Frankenstein', 19);";
   // const char* sql = "INSERT INTO users(id, pisa) VALUES (1,4);";
   // const char* sql = "SELECT id, kaka FROM users WHERE id IS NOT NULL;";
-  // const char *sql = "INSERT INTO users(id, name) VALUES (1,'Manfred'), (2, 'Albert');";
+  const char *sql = "INSERT INTO users(id, name) VALUES (3,'Manfred'), (4, 'Albert');";
   // const char* sql = "DELETE FROM users WHERE name = TRUE;";
   // const char* sql = "UPDATE users SET name = 'retro', agenotreal = 76 WHERE id = 1;";
   // const char* sql = "INSERT INTO comments(id, content, timestamp) VALUES (141,'comment');";
 
   // const char* sql = "INSERT INTO users VALUES ('1','Nick Freight', '28'), ('55', 'Jazz Lane', '21');";
 
-  // TODO: find out why this is treated as a single record by the parser
-  // record in question is one single literal : final value = Nick Freight', 28), (55, 'Jazz Lane
   // const char* sql = "INSERT INTO users VALUES (1, 'Nick Freight', 28), (55, 'Jazz Lane', 21);";
 
   // clang-format on

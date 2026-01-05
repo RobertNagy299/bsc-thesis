@@ -10,20 +10,10 @@ void FileHandler::insertData(InsertNode& node, const ExecutionContext& ctx) {
 
   const std::vector<ValueRecordNode*>& value_record_list = node.values->records;
   const std::size_t value_record_list_len = value_record_list.size();
-  // command is valid, so we must check for missing literals and get their default values
-  // 2 distinct cases: 1. the column list is specified. 2. it is not.
-  // we need to iterate through each value record, calculate its length, and create the header
-  if (!node.columns) {
-    // TODO: filter for PK and unique violations inside semantic validator
-    for (std::size_t i = 0; i < value_record_list_len; ++i) {
-      // construct record header
-      const auto& literal_values = node.values->records.at(i);
-      if (table_file.is_open()) {
-        FileHandler::Serializer::serializeRecordWithoutColList(ctx, node.table_name, literal_values, table_file,
-                                                               DB_Types::RecordType::INSERT, true);
-      }
-    }
-  } else {
+  // command is valid, and normalized, so just call the serializer
+  for (const auto& record : node.values->records) {
+    FileHandler::Serializer::serializeNormalizedRecord(ctx, node.table_name, record, node.projection_mask, table_file,
+                                                       DB_Types::RecordType::INSERT, true);
   }
 
   if (table_file.is_open()) { table_file.close(); }
