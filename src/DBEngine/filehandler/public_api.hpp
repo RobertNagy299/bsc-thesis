@@ -36,9 +36,6 @@ namespace Serializer {
   void serializeNormalizedRecord(const ExecutionContext& ctx, const std::string& table_name,
                                  const ValueRecordNode* const& record, const std::vector<bool>& projection_mask,
                                  std::ofstream& table_file, DB_Types::RecordType type, bool persist_to_disk);
-  void serializeRecordWithoutColList(const ExecutionContext& ctx, const std::string& table_name,
-                                     const ValueRecordNode* const& record, std::ofstream& table_file,
-                                     const DB_Types::RecordType type, bool persist_to_disk);
 
 } // namespace Serializer
 namespace Deserializer {

@@ -25,7 +25,7 @@ int main() {
 
   // const char* sql = "INSERT INTO users VALUES ('1','Nick Freight', '28'), ('55', 'Jazz Lane', '21');";
 
-  const char* sql = "INSERT INTO users VALUES (9, 'Nick Freight', 28), (13, 'Jazz Lane', 21);";
+  const char* sql = "INSERT INTO users VALUES (99, 'Nick Freight'), (133, 'Jazz Lane', 21);";
 
   // clang-format on
   // Open SQL string as input
