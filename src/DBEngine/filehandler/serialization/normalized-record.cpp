@@ -19,7 +19,7 @@ void FileHandler::Serializer::serializeNormalizedRecord(const ExecutionContext& 
 
   // --- PK payload ---
   const std::string pk_literal = Utilities::StringUtils::removeOuterQuotes(record->values[pk_idx]->value);
-
+  std::cout << " Final primary key literal in normalized-record.cpp = " << pk_literal << '\n';
   std::uint64_t record_length = sizeof(DB_Types::RecordType);
   record_length += sizeof(std::uint64_t) + pk_literal.size();
 
@@ -58,8 +58,12 @@ void FileHandler::Serializer::serializeNormalizedRecord(const ExecutionContext& 
     std::uint64_t remaining = std::max<std::uint64_t>(remaining_cols - offset_index, 0);
 
     std::uint64_t total_offset = remaining * sizeof(DB_Types::column_offset_t) + running_data_offset;
+    // empty initialization to ensure initialized padding for the struct
+    DB_Types::column_offset_t off{};
+    off.offset = total_offset;
+    off.col_id = colcode;
+    column_offsets.push_back(off);
 
-    column_offsets.push_back({total_offset, colcode});
     payload_literals.push_back(final_literal);
     std::cout << " in normalized-record.cpp, i = " << std::to_string(i) << " and final literal = " << final_literal
               << '\n';

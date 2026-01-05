@@ -87,8 +87,6 @@ void FileHandler::Serializer::serializeRecordWithoutColList(const ExecutionConte
     for (const auto& offset_record : column_offsets) { FileHandler::writeToBinaryFile(table_file, offset_record); }
     FileHandler::writeToBinaryFile(table_file, pk_literal_str);
     for (const std::string& literal_payload : literals_to_be_written_to_disk) {
-      std::cout << "Literal payload = " << literal_payload
-                << " With size (Bytes) = " << std::to_string(literal_payload.size()) << '\n';
       FileHandler::writeToBinaryFile(table_file, literal_payload);
     }
 

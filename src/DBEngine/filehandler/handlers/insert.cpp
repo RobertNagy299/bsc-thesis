@@ -8,8 +8,6 @@ void FileHandler::insertData(InsertNode& node, const ExecutionContext& ctx) {
   const std::string table_file_path = FileHandler::getTableFilePath(node.table_name);
   std::ofstream table_file(table_file_path, std::ios::app | std::ios::binary);
 
-  const std::vector<ValueRecordNode*>& value_record_list = node.values->records;
-  const std::size_t value_record_list_len = value_record_list.size();
   // command is valid, and normalized, so just call the serializer
   for (const auto& record : node.values->records) {
     FileHandler::Serializer::serializeNormalizedRecord(ctx, node.table_name, record, node.projection_mask, table_file,
