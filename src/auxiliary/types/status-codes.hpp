@@ -27,6 +27,7 @@ enum class ErrorCode : std::uint16_t {
   SEMVAL_TableDoesNotExist = 0u,
   SEMVAL_ColumnDoesNotExistInTable,
   SEMVAL_CREATE_TableAlreadyExists,
+  SEMVAL_INSERT_DuplicatePrimaryKeys,
 
   NOCONTX_SEMVAL_WHERE_EmptyLiteralIsNotComparable,
   NOCONTX_SEMVAL_WHERE_ComparatorIsIsNotViolation,

@@ -65,6 +65,9 @@ std::string MessageTemplateResolver::resolveErrorMessageTemplate(const StatusCod
     case StatusCode::ErrorCode::NOCONTX_SEMVAL_DELETE_GenericInvalidStatement: {
       return "Delete statement is semantically invalid! The engine will not perform any file operations.";
     }
+    case StatusCode::ErrorCode::SEMVAL_INSERT_DuplicatePrimaryKeys: {
+      return MessageTemplateResolver::injectContext("Primary key '{}' already exists in table '{}'!", resolved_context);
+    }
     default: {
       return "Unknown error";
     }

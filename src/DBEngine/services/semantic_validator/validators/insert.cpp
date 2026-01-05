@@ -22,6 +22,9 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
   const std::size_t table_cols_length = table_columns.size();
   std::cout << "Number of value records = " << std::to_string(value_record_length) << '\n';
   // node.columns is optional - if does not exist, is nullptr
+  // EDIT: I should have created a "Normalize_Statement" before doing this
+  // dumb if-else antipattern lol xd but it's too late now, if I start refactoring
+  // I am afraid I won't finish my thesis in time :(
   if (!node.columns) {
     // if there are empty values, make sure the omited values either have a default value
     // or are nullable, otherwise throw an error.
