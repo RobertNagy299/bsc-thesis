@@ -38,6 +38,7 @@ private:
   void initializePrimaryKeyIndices();
 
 public:
+  const DB_Types::indices_ptr_t& getHashmapIndices() const;
   const DB_Types::untyped_table_t& getUntypedTables() const;
   DB_Types::untyped_table_t& transferOwnershipOfUntypedTables();
   const DB_Types::table_colcode_map_t& getTableColcodeMap() const;

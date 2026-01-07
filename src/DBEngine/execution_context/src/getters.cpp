@@ -9,3 +9,5 @@ ExecutionContext& ExecutionContext::getInstance() {
 }
 
 DB_Types::untyped_table_t& ExecutionContext::transferOwnershipOfUntypedTables() { return this->untyped_tables; }
+
+const DB_Types::indices_ptr_t& ExecutionContext::getHashmapIndices() const { return this->indices; }

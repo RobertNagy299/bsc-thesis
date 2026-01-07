@@ -8,24 +8,12 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
-/**
- * @brief
- * This class is intended to be a `static` method container, do not instantiate it!
- */
-struct SemanticValidator {
-private:
-  static const bool validateWhereClauseSemantics(const DB_Types::untyped_table_t::const_iterator& table,
-                                                 WhereNode* node);
-  // Delete the default constructor to prevent instantiation
-  SemanticValidator() = delete;
 
-  // Delete copy constructor and assignment operator to prevent copying
-  SemanticValidator(const SemanticValidator&) = delete;
-  SemanticValidator& operator=(const SemanticValidator&) = delete;
+namespace SemanticValidator {
+const bool validateWhereClauseSemantics(const DB_Types::untyped_table_t::const_iterator& table, WhereNode* node);
 
-public:
-  static const bool validateInsertSemantics(InsertNode& node, const ExecutionContext& ctx);
-  static const bool validateSelectSemantics(SelectNode& node, const ExecutionContext& ctx);
-  static const bool validateDeleteSemantics(DeleteNode& node, const ExecutionContext& ctx);
-  static const bool validateUpdateSemantics(UpdateNode& node, const ExecutionContext& ctx);
-};
+const bool validateInsertSemantics(InsertNode& node, const ExecutionContext& ctx);
+const bool validateSelectSemantics(SelectNode& node, const ExecutionContext& ctx);
+const bool validateDeleteSemantics(DeleteNode& node, const ExecutionContext& ctx);
+const bool validateUpdateSemantics(UpdateNode& node, const ExecutionContext& ctx);
+}; // namespace SemanticValidator
