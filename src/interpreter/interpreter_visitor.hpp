@@ -41,8 +41,12 @@ public:
   }
 
   void visit(SelectNode& node) override {
-    // TODO validate semantics for WHERE clause
-    if (!SemanticValidator::validateSelectSemantics(node, ctx)) {
+
+    // call it here because normalizeSelect modifies the input node and also returns true or false.
+    // Thus it would create dead code by making the validatator impossible to run inside the if condition
+    bool normalized_successfully = SemanticNormalizer::normalizeSelect(node, ctx);
+
+    if (!SemanticValidator::validateSelectSemantics(node, ctx) || !normalized_successfully) {
       LoggerService::ErrorLogger::printAsStandardError(
           StatusCode::ErrorCode::NOCONTX_SEMVAL_SELECT_GenericInvalidStatement);
       return;
@@ -52,8 +56,13 @@ public:
       std::cout << " * ";
       return;
     }
-    for (auto col : node.columns->columns) { std ::cout << col; }
-    if (node.opt_where_node) {}
+    for (auto col : node.columns->columns) { std ::cout << col << ", "; }
+    std::cout << "\nprojection mask: ";
+    for (auto bit : node.projection_mask) { std::cout << bit << ", "; }
+    std::cout << "\nschema indexes in where: ";
+    for (auto& condNode : node.opt_where_node->conditions_list_node->conditions) {
+      std::cout << std::to_string(condNode->schema_index) << ", ";
+    }
   }
 
   void visit(UpdateNode& node) override {

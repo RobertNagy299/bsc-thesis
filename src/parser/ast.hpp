@@ -237,6 +237,8 @@ struct ConditionNode : ASTNode {
   ComparatorNode* cmp_node;
   LiteralNode* literal_value;
 
+  std::uint8_t schema_index = 255u; // resolved column index
+
   ConditionNode(const std::string& s, ComparatorNode* n, LiteralNode* l) : col_name(s), cmp_node(n), literal_value(l) {}
 
   void accept(ASTVisitor& v) override { v.visit(*this); };
@@ -275,7 +277,7 @@ struct ConditionListNode : ASTNode {
 
 struct WhereNode : ASTNode {
 
-  ConditionListNode* conditions_list_node;
+  ConditionListNode* conditions_list_node; // only contains one conditionNode for now
 
   WhereNode(ConditionListNode* cndl) : conditions_list_node(cndl) {}
 
@@ -294,6 +296,9 @@ struct SelectNode : ASTNode {
   ColumnListNode* columns; // optional (nullptr if not provided)
   std::string table_name;
   WhereNode* opt_where_node; // nullptr if not provided
+
+  std::vector<bool> projection_mask; // same size as schema
+  bool is_normalized = false;
 
   SelectNode(ColumnListNode* c, std::string& t, WhereNode* wheren)
       : table_name(t), columns(c), opt_where_node(wheren) {}

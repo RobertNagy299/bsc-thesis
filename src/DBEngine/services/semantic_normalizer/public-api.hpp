@@ -11,4 +11,6 @@
 
 namespace SemanticNormalizer {
 bool normalizeInsert(InsertNode& node, const ExecutionContext& ctx);
-}
+bool normalizeWhereClause(WhereNode* where, const std::vector<UntypedColumnDefNode*>& schema_cols);
+bool normalizeSelect(SelectNode& node, const ExecutionContext& ctx);
+} // namespace SemanticNormalizer
