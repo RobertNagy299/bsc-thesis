@@ -20,8 +20,11 @@ inline const std::uint64_t DB_RESERVED = 0x0L;
 void createUntypedTable(CreateUntypedTableNode& node, ExecutionContext& ctx);
 void dropTable(const DropTableNode& node, ExecutionContext& ctx);
 void insertData(InsertNode& node, const ExecutionContext& ctx);
-DB_Types::ResultSet selectData(const SelectNode& node, const ExecutionContext& ctx);
+std::unique_ptr<DB_Types::ResultSet> selectData(const SelectNode& node, const ExecutionContext& ctx);
 
+// "utils"
+void checkFileValidity(std::ifstream& table_file, const std::string& table_name);
+void checkFileValidity(std::fstream& table_file, const std::string& table_name);
 void ensureTableFileExists(const std::string& table_name);
 const std::string getTableFilePath(const std::string& table_name);
 const std::string getTableFolderPath(const std::string& table_name);

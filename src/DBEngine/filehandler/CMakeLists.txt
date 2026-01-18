@@ -12,3 +12,5 @@ add_library(FileHandler SHARED
 
   ${CMAKE_CURRENT_SOURCE_DIR}/public_api.hpp
 )
+
+target_link_libraries(FileHandler ConditionEvaluator)

@@ -58,7 +58,6 @@ DB_Types::TableFileDeserializationIndicator FileHandler::Deserializer::deseriali
       auto& cond = where->conditions_list_node->conditions[0];
 
       if (cond->schema_index == i) {
-        // TODO comparator evaluation
         where_result =
             ConditionEvaluator::evaluateComparator(deserialized_value, cond->cmp_node->type, cond->literal_value);
       }

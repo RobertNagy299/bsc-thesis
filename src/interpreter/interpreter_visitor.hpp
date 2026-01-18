@@ -52,8 +52,13 @@ public:
       return;
     }
     // handle file operations
-    FileHandler::selectData(node, ctx);
+    auto results = FileHandler::selectData(node, ctx);
 
+    // handle console printing, or sending off to a network endpoint later
+    LoggerService::StatusLogger::printResultSetAsTable(node, results);
+
+    // end of results's lifespan
+    /*
     std::cout << "Select node detected, table_name = " << node.table_name << '\n' << "col list = ";
     if (!node.columns) {
       std::cout << " * ";
@@ -66,6 +71,7 @@ public:
     for (auto& condNode : node.opt_where_node->conditions_list_node->conditions) {
       std::cout << std::to_string(condNode->schema_index) << ", ";
     }
+      */
   }
 
   void visit(UpdateNode& node) override {

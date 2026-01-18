@@ -7,8 +7,10 @@
 #include <vector>
 
 namespace DB_Types {
-
-using Value = std::variant<std::int64_t, double, std::string, bool, std::nullptr_t>;
+/*
+ * later extend to: std::variant<std::int64_t, double, std::string, bool, std::nullptr_t>
+ */
+using Value = std::string;
 using Record = std::vector<Value>;
 using ResultSet = std::vector<Record>;
 

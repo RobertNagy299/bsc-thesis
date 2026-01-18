@@ -47,3 +47,37 @@ void FileHandler::ensureTableFileExists(const std::string& table_name) {
     }
   }
 }
+
+/**
+ * Moves the seekg pointer past the file header while processing the file header
+ * Checks the MAGIC and the version to ensure compatibility and safety of file operations
+ */
+void FileHandler::checkFileValidity(std::ifstream& table_file, const std::string& table_name) {
+  DB_Types::table_file_header_t file_header;
+  table_file.read(reinterpret_cast<char*>(&file_header), sizeof(file_header));
+  if (file_header.magic != FileHandler::DB_MAGIC) {
+    LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::FILEOPS_UnknownTableFileFormat,
+                                                 std::vector<std::string>{table_name});
+  }
+  if (file_header.version != FileHandler::DB_VERSION) {
+    LoggerService::WarningLogger::printAsStandardOutput(
+        StatusCode::WarningCode::FILEOPS_FileWasMadeWithDifferentDBVersion, std::vector<std::string>{table_name});
+  }
+}
+
+/**
+ * Moves the seekg pointer past the file header while processing the file header
+ * Checks the MAGIC and the version to ensure compatibility and safety of file operations
+ */
+void FileHandler::checkFileValidity(std::fstream& table_file, const std::string& table_name) {
+  DB_Types::table_file_header_t file_header;
+  table_file.read(reinterpret_cast<char*>(&file_header), sizeof(file_header));
+  if (file_header.magic != FileHandler::DB_MAGIC) {
+    LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::FILEOPS_UnknownTableFileFormat,
+                                                 std::vector<std::string>{table_name});
+  }
+  if (file_header.version != FileHandler::DB_VERSION) {
+    LoggerService::WarningLogger::printAsStandardOutput(
+        StatusCode::WarningCode::FILEOPS_FileWasMadeWithDifferentDBVersion, std::vector<std::string>{table_name});
+  }
+}

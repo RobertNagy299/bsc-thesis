@@ -16,6 +16,7 @@ namespace ErrorLogger {
 
 namespace StatusLogger {
   void printAsStandardOutput(const std::string& status_msg);
+  void printResultSetAsTable(const SelectNode& node, const std::unique_ptr<DB_Types::ResultSet>& results);
 }; // namespace StatusLogger
 
 namespace WarningLogger {
