@@ -1,7 +1,8 @@
 #include "../public-api.hpp"
 
 bool ConditionEvaluator::evaluateComparator(const std::string& lhs, ComparatorNode::Type cmp, LiteralNode* rhs_node) {
-  const std::string& rhs = rhs_node->value;
+
+  const std::string& rhs = Utilities::StringUtils::removeOuterQuotes(rhs_node->value);
 
   RuntimeType ltype = classify(lhs);
   RuntimeType rtype = classify(rhs);
