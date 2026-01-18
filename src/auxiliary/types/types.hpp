@@ -8,6 +8,10 @@
 
 namespace DB_Types {
 
+using Value = std::variant<std::int64_t, double, std::string, bool, std::nullptr_t>;
+using Record = std::vector<Value>;
+using ResultSet = std::vector<Record>;
+
 typedef std::unordered_map<std::string, std::vector<UntypedColumnDefNode*>> untyped_table_t;
 typedef std::unordered_map<std::string, std::uint8_t> colname_colcode_map_t;
 typedef std::unordered_map<std::string, std::unique_ptr<colname_colcode_map_t>> table_colcode_map_t;
@@ -46,7 +50,8 @@ enum class TableFileDeserializationIndicator : std::uint8_t {
   ENDOFTABLE = 0xFFU,
   IOERROR = 0xFEU,
   TOMBSTONE = 0xFDU,
-  LIVE = 0xFCU
+  LIVE = 0xFCU,
+  SKIP = 0xFBU
 };
 
 typedef struct PrimaryKeyPayload {

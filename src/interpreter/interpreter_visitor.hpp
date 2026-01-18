@@ -51,6 +51,9 @@ public:
           StatusCode::ErrorCode::NOCONTX_SEMVAL_SELECT_GenericInvalidStatement);
       return;
     }
+    // handle file operations
+    FileHandler::selectData(node, ctx);
+
     std::cout << "Select node detected, table_name = " << node.table_name << '\n' << "col list = ";
     if (!node.columns) {
       std::cout << " * ";

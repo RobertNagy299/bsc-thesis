@@ -51,3 +51,33 @@ std::string Utilities::StringUtils::removeOuterQuotes(std::string str) {
   // Return the original string if no matching quotes were found
   return str;
 }
+
+/**
+ * Checks if the prefix of a string matches a given prefix pattern.
+ *
+ * @param mainString The string to check the prefix of.
+ * @param prefixPattern The pattern to match against the start of mainString.
+ * @return true if mainString starts with prefixPattern, false otherwise.
+ */
+bool Utilities::StringUtils::startsWith(const std::string& mainString, const std::string& prefixPattern) {
+  // rfind checks for the last occurrence of prefixPattern within mainString
+  // and checks if that last occurrence is at position 0 (the beginning).
+  return mainString.rfind(prefixPattern, 0) == 0;
+}
+
+/**
+ * @brief Checks if a string ends with a specific suffix pattern.
+ *
+ * @param str The main string to check.
+ * @param suffix The suffix pattern to look for.
+ * @return true if str ends with suffix, false otherwise.
+ */
+bool Utilities::StringUtils::hasSuffix(const std::string& str, const std::string& suffix) {
+  if (str.length() >= suffix.length()) {
+    // Check if the substring of 'str' starting from the appropriate index
+    // matches the 'suffix'.
+    return (str.rfind(suffix) == (str.length() - suffix.length()));
+  } else {
+    return false;
+  }
+}

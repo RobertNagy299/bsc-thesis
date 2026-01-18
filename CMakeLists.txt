@@ -72,10 +72,14 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/services/semantic_vali
 # defines SemanticNormalizer
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/services/semantic_normalizer)
 
+# defines ConditionEvaluator
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/services/condition-evaluator)
+
 # Link the executable with the shared libraries
 target_link_libraries(MainApp 
   SQLCore 
   Utils 
+  ConditionEvaluator
   SemanticValidator 
   SemanticNormalizer
   LoggerService

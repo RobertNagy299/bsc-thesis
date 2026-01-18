@@ -23,6 +23,8 @@ namespace StringUtils {
   std::string trim(const std::string& str);
   std::vector<std::string> splitString(const std::string& s, const std::string& delimiter);
   std::string removeOuterQuotes(std::string str);
+  bool startsWith(const std::string& mainString, const std::string& prefixPattern);
+  bool hasSuffix(const std::string& str, const std::string& suffix);
 }; // namespace StringUtils
 
 namespace InsertUtils {

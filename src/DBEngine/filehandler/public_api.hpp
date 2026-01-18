@@ -20,6 +20,7 @@ inline const std::uint64_t DB_RESERVED = 0x0L;
 void createUntypedTable(CreateUntypedTableNode& node, ExecutionContext& ctx);
 void dropTable(const DropTableNode& node, ExecutionContext& ctx);
 void insertData(InsertNode& node, const ExecutionContext& ctx);
+DB_Types::ResultSet selectData(const SelectNode& node, const ExecutionContext& ctx);
 
 void ensureTableFileExists(const std::string& table_name);
 const std::string getTableFilePath(const std::string& table_name);
@@ -39,6 +40,9 @@ namespace Serializer {
 
 } // namespace Serializer
 namespace Deserializer {
+  DB_Types::TableFileDeserializationIndicator
+  deserializeNextRecord(std::ifstream& file, const std::vector<UntypedColumnDefNode*>& schema,
+                        const std::vector<bool>& projection_mask, const WhereNode* where, DB_Types::Record& out_record);
   DB_Types::TableFileDeserializationIndicator deserializeNextPrimaryKey(std::ifstream& ifs, std::string& out_pk_val,
                                                                         std::uint64_t& out_offset,
                                                                         const std::size_t number_of_columns);
