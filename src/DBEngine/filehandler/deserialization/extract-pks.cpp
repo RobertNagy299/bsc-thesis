@@ -1,7 +1,10 @@
 #include "../public_api.hpp"
 
-// offset is absolute - it does not include the table header - header will always be checked in the local function to
-// ensure format consistency
+/* offset is absolute - it does not include the table header - header will always be checked in the local function to
+ * ensure format consistency
+ * out_offset always points to the start of the record's col_offset_region, starting from the beginning of
+ * the record region in a table file
+ */
 DB_Types::TableFileDeserializationIndicator
 FileHandler::Deserializer::deserializeNextPrimaryKey(std::ifstream& table_file, std::string& out_pk_val,
                                                      std::uint64_t& out_offset,

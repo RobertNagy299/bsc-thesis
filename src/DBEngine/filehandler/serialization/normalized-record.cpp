@@ -19,7 +19,6 @@ void FileHandler::Serializer::serializeNormalizedRecord(const ExecutionContext& 
 
   // --- PK payload ---
   const std::string pk_literal = Utilities::StringUtils::removeOuterQuotes(record->values[pk_idx]->value);
-  std::cout << " Final primary key literal in normalized-record.cpp = " << pk_literal << '\n';
   std::uint64_t record_length = sizeof(DB_Types::RecordType);
   record_length += sizeof(std::uint64_t) + pk_literal.size();
 
@@ -30,7 +29,7 @@ void FileHandler::Serializer::serializeNormalizedRecord(const ExecutionContext& 
   column_offsets.reserve(ncols - 1);
 
   std::uint8_t offset_index = 1;
-  std::uint8_t remaining_cols = ncols - 1;
+  std::uint8_t number_of_cols_without_pk = ncols - 1;
   std::uint64_t running_data_offset = 0;
 
   for (std::size_t i = 0; i < ncols; ++i) {
@@ -55,23 +54,22 @@ void FileHandler::Serializer::serializeNormalizedRecord(const ExecutionContext& 
 
     const std::uint8_t colcode = colcode_map->at(col->name);
 
-    std::uint64_t remaining = std::max<std::uint64_t>(remaining_cols - offset_index, 0);
-
-    std::uint64_t total_offset = remaining * sizeof(DB_Types::column_offset_t) + running_data_offset;
+    std::uint64_t total_offset = running_data_offset;
     // empty initialization to ensure initialized padding for the struct
     DB_Types::column_offset_t off{};
+    // offset should mean: distance from the beginning of the data_tuple region to the start of the column's [size]
+    // region
     off.offset = total_offset;
     off.col_id = colcode;
     column_offsets.push_back(off);
 
     payload_literals.push_back(final_literal);
-    std::cout << " in normalized-record.cpp, i = " << std::to_string(i) << " and final literal = " << final_literal
-              << '\n';
+
     running_data_offset += sizeof(std::uint64_t) + final_literal.size();
     offset_index++;
   }
 
-  record_length += running_data_offset + remaining_cols * sizeof(DB_Types::column_offset_t);
+  record_length += running_data_offset + number_of_cols_without_pk * sizeof(DB_Types::column_offset_t);
 
   // ---- write ----
   try {

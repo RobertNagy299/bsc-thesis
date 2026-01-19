@@ -20,8 +20,11 @@ inline const std::uint64_t DB_RESERVED = 0x0L;
 void createUntypedTable(CreateUntypedTableNode& node, ExecutionContext& ctx);
 void dropTable(const DropTableNode& node, ExecutionContext& ctx);
 void insertData(InsertNode& node, const ExecutionContext& ctx);
-void deleteData(const DeleteNode& node, const ExecutionContext& ctx);
-void performDeleteByIndexLookup(const DeleteNode& node, const ExecutionContext& ctx, std::fstream& table_file);
+void deleteData(const DeleteNode& node, ExecutionContext& ctx);
+void performDeleteByIndexLookup(const DeleteNode& node, ExecutionContext& ctx, std::fstream& table_file);
+DB_Types::TableFileDeserializationIndicator performSequentialDelete(const DeleteNode& node, const ExecutionContext& ctx,
+                                                                    std::fstream& table_file);
+
 std::unique_ptr<DB_Types::ResultSet> selectData(const SelectNode& node, const ExecutionContext& ctx);
 
 // "utils"

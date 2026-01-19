@@ -61,7 +61,7 @@ std::uint64_t offset;
 ```
 
 ColumnOffset is used to speed up the evaluation of Where conditions for columns without an index 
-
+offset is relative, tells you how far the data is from the beginning of the current record's data_tuple region (after the primary key)
 `[payload]` is:
 
 `[size][data][size][data]...` where each `[size][data]` pair corresponds to a single cell in the row

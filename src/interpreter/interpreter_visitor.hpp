@@ -99,8 +99,8 @@ public:
       return;
     }
 
-    // TODO semantically valid, perform file ops.
-  }
+    FileHandler::deleteData(node, ctx);
+    }
 
   void visit(WhereNode& node) override { std::cout << "Where node visited" << '\n'; }
 

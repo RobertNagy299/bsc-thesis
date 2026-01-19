@@ -1,6 +1,7 @@
+#include "../../services/condition-evaluator/public-api.hpp"
 #include "../public_api.hpp"
 
-void FileHandler::deleteData(const DeleteNode& node, const ExecutionContext& ctx) {
+void FileHandler::deleteData(const DeleteNode& node, ExecutionContext& ctx) {
   LoggerService::StatusLogger::printAsStandardOutput("'Delete' command is valid - starting file operations...");
   auto start = std::chrono::steady_clock::now();
 
@@ -22,7 +23,11 @@ void FileHandler::deleteData(const DeleteNode& node, const ExecutionContext& ctx
       // perform index look-up for fast delete
       FileHandler::performDeleteByIndexLookup(node, ctx, table_file);
     } else {
-      // TODO perform sequential delete
+      DB_Types::TableFileDeserializationIndicator delete_indicator;
+      do {
+        delete_indicator = FileHandler::performSequentialDelete(node, ctx, table_file);
+      } while (delete_indicator != DB_Types::TableFileDeserializationIndicator::ENDOFTABLE);
+      // TODO: invalidate indices
     }
   }
 
@@ -38,13 +43,11 @@ void FileHandler::deleteData(const DeleteNode& node, const ExecutionContext& ctx
  * jumps to the specified record in the buffer based on the index
  * by the time this function is called, the table header should have been processed
  */
-void FileHandler::performDeleteByIndexLookup(const DeleteNode& node, const ExecutionContext& ctx,
-                                             std::fstream& table_file) {
+void FileHandler::performDeleteByIndexLookup(const DeleteNode& node, ExecutionContext& ctx, std::fstream& table_file) {
   // find the offset in the index
-  const auto& offset = ctx.getHashmapIndices()
-                           ->at(node.table_name)
-                           ->at(node.opt_where_node->conditions_list_node->conditions[0]->col_name)
-                           ->at(node.opt_where_node->conditions_list_node->conditions[0]->literal_value->value);
+  const std::string& column_name = node.opt_where_node->conditions_list_node->conditions[0]->col_name;
+  const std::string& key_value = node.opt_where_node->conditions_list_node->conditions[0]->literal_value->value;
+  const auto& offset = ctx.getHashmapIndices()->at(node.table_name)->at(column_name)->at(key_value);
   // seek to the col offset region and then back to the col type region
   // offset is absolute, and seekp is not influenced by seekg, so we seek from the beg.
   table_file.seekp(0, std::ios::beg);
@@ -55,4 +58,120 @@ void FileHandler::performDeleteByIndexLookup(const DeleteNode& node, const Execu
 
   // overwrite the record type
   FileHandler::writeToBinaryFile(table_file, DB_Types::RecordType::DELETE);
+
+  // erase this key from the index
+  ctx.eraseKeyFromIndex(node.table_name, column_name, key_value);
+}
+
+/**
+ * Scans the file sequentially and deserializes the comparable literal.
+ * This function is called after the file header was processed.
+ */
+DB_Types::TableFileDeserializationIndicator
+FileHandler::performSequentialDelete(const DeleteNode& node, const ExecutionContext& ctx, std::fstream& table_file) {
+
+  std::uint64_t record_length;
+  // 1. Attempt to read the length indicator
+  if (!table_file.read(reinterpret_cast<char*>(&record_length), sizeof(record_length))) {
+    // If read fails (e.g., end of file reached or an error), return eof
+    return DB_Types::TableFileDeserializationIndicator::ENDOFTABLE;
+  }
+
+  // mark the current spot for seekp if we need to delete this record
+  const auto start_of_type_region = table_file.tellg();
+  // read the record type
+  DB_Types::RecordType record_type;
+  if (!table_file.read(reinterpret_cast<char*>(&record_type), sizeof(record_type))) {
+    return DB_Types::TableFileDeserializationIndicator::IOERROR;
+  }
+
+  // if it is a tombstone record, skip it
+  if (record_type == DB_Types::RecordType::DELETE || record_type == DB_Types::RecordType::UNUSED) {
+    // adjust the get and put pointers -- we are already 9 bytes into the record, and record length does not contain
+    // itself, so we need to jump forward by [record_length - sizeof(record_type)] bytes
+    table_file.seekg(record_length - sizeof(DB_Types::RecordType), std::ios::cur);
+    return DB_Types::TableFileDeserializationIndicator::TOMBSTONE;
+  }
+
+  // at this point this is a live record. If there is no WHERE clause, we have to delete it.
+  if (!node.opt_where_node) {
+    table_file.seekp(start_of_type_region, std::ios::beg);
+    FileHandler::writeToBinaryFile(table_file, DB_Types::RecordType::DELETE);
+    // indicate that a live record was found and deleted
+    return DB_Types::TableFileDeserializationIndicator::LIVE;
+  }
+
+  // at this point, we know there is a WHERE condition and we need to evaluate it.
+  // To do that, we need to deserialize the appropriate field.
+  const std::string& comparator_colname = node.opt_where_node->conditions_list_node->conditions[0]->col_name;
+  const std::string& comparator_value = Utilities::StringUtils::removeOuterQuotes(
+      node.opt_where_node->conditions_list_node->conditions[0]->literal_value->value);
+  // if we have a primary key comparison, we can skip the col offset region
+  const auto& schema = ctx.getUntypedTables().at(node.table_name);
+  const std::string& primary_key_colname = Utilities::ColumnUtils::extractPrimaryKeyColumn(schema);
+  const auto number_of_cols_without_pk = schema.size() - 1ul;
+
+  if (primary_key_colname == comparator_colname) {
+    // in this case we have a PK comparison that's not EQ
+    // We need to skip the coloffset_region and deserialize the primary key and evaluate the where condition
+    table_file.seekg(sizeof(DB_Types::column_offset_t) * number_of_cols_without_pk, std::ios::cur);
+    std::uint64_t pk_size;
+    std::string pk_literal;
+    table_file.read(reinterpret_cast<char*>(&pk_size), sizeof(pk_size));
+    pk_literal.resize(pk_size);
+    table_file.read(&pk_literal[0], pk_size);
+    if (ConditionEvaluator::evaluateComparator(
+            pk_literal, node.opt_where_node->conditions_list_node->conditions[0]->cmp_node->type,
+            node.opt_where_node->conditions_list_node->conditions[0]->literal_value)) {
+      // if we have a match, we have to delete the record
+      table_file.seekp(start_of_type_region, std::ios::beg);
+      FileHandler::writeToBinaryFile(table_file, DB_Types::RecordType::DELETE);
+      return DB_Types::TableFileDeserializationIndicator::LIVE;
+    }
+  } else {
+    // TODO debug why this only deletes one row
+    // if our condition is not checking against a primary key, we have to deserialize the col offset region, find
+    // which column we're dealing with, move the seekg pointer there and deserialize it, then check the condition
+    const auto& colcode_of_comp_col = ctx.getTableColcodeMap().at(node.table_name)->at(comparator_colname);
+    std::uint64_t final_offset;
+    for (std::size_t i = 0; i < number_of_cols_without_pk; ++i) {
+      std::uint64_t offset;
+      std::uint8_t col_code;
+      table_file.read(reinterpret_cast<char*>(&offset), sizeof(offset));
+      table_file.read(reinterpret_cast<char*>(&col_code), sizeof(col_code));
+      // skip the padding
+      table_file.seekg(sizeof(DB_Types::column_offset_t) - sizeof(offset) - sizeof(col_code), std::ios::cur);
+      if (col_code == colcode_of_comp_col) { final_offset = offset; }
+    }
+    // at this point we know the offset for the proper column and we need to skip the PK region
+    std::uint64_t pk_size;
+    table_file.read(reinterpret_cast<char*>(&pk_size), sizeof(pk_size));
+    table_file.seekg(pk_size, std::ios::cur);
+    // we are the beginning of the data_tuple region, we can jump to the record
+    table_file.seekg(final_offset, std::ios::cur);
+    std::uint64_t literal_size;
+    std::string lhs_literal;
+    table_file.read(reinterpret_cast<char*>(&literal_size), sizeof(literal_size));
+    lhs_literal.resize(literal_size);
+    table_file.read(&lhs_literal[0], literal_size);
+    // prepare the get pointer to point at the start of the next record
+    // currently, we have travelled: record type + col offset region + pk region + final offset
+    // this is a complex calculation, so we just jump back to the start of the type region
+    // and then skip the entire record
+    table_file.seekg(start_of_type_region, std::ios::beg);
+    table_file.seekg(record_length, std::ios::cur);
+    if (ConditionEvaluator::evaluateComparator(
+            lhs_literal, node.opt_where_node->conditions_list_node->conditions[0]->cmp_node->type,
+            node.opt_where_node->conditions_list_node->conditions[0]->literal_value)) {
+      // if we have a match, we need to delete the record
+      table_file.seekp(start_of_type_region, std::ios::beg);
+      FileHandler::writeToBinaryFile(table_file, DB_Types::RecordType::DELETE);
+      return DB_Types::TableFileDeserializationIndicator::LIVE;
+    }
+  }
+
+  // if we didn't find anything, just skip the record and return skip
+  table_file.seekg(start_of_type_region, std::ios::beg);
+  table_file.seekg(record_length, std::ios::cur);
+  return DB_Types::TableFileDeserializationIndicator::SKIP;
 }

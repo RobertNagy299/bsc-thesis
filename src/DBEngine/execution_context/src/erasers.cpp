@@ -11,3 +11,14 @@ void ExecutionContext::eraseInMemoryHashMapIndicesForTable(const std::string& ta
         StatusCode::FatalErrorCode::NOCONTX_HASHIDX_NULLPTR_GenericNullptrError);
   }
 }
+
+void ExecutionContext::eraseKeyFromIndex(const std::string& table_name, const std::string& col_name,
+                                         const std::string& key_value) {
+  if (this && this->indices && this->indices->at(table_name) && this->indices->at(table_name)->at(col_name) &&
+      this->indices->at(table_name)->at(col_name)->at(key_value)) {
+    this->indices->at(table_name)->at(col_name)->erase(key_value);
+  } else {
+    LoggerService::ErrorLogger::handleFatalError(
+        StatusCode::FatalErrorCode::NOCONTX_HASHIDX_NULLPTR_GenericNullptrError);
+  }
+}
