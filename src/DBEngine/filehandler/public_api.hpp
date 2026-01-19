@@ -20,6 +20,8 @@ inline const std::uint64_t DB_RESERVED = 0x0L;
 void createUntypedTable(CreateUntypedTableNode& node, ExecutionContext& ctx);
 void dropTable(const DropTableNode& node, ExecutionContext& ctx);
 void insertData(InsertNode& node, const ExecutionContext& ctx);
+void deleteData(const DeleteNode& node, const ExecutionContext& ctx);
+void performDeleteByIndexLookup(const DeleteNode& node, const ExecutionContext& ctx, std::fstream& table_file);
 std::unique_ptr<DB_Types::ResultSet> selectData(const SelectNode& node, const ExecutionContext& ctx);
 
 // "utils"
@@ -31,6 +33,10 @@ const std::string getTableFolderPath(const std::string& table_name);
 DB_Types::index_ptr_t extractPrimaryKeysIndex(std::ifstream& table_file, const std::size_t number_of_columns);
 
 template <typename T> void writeToBinaryFile(std::ofstream& outFile, const T& data) {
+  outFile.write(reinterpret_cast<const char*>(&data), sizeof(T));
+}
+
+template <typename T> void writeToBinaryFile(std::fstream& outFile, const T& data) {
   outFile.write(reinterpret_cast<const char*>(&data), sizeof(T));
 }
 // Specialization for std::string to handle variable length strings correctly

@@ -8,6 +8,7 @@ bool SemanticNormalizer::normalizeInsert(InsertNode& node, const ExecutionContex
   const auto& tables = ctx.getUntypedTables();
   auto t = tables.find(node.table_name);
   if (t == tables.end()) {
+    // TODO move this to the validator instead and decouple their calling in the visitor
     LoggerService::ErrorLogger::printAsStandardError(StatusCode::ErrorCode::SEMVAL_TableDoesNotExist,
                                                      std::vector<std::string>{node.table_name});
     return false;

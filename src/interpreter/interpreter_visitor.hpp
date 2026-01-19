@@ -90,11 +90,15 @@ public:
 
   void visit(DeleteNode& node) override {
     // Validate semantics
-    if (!SemanticValidator::validateDeleteSemantics(node, ctx)) {
+
+    bool is_normalized = SemanticNormalizer::normalizeDelete(node, ctx);
+
+    if (!SemanticValidator::validateDeleteSemantics(node, ctx) || !is_normalized) {
       LoggerService::ErrorLogger::printAsStandardError(
           StatusCode::ErrorCode::NOCONTX_SEMVAL_DELETE_GenericInvalidStatement);
       return;
     }
+
     // TODO semantically valid, perform file ops.
   }
 
