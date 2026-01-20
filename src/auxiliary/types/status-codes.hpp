@@ -68,6 +68,7 @@ enum class FatalErrorCode : std::uint16_t {
   FILEOPS_UnknownExceptionWhileCreatingTableFile,
   NOCONTX_NULLPTR_InMemoryPrimaryKeyHashMapInitializationFailure,
   NOCONTX_HASHIDX_NULLPTR_GenericNullptrError,
+  NOCONTX_FILEOPS_DELETE_ColumnNotFoundDueToCorruption,
   FILEOPS_UnknownTableFileFormat,
   METADAT_MetadataDirectoryDoesNotExist,
   METADAT_CouldNotCreateMetadataFileForTable,

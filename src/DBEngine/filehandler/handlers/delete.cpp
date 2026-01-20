@@ -66,6 +66,8 @@ void FileHandler::performDeleteByIndexLookup(const DeleteNode& node, ExecutionCo
 /**
  * Scans the file sequentially and deserializes the comparable literal.
  * This function is called after the file header was processed.
+ * Warning - we static_cast the record length to a std::streamoff, which meant we lose a lot of potential values
+ * because it is a downcast from unsigned long to regular long, but the compiler cries ambiguity if we don't do this
  */
 DB_Types::TableFileDeserializationIndicator
 FileHandler::performSequentialDelete(const DeleteNode& node, const ExecutionContext& ctx, std::fstream& table_file) {
@@ -97,6 +99,9 @@ FileHandler::performSequentialDelete(const DeleteNode& node, const ExecutionCont
   if (!node.opt_where_node) {
     table_file.seekp(start_of_type_region, std::ios::beg);
     FileHandler::writeToBinaryFile(table_file, DB_Types::RecordType::DELETE);
+    // synchronize the buffers and move to the next record
+    table_file.flush();
+    table_file.seekg(start_of_type_region + static_cast<std::streamoff>(record_length), std::ios::beg);
     // indicate that a live record was found and deleted
     return DB_Types::TableFileDeserializationIndicator::LIVE;
   }
@@ -126,22 +131,30 @@ FileHandler::performSequentialDelete(const DeleteNode& node, const ExecutionCont
       // if we have a match, we have to delete the record
       table_file.seekp(start_of_type_region, std::ios::beg);
       FileHandler::writeToBinaryFile(table_file, DB_Types::RecordType::DELETE);
+      // sync buffers and move to the next record
+      table_file.flush();
+      table_file.seekg(start_of_type_region + static_cast<std::streamoff>(record_length), std::ios::beg);
       return DB_Types::TableFileDeserializationIndicator::LIVE;
     }
   } else {
-    // TODO debug why this only deletes one row
     // if our condition is not checking against a primary key, we have to deserialize the col offset region, find
     // which column we're dealing with, move the seekg pointer there and deserialize it, then check the condition
     const auto& colcode_of_comp_col = ctx.getTableColcodeMap().at(node.table_name)->at(comparator_colname);
-    std::uint64_t final_offset;
+    std::uint64_t final_offset = UINT64_MAX;
     for (std::size_t i = 0; i < number_of_cols_without_pk; ++i) {
-      std::uint64_t offset;
-      std::uint8_t col_code;
-      table_file.read(reinterpret_cast<char*>(&offset), sizeof(offset));
-      table_file.read(reinterpret_cast<char*>(&col_code), sizeof(col_code));
-      // skip the padding
-      table_file.seekg(sizeof(DB_Types::column_offset_t) - sizeof(offset) - sizeof(col_code), std::ios::cur);
-      if (col_code == colcode_of_comp_col) { final_offset = offset; }
+      DB_Types::column_offset_t entry;
+      table_file.read(reinterpret_cast<char*>(&entry), sizeof(entry));
+      // std::uint64_t offset;
+      // std::uint8_t col_code;
+      // table_file.read(reinterpret_cast<char*>(&offset), sizeof(offset));
+      // table_file.read(reinterpret_cast<char*>(&col_code), sizeof(col_code));
+      // skip the padding because column_offset_t is 16 bytes, even though the actual data is just 8 + 1 bytes
+      // table_file.seekg(sizeof(DB_Types::column_offset_t) - sizeof(offset) - sizeof(col_code), std::ios::cur);
+      if (entry.col_id == colcode_of_comp_col) { final_offset = entry.offset; }
+    }
+    if (final_offset == UINT64_MAX) {
+      LoggerService::ErrorLogger::handleFatalError(
+          StatusCode::FatalErrorCode::NOCONTX_FILEOPS_DELETE_ColumnNotFoundDueToCorruption);
     }
     // at this point we know the offset for the proper column and we need to skip the PK region
     std::uint64_t pk_size;
@@ -166,12 +179,15 @@ FileHandler::performSequentialDelete(const DeleteNode& node, const ExecutionCont
       // if we have a match, we need to delete the record
       table_file.seekp(start_of_type_region, std::ios::beg);
       FileHandler::writeToBinaryFile(table_file, DB_Types::RecordType::DELETE);
+      // sync buffers and move to the next record
+      table_file.flush();
+      table_file.seekg(start_of_type_region + static_cast<std::streamoff>(record_length), std::ios::beg);
       return DB_Types::TableFileDeserializationIndicator::LIVE;
     }
   }
 
-  // if we didn't find anything, just skip the record and return skip
-  table_file.seekg(start_of_type_region, std::ios::beg);
-  table_file.seekg(record_length, std::ios::cur);
+  // if we didn't find anything, just sync the buffers, skip the record and return skip
+  table_file.flush();
+  table_file.seekg(start_of_type_region + static_cast<std::streamoff>(record_length), std::ios::beg);
   return DB_Types::TableFileDeserializationIndicator::SKIP;
 }

@@ -19,11 +19,11 @@ int main() {
   // const char* sql = "INSERT INTO users(id, pisa) VALUES (1,4);";
   const char* sql = "SELECT * FROM users;";
   // const char *sql = "INSERT INTO users(id, name) VALUES (3,'Manfred'), (4, 'Albert');";
-  // const char* sql = "DELETE FROM users WHERE age < 50;";
+  // const char* sql = "DELETE FROM users WHERE age < 70;";
   // const char* sql = "UPDATE users SET name = 'retro', agenotreal = 76 WHERE id = 1;";
   // const char* sql = "INSERT INTO comments(id, content, timestamp) VALUES (141,'comment');";
 
-  // const char* sql = "INSERT INTO users VALUES (4, 'Donald Duck', 79), (5, 'Jane Doe', 43), (6, 'Marie Curie', 16);";
+  // const char* sql = "INSERT INTO users VALUES (444, 'Donald Duck', 79), (445, 'Jane Doe', 43), (446, 'Marie Curie', 16);";
 
   // clang-format on
   // Open SQL string as input
