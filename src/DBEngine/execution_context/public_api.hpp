@@ -36,10 +36,11 @@ private:
   void initializeColumnEncodingMap();
   void initializeUntypedTableMetadata();
   void initializePrimaryKeyIndices();
+  void initializePrimaryKeyIndicesForTable(const std::string& table_name);
 
 public:
   void eraseKeyFromIndex(const std::string& table_name, const std::string& col_name, const std::string& key_value);
-  void recalculateIndexForTable(const std::string& table_name);
+  void recalculateIndicesForTable(const std::string& table_name);
   const DB_Types::indices_ptr_t& getHashmapIndices() const;
   const DB_Types::untyped_table_t& getUntypedTables() const;
   DB_Types::untyped_table_t& transferOwnershipOfUntypedTables();

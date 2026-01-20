@@ -27,7 +27,8 @@ void FileHandler::deleteData(const DeleteNode& node, ExecutionContext& ctx) {
       do {
         delete_indicator = FileHandler::performSequentialDelete(node, ctx, table_file);
       } while (delete_indicator != DB_Types::TableFileDeserializationIndicator::ENDOFTABLE);
-      // TODO: invalidate indices
+      // invalidate indices for this table and recalculate them
+      ctx.recalculateIndicesForTable(node.table_name);
     }
   }
 
@@ -144,12 +145,6 @@ FileHandler::performSequentialDelete(const DeleteNode& node, const ExecutionCont
     for (std::size_t i = 0; i < number_of_cols_without_pk; ++i) {
       DB_Types::column_offset_t entry;
       table_file.read(reinterpret_cast<char*>(&entry), sizeof(entry));
-      // std::uint64_t offset;
-      // std::uint8_t col_code;
-      // table_file.read(reinterpret_cast<char*>(&offset), sizeof(offset));
-      // table_file.read(reinterpret_cast<char*>(&col_code), sizeof(col_code));
-      // skip the padding because column_offset_t is 16 bytes, even though the actual data is just 8 + 1 bytes
-      // table_file.seekg(sizeof(DB_Types::column_offset_t) - sizeof(offset) - sizeof(col_code), std::ios::cur);
       if (entry.col_id == colcode_of_comp_col) { final_offset = entry.offset; }
     }
     if (final_offset == UINT64_MAX) {

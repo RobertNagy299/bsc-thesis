@@ -25,6 +25,7 @@ SELECT * FROM table \
 
  - Maximum # of columns in a table: 256 (comes from the column offset map - col_id is of type std::uint8_t)
  - Only one condition is allowed in the WHERE clause
+ - The maximum safe length of a record is LONG_INT_MAX bytes. UNSIGNED_LONG_MAX number of bytes is the theoretical maximum, but due to seekg pointer manipulation and std::streamoff static casting, the record length is ultimately treated as a long int
 
 # Binary file structure:
 

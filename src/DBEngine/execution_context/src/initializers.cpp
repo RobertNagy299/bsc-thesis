@@ -74,48 +74,52 @@ void ExecutionContext::initializeColumnEncodingMap() {
 void ExecutionContext::initializePrimaryKeyIndices() {
   for (const auto& table : this->getUntypedTables()) {
     const std::string& table_name = table.first;
-    FileHandler::ensureTableFileExists(table_name);
-    const std::string& table_path = FileHandler::getTableFilePath(table_name);
-    // insert the pointer to this table's column - indeces map
-    if (this != nullptr && this->indices != nullptr) {
-      this->indices->insert(std::pair<std::string, DB_Types::colname_literal_offset_map_ptr_t>(
-          table_name, std::make_unique<DB_Types::colname_literal_offset_map_t>()));
+    ExecutionContext::initializePrimaryKeyIndicesForTable(table_name);
+  } // for loop
+}
+
+void ExecutionContext::initializePrimaryKeyIndicesForTable(const std::string& table_name) {
+  FileHandler::ensureTableFileExists(table_name);
+  const std::string& table_path = FileHandler::getTableFilePath(table_name);
+  // insert the pointer to this table's column - indices map
+  if (this != nullptr && this->indices != nullptr) {
+    this->indices->insert(std::pair<std::string, DB_Types::colname_literal_offset_map_ptr_t>(
+        table_name, std::make_unique<DB_Types::colname_literal_offset_map_t>()));
+  } else {
+    LoggerService::ErrorLogger::handleFatalError(
+        StatusCode::FatalErrorCode::NOCONTX_NULLPTR_InMemoryPrimaryKeyHashMapInitializationFailure);
+  }
+  std::ifstream table_file(table_path, std::ios::binary | std::ios::in);
+  // store the index as a "pk" -> "offset" pair where pk is the string representation of the pk
+  // and the offset is the relative offset from the start of the record to the start of the data tuple region
+  if (table_file.is_open()) {
+    DB_Types::table_file_header_t file_header;
+    table_file.read(reinterpret_cast<char*>(&file_header), sizeof(file_header));
+    if (file_header.magic != FileHandler::DB_MAGIC) {
+      LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::FILEOPS_UnknownTableFileFormat,
+                                                   std::vector<std::string>{table_name});
+    }
+    if (file_header.version != FileHandler::DB_VERSION) {
+      LoggerService::WarningLogger::printAsStandardOutput(
+          StatusCode::WarningCode::FILEOPS_FileWasMadeWithDifferentDBVersion, std::vector<std::string>{table_name});
+    }
+    // perform deserialization logic
+    const auto& schema = this->getUntypedTables().at(table_name);
+    const std::string& pk_col_name = Utilities::ColumnUtils::extractPrimaryKeyColumn(schema);
+    if (this != nullptr && this->indices != nullptr && this->indices->at(table_name) != nullptr) {
+      // subtract 1 from the col list size due to the exclusion of the PK from the col offset region
+      this->indices->at(table_name)
+          ->insert(std::pair<std::string, DB_Types::index_ptr_t>(
+              pk_col_name, FileHandler::extractPrimaryKeysIndex(table_file, schema.size() - 1UL)));
+      // TODO remove debugging logs
+      for (const auto& rec : *(this->indices->at(table_name)->at(pk_col_name))) {
+        std::cout << " in index, pk val = " << rec.first << " Offset = " << std::to_string(rec.second) << '\n';
+      }
     } else {
       LoggerService::ErrorLogger::handleFatalError(
           StatusCode::FatalErrorCode::NOCONTX_NULLPTR_InMemoryPrimaryKeyHashMapInitializationFailure);
     }
-
-    std::ifstream table_file(table_path, std::ios::binary | std::ios::in);
-    // store the index as a "pk" -> "offset" pair where pk is the string representation of the pk
-    // and the offset is the relative offset from the start of the record to the start of the data tuple region
-    if (table_file.is_open()) {
-      DB_Types::table_file_header_t file_header;
-      table_file.read(reinterpret_cast<char*>(&file_header), sizeof(file_header));
-      if (file_header.magic != FileHandler::DB_MAGIC) {
-        LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::FILEOPS_UnknownTableFileFormat,
-                                                     std::vector<std::string>{table_name});
-      }
-      if (file_header.version != FileHandler::DB_VERSION) {
-        LoggerService::WarningLogger::printAsStandardOutput(
-            StatusCode::WarningCode::FILEOPS_FileWasMadeWithDifferentDBVersion, std::vector<std::string>{table_name});
-      }
-      // perform deserialization logic
-      const std::string& pk_col_name = Utilities::ColumnUtils::extractPrimaryKeyColumn(table.second);
-      if (this != nullptr && this->indices != nullptr && this->indices->at(table_name) != nullptr) {
-        // subtract 1 from the col list size due to the exclusion of the PK from the col offset region
-        this->indices->at(table_name)
-            ->insert(std::pair<std::string, DB_Types::index_ptr_t>(
-                pk_col_name, FileHandler::extractPrimaryKeysIndex(table_file, table.second.size() - 1UL)));
-        // TODO remove debugging logs
-        for (const auto& rec : *(this->indices->at(table_name)->at(pk_col_name))) {
-          std::cout << " in index, pk val = " << rec.first << " Offset = " << std::to_string(rec.second) << '\n';
-        }
-      } else {
-        LoggerService::ErrorLogger::handleFatalError(
-            StatusCode::FatalErrorCode::NOCONTX_NULLPTR_InMemoryPrimaryKeyHashMapInitializationFailure);
-      }
-    }
-
-    if (table_file.is_open()) { table_file.close(); }
   }
+
+  if (table_file.is_open()) { table_file.close(); }
 }
