@@ -69,11 +69,15 @@ enum class FatalErrorCode : std::uint16_t {
   NOCONTX_NULLPTR_InMemoryPrimaryKeyHashMapInitializationFailure,
   NOCONTX_HASHIDX_NULLPTR_GenericNullptrError,
   NOCONTX_FILEOPS_DELETE_ColumnNotFoundDueToCorruption,
+  NOCONTX_FILEOPS_UnknownIoErrorDuringDeserialization,
+  NOCONTX_FILEOPS_COMPACT_UnknownErrorDuringCopyingDuringCompaction,
   FILEOPS_UnknownTableFileFormat,
   METADAT_MetadataDirectoryDoesNotExist,
   METADAT_CouldNotCreateMetadataFileForTable,
   METADAT_TableMetadataDirectoryDoesNotExist,
-  DROP_UnknownFileSystemError,
+  DROP_FILEOPS_UnknownFileSystemError,
+  COMPACT_FILEOPS_UnknownFileSystemErrorWhileDeletingOldFile,
+  COMPACT_FILEOPS_UnknownFileSystemErrorWhileRenamingNewFile
 };
 
 /**

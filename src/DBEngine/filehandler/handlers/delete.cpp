@@ -34,6 +34,16 @@ void FileHandler::deleteData(const DeleteNode& node, ExecutionContext& ctx) {
 
   if (table_file.is_open()) { table_file.close(); }
 
+  // check the tombstone ratio and perform compaction if necessary
+  double tombstone_ratio = FileHandler::Compactor::calculateTombstoneRatio(node.table_name);
+  LoggerService::StatusLogger::printAsStandardOutput("Tombstone ratio = " + std::to_string(tombstone_ratio));
+  if (tombstone_ratio >= FileHandler::Compactor::COMPACTION_THRESHOLD) {
+    LoggerService::StatusLogger::printAsStandardOutput(
+        "Tombstone ratio is greater than or equal to the compaction treshold, which is " +
+        std::to_string(FileHandler::Compactor::COMPACTION_THRESHOLD) + ". Performing compaction...");
+    FileHandler::Compactor::compactTable(node.table_name, ctx);
+  }
+
   auto end = std::chrono::steady_clock::now();
   std::chrono::duration<double, std::milli> double_duration = end - start;
   LoggerService::StatusLogger::printAsStandardOutput("Deletion finished in " + std::to_string(double_duration.count()) +

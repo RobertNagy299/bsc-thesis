@@ -40,7 +40,7 @@ void FileHandler::dropTable(const DropTableNode& node, ExecutionContext& ctx) {
                                                        std::to_string(duration.count()) + "ms");
 
   } catch (const std::filesystem::filesystem_error& e) {
-    LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::DROP_UnknownFileSystemError,
+    LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::DROP_FILEOPS_UnknownFileSystemError,
                                                  std::vector<std::string>{node.table_name, e.what()});
   }
 }

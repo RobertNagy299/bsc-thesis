@@ -16,7 +16,7 @@ inline const std::uint64_t DB_MAGIC = 0x4A5353514C7631L;
 inline const std::uint64_t DB_VERSION = 0x01L;
 inline const std::uint64_t DB_FLAGS = 0x0L;
 inline const std::uint64_t DB_RESERVED = 0x0L;
-// methods
+
 void createUntypedTable(CreateUntypedTableNode& node, ExecutionContext& ctx);
 void dropTable(const DropTableNode& node, ExecutionContext& ctx);
 void insertData(InsertNode& node, const ExecutionContext& ctx);
@@ -45,13 +45,25 @@ template <typename T> void writeToBinaryFile(std::fstream& outFile, const T& dat
 // Specialization for std::string to handle variable length strings correctly
 void writeToBinaryFile(std::ofstream& outFile, const std::string& data);
 
+namespace Compactor {
+  inline const double COMPACTION_THRESHOLD = 0.40;
+  // methods
+  double calculateTombstoneRatio(const std::string& table_name);
+  void compactTable(const std::string& table_name, const ExecutionContext& ctx);
+  DB_Types::TableFileDeserializationIndicator copyNextLiveRecord(std::ifstream& old_table_file,
+                                                                 std::ofstream& new_table_file,
+                                                                 const std::size_t& number_of_cols_without_pk);
+} // namespace Compactor
+
 namespace Serializer {
+  void createTableFile(const std::string& table_file_path);
   void serializeNormalizedRecord(const ExecutionContext& ctx, const std::string& table_name,
                                  const ValueRecordNode* const& record, const std::vector<bool>& projection_mask,
                                  std::ofstream& table_file, DB_Types::RecordType type, bool persist_to_disk);
 
 } // namespace Serializer
 namespace Deserializer {
+  DB_Types::TableFileDeserializationIndicator deserializeNextRecordType(std::ifstream& table_file);
   DB_Types::TableFileDeserializationIndicator
   deserializeNextRecord(std::ifstream& file, const std::vector<UntypedColumnDefNode*>& schema,
                         const std::vector<bool>& projection_mask, const WhereNode* where, DB_Types::Record& out_record);

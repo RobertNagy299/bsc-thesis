@@ -30,9 +30,19 @@ std::string MessageTemplateResolver::resolveFatalErrorMessageTemplate(const Stat
       return MessageTemplateResolver::injectContext("Metadata directory for table '{}' does not exist.",
                                                     resolved_context);
     }
-    case StatusCode::FatalErrorCode::DROP_UnknownFileSystemError: {
+    case StatusCode::FatalErrorCode::DROP_FILEOPS_UnknownFileSystemError: {
       return MessageTemplateResolver::injectContext(
           "Unknown filesystem error while attempting to drop table '{}'. Error message: '{}'", resolved_context);
+    }
+    case StatusCode::FatalErrorCode::COMPACT_FILEOPS_UnknownFileSystemErrorWhileDeletingOldFile: {
+      return MessageTemplateResolver::injectContext("Unknown filesystem error while attempting to compact table '{}'. "
+                                                    "Occured while trying to delete the old file. Error message: '{}'",
+                                                    resolved_context);
+    }
+    case StatusCode::FatalErrorCode::COMPACT_FILEOPS_UnknownFileSystemErrorWhileRenamingNewFile: {
+      return MessageTemplateResolver::injectContext("Unknown filesystem error while attempting to compact table '{}'. "
+                                                    "Occured while trying to rename the new file. Error message: '{}'",
+                                                    resolved_context);
     }
     case StatusCode::FatalErrorCode::FILEOPS_CouldNotCreateTableFile: {
       return MessageTemplateResolver::injectContext("Could not create binary file for table '{}'!", resolved_context);
@@ -41,8 +51,18 @@ std::string MessageTemplateResolver::resolveFatalErrorMessageTemplate(const Stat
       return MessageTemplateResolver::injectContext(
           "Unknown exception while creating binary file for table '{}'. Error message: '{}'", resolved_context);
     }
+    case StatusCode::FatalErrorCode::NOCONTX_FILEOPS_COMPACT_UnknownErrorDuringCopyingDuringCompaction: {
+      return "Unknown IOERROR while copying live records to new file";
+    }
     case StatusCode::FatalErrorCode::NOCONTX_HASHIDX_NULLPTR_GenericNullptrError: {
       return "Could not operate on the in-memory hash-map index due to nullptr error";
+    }
+    case StatusCode::FatalErrorCode::NOCONTX_FILEOPS_UnknownIoErrorDuringDeserialization: {
+      return "Unknown IOError during binary file handling";
+    }
+    case StatusCode::FatalErrorCode::NOCONTX_FILEOPS_DELETE_ColumnNotFoundDueToCorruption: {
+      return "Could not deserialize column offset region during delete process, possibly due to file corruption or "
+             "misalignment";
     }
     default: {
       return "Unknown fatal error";

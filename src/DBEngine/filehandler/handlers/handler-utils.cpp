@@ -24,28 +24,7 @@ void FileHandler::ensureTableFileExists(const std::string& table_name) {
   std::filesystem::create_directories(table_datastorage_dir);
 
   const std::string table_datastorage_file_path = FileHandler::getTableFilePath(table_name);
-  if (!std::filesystem::exists(std::filesystem::path(table_datastorage_file_path))) {
-    std::ofstream table_file(table_datastorage_file_path, std::ios::out | std::ios::binary);
-    try {
-      if (table_file.is_open()) {
-        // insert table file header:
-        FileHandler::writeToBinaryFile(table_file, FileHandler::DB_MAGIC);
-        FileHandler::writeToBinaryFile(table_file, FileHandler::DB_VERSION);
-        FileHandler::writeToBinaryFile(table_file, FileHandler::DB_FLAGS);
-        FileHandler::writeToBinaryFile(table_file, FileHandler::DB_RESERVED);
-        table_file.close();
-      } else {
-        LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::FILEOPS_CouldNotCreateTableFile,
-                                                     std::vector<std::string>{table_name});
-      }
-
-    } catch (const std::exception& exception) {
-      // TODO cleanup partially broken file if possible
-      LoggerService::ErrorLogger::handleFatalError(
-          StatusCode::FatalErrorCode::FILEOPS_UnknownExceptionWhileCreatingTableFile,
-          std::vector<std::string>{table_name, exception.what()});
-    }
-  }
+  FileHandler::Serializer::createTableFile(table_datastorage_file_path);
 }
 
 /**
