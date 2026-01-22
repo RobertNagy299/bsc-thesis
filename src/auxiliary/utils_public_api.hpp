@@ -13,6 +13,7 @@ namespace Utilities {
 namespace ColumnUtils {
 
   const bool columnsExistInTable(ColumnListNode*& node, const DB_Types::untyped_table_t::const_iterator& table);
+  const bool columnsExistInTable(const std::vector<UntypedColumnDefNode*>& columns, const std::string& col_name);
   const std::string& extractPrimaryKeyColumn(const std::vector<UntypedColumnDefNode*>& columns);
   std::unique_ptr<std::unordered_set<std::string>>
   extractColumnNamesFromTable(const DB_Types::untyped_table_t::const_iterator& table);

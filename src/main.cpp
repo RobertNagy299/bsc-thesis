@@ -17,10 +17,10 @@ int main() {
   // const char* sql = "DROP TABLE users;"; 
   // const char *sql = "INSERT INTO users VALUES(6, 'Frankenstein', 19);";
   // const char* sql = "INSERT INTO users(id, pisa) VALUES (1,4);";
-  const char* sql = "SELECT * FROM users;";
+  // const char* sql = "SELECT * FROM users;";
   // const char *sql = "INSERT INTO users(id, name) VALUES (3,'Manfred'), (4, 'Albert');";
   // const char* sql = "DELETE FROM users WHERE age = 79;";
-  // const char* sql = "UPDATE users SET name = 'retro', agenotreal = 76 WHERE id = 1;";
+  const char* sql = "UPDATE users SET name = 'retro', age = 76 WHERE id = 1;";
   // const char* sql = "INSERT INTO comments(id, content, timestamp) VALUES (141,'comment');";
 
   // const char* sql = "INSERT INTO users VALUES (544, 'Donald Duck', 79), (445, 'Jane Doe', 43), (446, 'Marie Curie', 16);";

@@ -28,6 +28,8 @@ enum class ErrorCode : std::uint16_t {
   SEMVAL_ColumnDoesNotExistInTable,
   SEMVAL_CREATE_TableAlreadyExists,
   SEMVAL_INSERT_DuplicatePrimaryKeys,
+  SEMVAL_UPDATE_TriedUpdatingTheSameColumnInOneCommand,
+  SEMVAL_UPDATE_TriedUpdatingThePrimaryKey,
 
   NOCONTX_SEMVAL_WHERE_EmptyLiteralIsNotComparable,
   NOCONTX_SEMVAL_WHERE_ComparatorIsIsNotViolation,

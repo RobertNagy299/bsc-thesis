@@ -68,6 +68,15 @@ std::string MessageTemplateResolver::resolveErrorMessageTemplate(const StatusCod
     case StatusCode::ErrorCode::SEMVAL_INSERT_DuplicatePrimaryKeys: {
       return MessageTemplateResolver::injectContext("Primary key '{}' already exists in table '{}'!", resolved_context);
     }
+    case StatusCode::ErrorCode::SEMVAL_UPDATE_TriedUpdatingTheSameColumnInOneCommand: {
+      return MessageTemplateResolver::injectContext(
+          "Update command contains column '{}' multiple times, which is not allowed.", resolved_context);
+    }
+    case StatusCode::ErrorCode::SEMVAL_UPDATE_TriedUpdatingThePrimaryKey: {
+      return MessageTemplateResolver::injectContext(
+          "You've tried to update the primary key (column '{}'), which is not allowed because it's a bad practice.",
+          resolved_context);
+    }
     default: {
       return "Unknown error";
     }

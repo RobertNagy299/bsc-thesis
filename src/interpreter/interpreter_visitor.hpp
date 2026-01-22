@@ -75,12 +75,17 @@ public:
   }
 
   void visit(UpdateNode& node) override {
-    if (!SemanticValidator::validateUpdateSemantics(node, ctx)) {
+
+    bool is_normalized = SemanticNormalizer::normalizeUpdate(node, ctx);
+
+    if (!SemanticValidator::validateUpdateSemantics(node, ctx) || !is_normalized) {
       LoggerService::ErrorLogger::printAsStandardError(
           StatusCode::ErrorCode::NOCONTX_SEMVAL_UPDATE_GenericInvalidStatement);
       return;
     }
     // TODO file operations and testing
+    std::cout << "Update assignment literal = " << node.assignment_list_node->assignments[0]->literal_node->value
+              << "\n";
     std::cout << "Update node visited" << '\n';
   }
 
@@ -100,7 +105,7 @@ public:
     }
 
     FileHandler::deleteData(node, ctx);
-    }
+  }
 
   void visit(WhereNode& node) override { std::cout << "Where node visited" << '\n'; }
 

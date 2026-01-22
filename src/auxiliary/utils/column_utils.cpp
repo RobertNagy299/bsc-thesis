@@ -1,6 +1,7 @@
 #include "../../parser/ast.hpp"
 #include "../types/types.hpp"
 #include "../utils_public_api.hpp"
+#include <algorithm>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -41,4 +42,12 @@ const std::string& Utilities::ColumnUtils::extractPrimaryKeyColumn(const std::ve
     if (Utilities::InsertUtils::getModifiers(col->modifiers).primary_key) { return col->name; }
   }
   // TODO account for tables without a primary key
+}
+
+const bool Utilities::ColumnUtils::columnsExistInTable(const std::vector<UntypedColumnDefNode*>& columns,
+                                                       const std::string& col_name) {
+  const auto& column =
+      std::find_if(columns.begin(), columns.end(),
+                   [&col_name](const UntypedColumnDefNode* const& col) { return col->name == col_name; });
+  return column == columns.end() ? false : true;
 }
