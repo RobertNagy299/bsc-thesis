@@ -84,9 +84,9 @@ public:
       return;
     }
     // TODO file operations and testing
-    std::cout << "Update assignment literal = " << node.assignment_list_node->assignments[0]->literal_node->value
-              << "\n";
-    std::cout << "Update node visited" << '\n';
+    std::cout << "inverse Projection mask in update node:\n";
+    for (const auto bit : node.inverse_proj_mask) { std::cout << bit << " "; }
+    std::cout << "\nUpdate node visited" << '\n';
   }
 
   void visit(AssignmentNode& node) override { std::cout << "assignment node visited" << '\n'; }

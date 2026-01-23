@@ -5,6 +5,7 @@ add_library(FileHandler SHARED
   ${CMAKE_CURRENT_SOURCE_DIR}/handlers/insert.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/handlers/select.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/handlers/delete.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/handlers/update.cpp
 
   ${CMAKE_CURRENT_SOURCE_DIR}/serialization/normalized-record.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/serialization/create-new-tablefile.cpp

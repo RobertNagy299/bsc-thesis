@@ -375,7 +375,9 @@ struct AssignmentListNode : ASTNode {
 struct UpdateNode : ASTNode {
   std::string table_name;
   AssignmentListNode* assignment_list_node;
-  WhereNode* opt_where_node; // optional, nullptr if not provided
+  WhereNode* opt_where_node;           // optional, nullptr if not provided
+  std::vector<bool> inverse_proj_mask; // stores which values keep their old form
+  bool is_normalized = false;
 
   UpdateNode(std::string& tn, AssignmentListNode* aln_p, WhereNode* wn_p)
       : table_name(tn), assignment_list_node(aln_p), opt_where_node(wn_p) {}

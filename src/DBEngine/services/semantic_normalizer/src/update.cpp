@@ -19,12 +19,25 @@ bool SemanticNormalizer::normalizeUpdate(UpdateNode& node, const ExecutionContex
     return false;
   }
   std::unordered_set<std::string> assigned_columns;
+  // mark every value as if it's being kept in its old form
+  node.inverse_proj_mask.assign(schema.size(), true);
+
+  // get canonical order of cols
+  std::vector<std::string> full_col_list;
+  full_col_list.reserve(schema.size());
+  for (auto& col : schema) full_col_list.push_back(col->name);
 
   for (auto& assignment : node.assignment_list_node->assignments) {
     const std::string& col_name = assignment->col_name;
 
-    // 3.1 Column exists
-    if (!Utilities::ColumnUtils::columnsExistInTable(schema, col_name)) { return false; }
+    // find the index of the column
+    auto it = std::find(full_col_list.begin(), full_col_list.end(), col_name);
+    if (it == full_col_list.end()) {
+      return false; // unknown column - validator will report
+    }
+
+    std::size_t schema_index = std::distance(full_col_list.begin(), it);
+    node.inverse_proj_mask[schema_index] = false; // mark this as a new value
 
     // 3.2 No duplicate assignments
     if (assigned_columns.find(col_name) != assigned_columns.end()) {
@@ -52,6 +65,6 @@ bool SemanticNormalizer::normalizeUpdate(UpdateNode& node, const ExecutionContex
   if (node.opt_where_node) {
     if (!SemanticNormalizer::normalizeWhereClause(node.opt_where_node, schema)) { return false; }
   }
-
+  node.is_normalized = true;
   return true;
 }
