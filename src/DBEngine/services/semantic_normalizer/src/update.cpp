@@ -29,7 +29,8 @@ bool SemanticNormalizer::normalizeUpdate(UpdateNode& node, const ExecutionContex
 
   for (auto& assignment : node.assignment_list_node->assignments) {
     const std::string& col_name = assignment->col_name;
-
+    // 3.5 Normalize literal (strip quotes, canonicalize)
+    assignment->literal_node->value = Utilities::StringUtils::removeOuterQuotes(assignment->literal_node->value);
     // find the index of the column
     auto it = std::find(full_col_list.begin(), full_col_list.end(), col_name);
     if (it == full_col_list.end()) {
@@ -38,7 +39,9 @@ bool SemanticNormalizer::normalizeUpdate(UpdateNode& node, const ExecutionContex
 
     std::size_t schema_index = std::distance(full_col_list.begin(), it);
     node.inverse_proj_mask[schema_index] = false; // mark this as a new value
-
+    // map the literal value to the schema index - important for the executor
+    node.schema_index_to_literal_map.insert(
+        std::pair<std::size_t, std::string>(schema_index, assignment->literal_node->value));
     // 3.2 No duplicate assignments
     if (assigned_columns.find(col_name) != assigned_columns.end()) {
       // duplicate columns, validator will report
@@ -57,8 +60,6 @@ bool SemanticNormalizer::normalizeUpdate(UpdateNode& node, const ExecutionContex
       return false;
     }
     assigned_columns.insert(assignment->col_name);
-    // 3.5 Normalize literal (strip quotes, canonicalize)
-    assignment->literal_node->value = Utilities::StringUtils::removeOuterQuotes(assignment->literal_node->value);
   }
 
   // 4. Normalize WHERE clause (if present)

@@ -84,9 +84,7 @@ public:
       return;
     }
     // TODO file operations and testing
-    std::cout << "inverse Projection mask in update node:\n";
-    for (const auto bit : node.inverse_proj_mask) { std::cout << bit << " "; }
-    std::cout << "\nUpdate node visited" << '\n';
+    FileHandler::updateData(node, ctx);
   }
 
   void visit(AssignmentNode& node) override { std::cout << "assignment node visited" << '\n'; }

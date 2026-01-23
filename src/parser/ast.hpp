@@ -1,6 +1,8 @@
 #pragma once
 #include <iostream>
+#include <memory>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 struct ProgramNode;
@@ -134,6 +136,12 @@ struct ValueRecordNode : ASTNode {
   std::vector<LiteralNode*> values;
 
   ValueRecordNode(std::vector<LiteralNode*> vals) : values(std::move(vals)) {}
+  ValueRecordNode(std::vector<std::unique_ptr<LiteralNode>> vals) {
+    for (auto& smart_ptr : vals) {
+      // transfer ownership
+      values.push_back(std::move(smart_ptr.release()));
+    }
+  }
 
   ~ValueRecordNode() {
     for (auto& v : values) {
@@ -375,9 +383,11 @@ struct AssignmentListNode : ASTNode {
 struct UpdateNode : ASTNode {
   std::string table_name;
   AssignmentListNode* assignment_list_node;
-  WhereNode* opt_where_node;           // optional, nullptr if not provided
+  WhereNode* opt_where_node; // optional, nullptr if not provided
+
   std::vector<bool> inverse_proj_mask; // stores which values keep their old form
   bool is_normalized = false;
+  std::unordered_map<std::size_t, std::string> schema_index_to_literal_map;
 
   UpdateNode(std::string& tn, AssignmentListNode* aln_p, WhereNode* wn_p)
       : table_name(tn), assignment_list_node(aln_p), opt_where_node(wn_p) {}

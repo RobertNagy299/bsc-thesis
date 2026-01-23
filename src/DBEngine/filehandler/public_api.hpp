@@ -64,6 +64,9 @@ namespace Serializer {
 
 } // namespace Serializer
 namespace Deserializer {
+  DB_Types::TableFileDeserializationIndicator
+  deserializeNextRecordAndMarkAsTombstone(std::fstream& table_file, const std::vector<UntypedColumnDefNode*>& schema,
+                                          const WhereNode* where, DB_Types::Record& out_record);
   DB_Types::TableFileDeserializationIndicator deserializeNextRecordType(std::ifstream& table_file);
   DB_Types::TableFileDeserializationIndicator
   deserializeNextRecord(std::ifstream& file, const std::vector<UntypedColumnDefNode*>& schema,
