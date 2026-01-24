@@ -4,3 +4,12 @@ add_library(CLIDriver SHARED
 
   ${CMAKE_CURRENT_SOURCE_DIR}/public-api.hpp
 )
+
+target_link_libraries(CLIDriver
+  PRIVATE
+    SemanticValidator 
+    SemanticNormalizer
+    LoggerService
+    FileHandler
+    ExecutionContext
+)
