@@ -1,5 +1,7 @@
 # Valgrind usage
 
+## For a text report about memory usage and leaks / bad alloc errors
+
 ```
 
 valgrind --leak-check=full \
@@ -10,6 +12,22 @@ valgrind --leak-check=full \
          ./MainApp
 
 ```
+
+## For heap memory usage visualization with Massif:
+
+```
+valgrind --tool=massif ./MainApp
+
+massif-visualizer massif.out.<pid>
+
+```
+
+## for stack + heap tracking visualization:
+
+```
+valgrind --tool=massif --stacks=yes ./your_program
+```
+
 
 # Commands:
 
