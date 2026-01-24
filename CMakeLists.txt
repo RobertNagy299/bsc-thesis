@@ -75,6 +75,9 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/services/semantic_norm
 # defines ConditionEvaluator
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/DBEngine/services/condition-evaluator)
 
+# defines CLIDriver
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/src/CLI-driver)
+
 # Link the executable with the shared libraries
 target_link_libraries(MainApp 
   SQLCore 
@@ -85,6 +88,7 @@ target_link_libraries(MainApp
   LoggerService
   FileHandler
   ExecutionContext
+  CLIDriver
 )
 
 
