@@ -4,6 +4,8 @@
 #include "../public-api.hpp"
 #include <cstring>
 #include <iostream>
+#include <readline/history.h>
+#include <readline/readline.h>
 #include <sstream>
 #include <string>
 

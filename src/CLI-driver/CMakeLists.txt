@@ -7,6 +7,7 @@ add_library(CLIDriver SHARED
 
 target_link_libraries(CLIDriver
   PRIVATE
+    Readline::Readline
     SemanticValidator 
     SemanticNormalizer
     LoggerService
