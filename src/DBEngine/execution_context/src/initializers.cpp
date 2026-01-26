@@ -93,16 +93,7 @@ void ExecutionContext::initializePrimaryKeyIndicesForTable(const std::string& ta
   // store the index as a "pk" -> "offset" pair where pk is the string representation of the pk
   // and the offset is the relative offset from the start of the record to the start of the data tuple region
   if (table_file.is_open()) {
-    DB_Types::table_file_header_t file_header;
-    table_file.read(reinterpret_cast<char*>(&file_header), sizeof(file_header));
-    if (file_header.magic != FileHandler::DB_MAGIC) {
-      LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::FILEOPS_UnknownTableFileFormat,
-                                                   std::vector<std::string>{table_name});
-    }
-    if (file_header.version != FileHandler::DB_VERSION) {
-      LoggerService::WarningLogger::printAsStandardOutput(
-          StatusCode::WarningCode::FILEOPS_FileWasMadeWithDifferentDBVersion, std::vector<std::string>{table_name});
-    }
+    FileHandler::checkFileValidity(table_file, table_name);
     // perform deserialization logic
     const auto& schema = this->getUntypedTables().at(table_name);
     const std::string& pk_col_name = Utilities::ColumnUtils::extractPrimaryKeyColumn(schema);

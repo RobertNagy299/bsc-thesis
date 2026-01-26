@@ -51,7 +51,8 @@ public:
   void eraseTable(const std::string& table_name);
 
   void eraseInMemoryHashMapIndicesForTable(const std::string& table_name);
-
+  void addNewPrimaryKeyIndex(const std::string& table_name, const std::string& pk_col_name,
+                             const std::string& pk_literal, const std::uint64_t offset);
   static ExecutionContext& getInstance();
   static void destroyInstance();
 };

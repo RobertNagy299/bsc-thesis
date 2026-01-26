@@ -60,4 +60,6 @@ const std::string Utilities::InsertUtils::getDefaultValue(const std::vector<std:
       return Utilities::StringUtils::removeOuterQuotes(current_modifier.substr(8));
     }
   }
+  // if no default value was found, we know the default is NULL - which is represented by an empty string.
+  return std::string();
 }

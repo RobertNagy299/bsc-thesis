@@ -19,7 +19,7 @@ inline const std::uint64_t DB_RESERVED = 0x0L;
 
 void createUntypedTable(CreateUntypedTableNode& node, ExecutionContext& ctx);
 void dropTable(const DropTableNode& node, ExecutionContext& ctx);
-void insertData(InsertNode& node, const ExecutionContext& ctx);
+void insertData(const InsertNode& node, ExecutionContext& ctx);
 void deleteData(const DeleteNode& node, ExecutionContext& ctx);
 void updateData(const UpdateNode& node, ExecutionContext& ctx);
 void performDeleteByIndexLookup(const DeleteNode& node, ExecutionContext& ctx, std::fstream& table_file);
@@ -58,7 +58,7 @@ namespace Compactor {
 
 namespace Serializer {
   void createTableFile(const std::string& table_file_path);
-  void serializeNormalizedRecord(const ExecutionContext& ctx, const std::string& table_name,
+  void serializeNormalizedRecord(ExecutionContext& ctx, const std::string& table_name,
                                  const ValueRecordNode* const& record, const std::vector<bool>& projection_mask,
                                  std::ofstream& table_file, DB_Types::RecordType type, bool persist_to_disk);
 

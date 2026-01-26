@@ -1,6 +1,6 @@
 #include "../public_api.hpp"
 
-void FileHandler::insertData(InsertNode& node, const ExecutionContext& ctx) {
+void FileHandler::insertData(const InsertNode& node, ExecutionContext& ctx) {
   LoggerService::StatusLogger::printAsStandardOutput("'Insert' command is valid - starting file operations...");
   auto start = std::chrono::steady_clock::now();
 
@@ -10,6 +10,7 @@ void FileHandler::insertData(InsertNode& node, const ExecutionContext& ctx) {
 
   // command is valid, and normalized, so just call the serializer
   for (const auto& record : node.values->records) {
+    // the serializer will add the new primary keys to the in-memory index.
     FileHandler::Serializer::serializeNormalizedRecord(ctx, node.table_name, record, node.projection_mask, table_file,
                                                        DB_Types::RecordType::INSERT, true);
   }

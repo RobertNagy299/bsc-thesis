@@ -120,6 +120,27 @@ size is used for reading the exact number of bytes needed to get the data, data 
 
 `primary_key` is `[size][data]` as well
 
+## Offsets explained
+
+### Offsets in the context of indexes
+
+**In this case, the offset is absolute** - it does not include the table header - header will always be checked in the local function to ensure format consistency
+
+This kind of offset always points to the start of the record's col_offset_region, starting from the beginning of
+the record region in a table file. The record region begins right after the table file header.
+
+### Offsets in the context of "column offset regions" in the binary file
+
+**In this case, the offsets are always relative.** They are local to the current record in the file.
+They start from the beginning of the data_tuple_region and tell us how far the actual literal value for the given column is.
+
+For the first secondary attribute, this offset is always 0 because it is at the beginning of the data tuple region.
+For the second secondary attribute this offset is sizeof(uint64_t) + first_secondary_attribute_literal.size().
+And so on.
+
+This should be used for granular deserialization in order to minimize disk IO.
+This way, we don't have to deserialize entire records for condition evaluation, but instead only the single column that we need for the condition.
+
 # Contribution guide:
 
 ## Branch naming

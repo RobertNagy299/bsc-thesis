@@ -1,6 +1,6 @@
 #include "../public_api.hpp"
 
-void FileHandler::Serializer::serializeNormalizedRecord(const ExecutionContext& ctx, const std::string& table_name,
+void FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext& ctx, const std::string& table_name,
                                                         const ValueRecordNode* const& record,
                                                         const std::vector<bool>& projection_mask,
                                                         std::ofstream& table_file, DB_Types::RecordType type,
@@ -12,7 +12,7 @@ void FileHandler::Serializer::serializeNormalizedRecord(const ExecutionContext& 
 
   const std::size_t ncols = table_cols.size();
 
-  // --- compute PK index ---
+  // --- compute PK's position index in the canonical schema ---
   std::uint8_t pk_idx = 0;
   for (; pk_idx < ncols; ++pk_idx)
     if (Utilities::InsertUtils::getModifiers(table_cols[pk_idx]->modifiers).primary_key) break;
@@ -38,13 +38,13 @@ void FileHandler::Serializer::serializeNormalizedRecord(const ExecutionContext& 
     const auto& col = table_cols[i];
     const auto modifiers = Utilities::InsertUtils::getModifiers(col->modifiers);
 
-    std::string final_literal;
+    std::string final_literal; // will be initialized based on certain conditions
 
     const auto& lit = record->values[i];
     const bool user_provided = projection_mask[i];
     const bool is_empty = !lit || lit->type == LiteralNode::Type::EMPTY;
 
-    // potentially erroneous logic
+    // final_literal is initialized here
     if (!user_provided || is_empty) {
       // --- DEFAULT substituted here ---
       final_literal = Utilities::InsertUtils::getDefaultValue(col->modifiers);
@@ -54,12 +54,11 @@ void FileHandler::Serializer::serializeNormalizedRecord(const ExecutionContext& 
 
     const std::uint8_t colcode = colcode_map->at(col->name);
 
-    std::uint64_t total_offset = running_data_offset;
     // empty initialization to ensure initialized padding for the struct
     DB_Types::column_offset_t off{};
     // offset should mean: distance from the beginning of the data_tuple region to the start of the column's [size]
     // region
-    off.offset = total_offset;
+    off.offset = running_data_offset;
     off.col_id = colcode;
     column_offsets.push_back(off);
 
@@ -75,6 +74,10 @@ void FileHandler::Serializer::serializeNormalizedRecord(const ExecutionContext& 
   try {
     FileHandler::writeToBinaryFile(table_file, record_length);
     FileHandler::writeToBinaryFile(table_file, type);
+    // add the primary key to the index here in the case of INSERT
+    if (type == DB_Types::RecordType::INSERT) {
+      ctx.addNewPrimaryKeyIndex(table_name, table_cols.at(pk_idx)->name, pk_literal, table_file.tellp());
+    }
 
     for (auto& off : column_offsets) FileHandler::writeToBinaryFile(table_file, off);
 
