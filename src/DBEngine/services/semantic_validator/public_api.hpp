@@ -15,6 +15,7 @@ const bool checkIfTableExists(const std::string& table_name, const ExecutionCont
 
 const bool validateInsertSemantics(InsertNode& node, const ExecutionContext& ctx);
 const bool validateSelectSemantics(SelectNode& node, const ExecutionContext& ctx);
+const bool validateDescribeSemantics(const DescribeNode& node, const ExecutionContext& ctx);
 const bool validateDeleteSemantics(DeleteNode& node, const ExecutionContext& ctx);
 const bool validateUpdateSemantics(UpdateNode& node, const ExecutionContext& ctx);
 const bool validateDropSemantics(const DropTableNode& node, const ExecutionContext& ctx);

@@ -80,6 +80,9 @@ std::string MessageTemplateResolver::resolveErrorMessageTemplate(const StatusCod
     case StatusCode::ErrorCode::NOCONTX_SEMVAL_DROP_GenericInvalidStatement: {
       return "Drop statement is semantically invalid! The engine will not perform any file operations.";
     }
+    case StatusCode::ErrorCode::NOCONTX_SEMVAL_DESCRIBE_GenericInvalidStatement: {
+      return "Describe statement is semantically invalid! The engine will not perform any file operations.";
+    }
     default: {
       return "Unknown error";
     }

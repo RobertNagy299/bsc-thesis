@@ -36,6 +36,7 @@ enum class ErrorCode : std::uint16_t {
   NOCONTX_SEMVAL_WHERE_ComparatorLikeNotLikeViolation,
   NOCONTX_SEMVAL_WHERE_ComparatorEQNotEQViolation,
   NOCONTX_SEMVAL_WHERE_ComparatorMathViolation,
+  NOCONTX_SEMVAL_DESCRIBE_GenericInvalidStatement,
 
   NOCONTX_SEMVAL_INSERT_GenericInvalidStatement,
   NOCONTX_SEMVAL_SELECT_GenericInvalidStatement,

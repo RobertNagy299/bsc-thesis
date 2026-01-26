@@ -35,6 +35,16 @@ public:
     FileHandler::dropTable(node, ctx);
   }
 
+  void visit(DescribeNode& node) override {
+    if (!SemanticValidator::validateDescribeSemantics(node, ctx)) {
+      LoggerService::ErrorLogger::printAsStandardError(
+          StatusCode::ErrorCode::NOCONTX_SEMVAL_DESCRIBE_GenericInvalidStatement);
+      return;
+    }
+    // at this point we know the table exists
+    LoggerService::StatusLogger::printTableDescription(node, ctx.getUntypedTables().at(node.table_name));
+  }
+
   void visit(InsertNode& node) override {
 
     // Semantic validation - ensure proper literal values, types, etc.

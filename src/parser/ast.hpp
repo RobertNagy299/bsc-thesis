@@ -23,6 +23,7 @@ struct ConditionListNode;
 struct WhereNode;
 
 struct DeleteNode;
+struct DescribeNode;
 
 struct AssignmentNode;
 struct AssignmentListNode;
@@ -34,6 +35,7 @@ struct ASTVisitor {
   virtual void visit(ConditionNode& node) = 0;
   virtual void visit(ConditionListNode& node) = 0;
   virtual void visit(WhereNode& node) = 0;
+  virtual void visit(DescribeNode& node) = 0;
 
   virtual void visit(DeleteNode& node) = 0;
 
@@ -73,6 +75,14 @@ struct ProgramNode : ASTNode {
       }
     }
   }
+};
+
+struct DescribeNode : ASTNode {
+  std::string table_name;
+
+  DescribeNode(const std::string& table_name) : table_name(std::move(table_name)) {}
+
+  void accept(ASTVisitor& v) override { v.visit(*this); }
 };
 
 struct CreateUntypedTableNode : ASTNode {

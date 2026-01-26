@@ -15,6 +15,7 @@ namespace ErrorLogger {
 }; // namespace ErrorLogger
 
 namespace StatusLogger {
+  void printTableDescription(const DescribeNode& node, const std::vector<UntypedColumnDefNode*> schema);
   void printAsStandardOutput(const std::string& status_msg);
   void printResultSetAsTable(const SelectNode& node, const std::unique_ptr<DB_Types::ResultSet>& results);
 }; // namespace StatusLogger

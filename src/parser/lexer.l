@@ -38,6 +38,7 @@ STRING    \'([^\'\\]|\\.)*\'
 "!="             {  return OP_NE; }
 
 "SELECT"         {  return KW_SELECT; }
+"DESCRIBE"       {  return KW_DESCRIBE; }
 "DELETE"         {  return KW_DELETE; }
 "UPDATE"         {  return KW_UPDATE; }
 "SET"            {  return KW_SET; }

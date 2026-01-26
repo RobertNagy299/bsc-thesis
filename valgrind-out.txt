@@ -1,259 +1,717 @@
-==7568== Memcheck, a memory error detector
-==7568== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==7568== Using Valgrind-3.19.0-8d3c8034b8-20220411 and LibVEX; rerun with -h for copyright info
-==7568== Command: ./MainApp
-==7568== Parent PID: 3634
-==7568== 
---7568-- 
---7568-- Valgrind options:
---7568--    --leak-check=full
---7568--    --show-leak-kinds=all
---7568--    --track-origins=yes
---7568--    --verbose
---7568--    --suppressions=../suppressions/readline.supp
---7568--    --log-file=../valgrind-out.txt
---7568-- Contents of /proc/version:
---7568--   Linux version 6.1.0-42-amd64 (debian-kernel@lists.debian.org) (gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #1 SMP PREEMPT_DYNAMIC Debian 6.1.159-1 (2025-12-30)
---7568-- 
---7568-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3
---7568-- Page sizes: currently 4096, max supported 4096
---7568-- Valgrind library directory: /usr/libexec/valgrind
---7568-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp
---7568-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
---7568--   Considering /usr/lib/debug/.build-id/65/80196fa83df5c1edec10a57b2725eda6c73d7c.debug ..
---7568--   .. build-id is valid
---7568-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
---7568--   Considering /usr/lib/debug/.build-id/82/26c2aa6b808ebd5a6fafb694a7fb3287f33590.debug ..
---7568--   .. build-id is valid
---7568--    object doesn't have a dynamic symbol table
---7568-- Scheduler: using generic scheduler lock implementation.
---7568-- Reading suppressions file: ../suppressions/readline.supp
---7568-- Reading suppressions file: /usr/libexec/valgrind/default.supp
-==7568== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-7568-by-robi-on-???
-==7568== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-7568-by-robi-on-???
-==7568== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-7568-by-robi-on-???
-==7568== 
-==7568== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==7568== don't want to do, unless you know exactly what you're doing,
-==7568== or are doing some strange experiment):
-==7568==   /usr/bin/vgdb --pid=7568 ...command...
-==7568== 
-==7568== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==7568==   /path/to/gdb ./MainApp
-==7568== and then give GDB the following command
-==7568==   target remote | /usr/bin/vgdb --pid=7568
-==7568== --pid is optional if only one valgrind process is running
-==7568== 
---7568-- REDIR: 0x40239c0 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bb0e2 (vgPlain_amd64_linux_REDIR_FOR_strlen)
---7568-- REDIR: 0x40221a0 (ld-linux-x86-64.so.2:index) redirected to 0x580bb0fc (vgPlain_amd64_linux_REDIR_FOR_index)
---7568-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
---7568--   Considering /usr/lib/debug/.build-id/ad/f1388be4d8781737b0c83fe111a5a9c6e930aa.debug ..
---7568--   .. build-id is valid
---7568-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
---7568--   Considering /usr/lib/debug/.build-id/d8/ec66cffcb23a75c3f15940674d6028709121f8.debug ..
---7568--   .. build-id is valid
-==7568== WARNING: new redirection conflicts with existing -- ignoring it
---7568--     old: 0x040239c0 (strlen              ) R-> (0000.0) 0x580bb0e2 vgPlain_amd64_linux_REDIR_FOR_strlen
---7568--     new: 0x040239c0 (strlen              ) R-> (2007.0) 0x048478a0 strlen
---7568-- REDIR: 0x40223c0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4848780 (strcmp)
---7568-- REDIR: 0x4021630 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x484c1a0 (mempcpy)
---7568-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so
---7568-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30
---7568--    object doesn't have a symbol table
---7568-- Reading syms from /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
---7568--    object doesn't have a symbol table
---7568-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
---7568--   Considering /usr/lib/debug/.build-id/61/96744a316dbd57c0fd8968df1680aac482cec4.debug ..
---7568--   .. build-id is valid
-==7568== WARNING: new redirection conflicts with existing -- ignoring it
---7568--     old: 0x04b4e600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
---7568--     new: 0x04b4e600 (memalign            ) R-> (1017.0) 0x04846b90 aligned_alloc
-==7568== WARNING: new redirection conflicts with existing -- ignoring it
---7568--     old: 0x04b4e600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
---7568--     new: 0x04b4e600 (memalign            ) R-> (1017.0) 0x04846b60 aligned_alloc
-==7568== WARNING: new redirection conflicts with existing -- ignoring it
---7568--     old: 0x04b4e600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
---7568--     new: 0x04b4e600 (memalign            ) R-> (1017.0) 0x04846b90 aligned_alloc
-==7568== WARNING: new redirection conflicts with existing -- ignoring it
---7568--     old: 0x04b4e600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
---7568--     new: 0x04b4e600 (memalign            ) R-> (1017.0) 0x04846b60 aligned_alloc
---7568-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/semantic_validator/libSemanticValidator.so
---7568-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/semantic_normalizer/libSemanticNormalizer.so
---7568-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/logger/libLoggerService.so
---7568-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so
---7568-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/execution_context/libExecutionContext.so
---7568-- Reading syms from /usr/lib/x86_64-linux-gnu/libreadline.so.8.2
---7568--    object doesn't have a symbol table
---7568-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
---7568--   Considering /usr/lib/debug/.build-id/d6/e6f9e3af1243eed9bf5efd366dd015a9f22c13.debug ..
---7568--   .. build-id is valid
---7568-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/auxiliary/libUtils.so
---7568-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/condition-evaluator/libConditionEvaluator.so
---7568-- Reading syms from /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4
---7568--    object doesn't have a symbol table
---7568-- REDIR: 0x4b54540 (libc.so.6:strnlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b545d0 (libc.so.6:strpbrk) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b526f0 (libc.so.6:strcmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b674e0 (libc.so.6:wcsnlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b51830 (libc.so.6:memset) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b65e20 (libc.so.6:wcslen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b50e60 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b65c50 (libc.so.6:wcschr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b525e0 (libc.so.6:index) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b54600 (libc.so.6:rindex) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b65ce0 (libc.so.6:wcscmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b51a70 (libc.so.6:stpncpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b66230 (libc.so.6:wmemchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b543f0 (libc.so.6:strncmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b51ae0 (libc.so.6:strcasecmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b53950 (libc.so.6:strcspn) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b65d70 (libc.so.6:wcscpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b52560 (libc.so.6:strcat) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b542e0 (libc.so.6:strncasecmp_l) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b50d70 (libc.so.6:bcmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b517a0 (libc.so.6:memrchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b52660 (libc.so.6:strchrnul) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b538d0 (libc.so.6:strcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b51b80 (libc.so.6:strcasecmp_l) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b541b0 (libc.so.6:strlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b54490 (libc.so.6:strncpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b519f0 (libc.so.6:stpcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b51580 (libc.so.6:memmove) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b50cf0 (libc.so.6:memchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b547c0 (libc.so.6:strspn) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b51690 (libc.so.6:mempcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b54240 (libc.so.6:strncasecmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b51930 (libc.so.6:rawmemchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b54380 (libc.so.6:strncat) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4bcb0d0 (libc.so.6:__memcpy_chk) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b54f60 (libc.so.6:strstr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---7568-- REDIR: 0x4b64be0 (libc.so.6:__strrchr_sse2) redirected to 0x4847320 (__strrchr_sse2)
---7568-- REDIR: 0x4b4d920 (libc.so.6:malloc) redirected to 0x4841740 (malloc)
---7568-- REDIR: 0x4b5ed50 (libc.so.6:__strlen_sse2) redirected to 0x48477e0 (__strlen_sse2)
---7568-- REDIR: 0x4b577e0 (libc.so.6:__memcmp_sse2) redirected to 0x484a9e0 (__memcmp_sse2)
---7568-- REDIR: 0x4c26600 (libc.so.6:__strcmp_sse42) redirected to 0x4848740 (__strcmp_sse42)
---7568-- REDIR: 0x4924570 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4841ec0 (operator new(unsigned long))
---7568-- REDIR: 0x4b57d70 (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4848890 (memcpy@GLIBC_2.2.5)
---7568-- REDIR: 0x4b4e6d0 (libc.so.6:calloc) redirected to 0x4846540 (calloc)
---7568-- REDIR: 0x4b5e720 (libc.so.6:__strcpy_sse2_unaligned) redirected to 0x48478d0 (strcpy)
---7568-- REDIR: 0x4b5cd40 (libc.so.6:__strchrnul_sse2) redirected to 0x484bca0 (strchrnul)
---7568-- REDIR: 0x4af63c0 (libc.so.6:setenv) redirected to 0x484cba0 (setenv)
---7568-- REDIR: 0x4b5cb20 (libc.so.6:__strchr_sse2) redirected to 0x4847400 (__strchr_sse2)
---7568-- REDIR: 0x4c28f70 (libc.so.6:__strncmp_sse42) redirected to 0x4847ff0 (__strncmp_sse42)
---7568-- REDIR: 0x4b4e120 (libc.so.6:realloc) redirected to 0x48467b0 (realloc)
---7568-- REDIR: 0x4b57d50 (libc.so.6:__mempcpy_sse2_unaligned) redirected to 0x484bdb0 (mempcpy)
---7568-- REDIR: 0x4b649c0 (libc.so.6:__strnlen_sse2) redirected to 0x4847720 (strnlen)
---7568-- REDIR: 0x4b4dee0 (libc.so.6:free) redirected to 0x4844110 (free)
---7568-- REDIR: 0x4b57d60 (libc.so.6:__memcpy_chk_sse2_unaligned) redirected to 0x484c290 (__memcpy_chk)
---7568-- REDIR: 0x4b58640 (libc.so.6:__memset_sse2_unaligned) redirected to 0x484b1c0 (memset)
---7568-- REDIR: 0x4b639e0 (libc.so.6:__strncpy_sse2_unaligned) redirected to 0x4847db0 (__strncpy_sse2_unaligned)
---7568-- REDIR: 0x4b574b0 (libc.so.6:__memchr_sse2) redirected to 0x4848800 (memchr)
---7568-- REDIR: 0x4c24dc0 (libc.so.6:__strcasecmp_l_sse42) redirected to 0x4848290 (strcasecmp_l)
---7568-- REDIR: 0x4b58a60 (libc.so.6:__stpcpy_sse2_unaligned) redirected to 0x484ada0 (__stpcpy_sse2_unaligned)
---7568-- REDIR: 0x4c24db0 (libc.so.6:__strcasecmp_sse42) redirected to 0x4848050 (strcasecmp)
---7568-- REDIR: 0x4c274d0 (libc.so.6:__strncasecmp_sse42) redirected to 0x4848110 (strncasecmp)
---7568-- REDIR: 0x49228e0 (libstdc++.so.6:operator delete(void*, unsigned long)) redirected to 0x4844930 (operator delete(void*, unsigned long))
---7568-- REDIR: 0x49245d0 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x48431a0 (operator new[](unsigned long))
---7568-- REDIR: 0x49228d0 (libstdc++.so.6:operator delete(void*)) redirected to 0x48446b0 (operator delete(void*))
---7568-- REDIR: 0x4922900 (libstdc++.so.6:operator delete[](void*)) redirected to 0x48456f0 (operator delete[](void*))
---7568-- REDIR: 0x4c274e0 (libc.so.6:__strncasecmp_l_sse42) redirected to 0x48483e0 (strncasecmp_l)
-==7568== 
-==7568== HEAP SUMMARY:
-==7568==     in use at exit: 229,442 bytes in 240 blocks
-==7568==   total heap usage: 2,646 allocs, 2,406 frees, 1,214,649 bytes allocated
-==7568== 
-==7568== Searching for pointers to 240 not-freed blocks
-==7568== Checked 427,328 bytes
-==7568== 
-==7568== 9 bytes in 1 blocks are still reachable in loss record 6 of 80
-==7568==    at 0x48417B4: malloc (vg_replace_malloc.c:381)
-==7568==    by 0x4B53999: strdup (strdup.c:42)
-==7568==    by 0x505C1D5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
-==7568==    by 0x505F2C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
-==7568==    by 0x4E6059C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E619D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4A07B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4AB48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4B3C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x485D113: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
-==7568==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==7568== 
-==7568== 9 bytes in 1 blocks are still reachable in loss record 7 of 80
-==7568==    at 0x48417B4: malloc (vg_replace_malloc.c:381)
-==7568==    by 0x4B53999: strdup (strdup.c:42)
-==7568==    by 0x505C1D5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
-==7568==    by 0x505F2C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
-==7568==    by 0x4E60DB4: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E619D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4A07B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4AB48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4B3C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x485D113: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
-==7568==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==7568== 
-==7568== 24 bytes in 1 blocks are still reachable in loss record 17 of 80
-==7568==    at 0x48417B4: malloc (vg_replace_malloc.c:381)
-==7568==    by 0x4BB7DD5: tsearch (tsearch.c:337)
-==7568==    by 0x505C1F0: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
-==7568==    by 0x505F2C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
-==7568==    by 0x4E6059C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E619D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4A07B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4AB48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4B3C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x485D113: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
-==7568==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==7568== 
-==7568== 24 bytes in 1 blocks are still reachable in loss record 18 of 80
-==7568==    at 0x48417B4: malloc (vg_replace_malloc.c:381)
-==7568==    by 0x4BB7DD5: tsearch (tsearch.c:337)
-==7568==    by 0x505C1F0: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
-==7568==    by 0x505F2C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
-==7568==    by 0x4E60DB4: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E619D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4A07B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4AB48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4B3C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x485D113: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
-==7568==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==7568== 
-==7568== 168 bytes in 1 blocks are still reachable in loss record 29 of 80
-==7568==    at 0x48465EF: calloc (vg_replace_malloc.c:1328)
-==7568==    by 0x505C14E: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
-==7568==    by 0x505F2C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
-==7568==    by 0x4E6059C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E619D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4A07B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4AB48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4B3C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x485D113: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
-==7568==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==7568== 
-==7568== 168 bytes in 1 blocks are still reachable in loss record 30 of 80
-==7568==    at 0x48465EF: calloc (vg_replace_malloc.c:1328)
-==7568==    by 0x505C14E: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
-==7568==    by 0x505F2C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
-==7568==    by 0x4E60DB4: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E619D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4A07B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4AB48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x4E4B3C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==7568==    by 0x485D113: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
-==7568==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==7568== 
-==7568== LEAK SUMMARY:
-==7568==    definitely lost: 0 bytes in 0 blocks
-==7568==    indirectly lost: 0 bytes in 0 blocks
-==7568==      possibly lost: 0 bytes in 0 blocks
-==7568==    still reachable: 402 bytes in 6 blocks
-==7568==         suppressed: 229,040 bytes in 234 blocks
-==7568== 
-==7568== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
---7568-- 
---7568-- used_suppression:     42 readline_internal_xmalloc ../suppressions/readline.supp:46 suppressed: 198,669 bytes in 202 blocks
---7568-- used_suppression:     25 ncurses_terminfo_cache ../suppressions/readline.supp:21 suppressed: 24,715 bytes in 25 blocks
---7568-- used_suppression:      2 readline_internal_xrealloc ../suppressions/readline.supp:55 suppressed: 1,544 bytes in 2 blocks
---7568-- used_suppression:      4 precise_readline__generated_suppr_4 ../suppressions/readline.supp:157 suppressed: 4,096 bytes in 4 blocks
---7568-- used_suppression:      1 precise_readline__generated_suppr_5 ../suppressions/readline.supp:172 suppressed: 16 bytes in 1 blocks
-==7568== 
-==7568== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==9550== Memcheck, a memory error detector
+==9550== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==9550== Using Valgrind-3.19.0-8d3c8034b8-20220411 and LibVEX; rerun with -h for copyright info
+==9550== Command: ./MainApp
+==9550== Parent PID: 3725
+==9550== 
+--9550-- 
+--9550-- Valgrind options:
+--9550--    --leak-check=full
+--9550--    --show-leak-kinds=all
+--9550--    --track-origins=yes
+--9550--    --verbose
+--9550--    --suppressions=../suppressions/readline.supp
+--9550--    --log-file=../valgrind-out.txt
+--9550-- Contents of /proc/version:
+--9550--   Linux version 6.1.0-42-amd64 (debian-kernel@lists.debian.org) (gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #1 SMP PREEMPT_DYNAMIC Debian 6.1.159-1 (2025-12-30)
+--9550-- 
+--9550-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3
+--9550-- Page sizes: currently 4096, max supported 4096
+--9550-- Valgrind library directory: /usr/libexec/valgrind
+--9550-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp
+--9550-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--9550--   Considering /usr/lib/debug/.build-id/65/80196fa83df5c1edec10a57b2725eda6c73d7c.debug ..
+--9550--   .. build-id is valid
+--9550-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--9550--   Considering /usr/lib/debug/.build-id/82/26c2aa6b808ebd5a6fafb694a7fb3287f33590.debug ..
+--9550--   .. build-id is valid
+--9550--    object doesn't have a dynamic symbol table
+--9550-- Scheduler: using generic scheduler lock implementation.
+--9550-- Reading suppressions file: ../suppressions/readline.supp
+--9550-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==9550== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-9550-by-robi-on-???
+==9550== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-9550-by-robi-on-???
+==9550== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-9550-by-robi-on-???
+==9550== 
+==9550== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==9550== don't want to do, unless you know exactly what you're doing,
+==9550== or are doing some strange experiment):
+==9550==   /usr/bin/vgdb --pid=9550 ...command...
+==9550== 
+==9550== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==9550==   /path/to/gdb ./MainApp
+==9550== and then give GDB the following command
+==9550==   target remote | /usr/bin/vgdb --pid=9550
+==9550== --pid is optional if only one valgrind process is running
+==9550== 
+--9550-- REDIR: 0x40239c0 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bb0e2 (vgPlain_amd64_linux_REDIR_FOR_strlen)
+--9550-- REDIR: 0x40221a0 (ld-linux-x86-64.so.2:index) redirected to 0x580bb0fc (vgPlain_amd64_linux_REDIR_FOR_index)
+--9550-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--9550--   Considering /usr/lib/debug/.build-id/ad/f1388be4d8781737b0c83fe111a5a9c6e930aa.debug ..
+--9550--   .. build-id is valid
+--9550-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+--9550--   Considering /usr/lib/debug/.build-id/d8/ec66cffcb23a75c3f15940674d6028709121f8.debug ..
+--9550--   .. build-id is valid
+==9550== WARNING: new redirection conflicts with existing -- ignoring it
+--9550--     old: 0x040239c0 (strlen              ) R-> (0000.0) 0x580bb0e2 vgPlain_amd64_linux_REDIR_FOR_strlen
+--9550--     new: 0x040239c0 (strlen              ) R-> (2007.0) 0x048478a0 strlen
+--9550-- REDIR: 0x40223c0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4848780 (strcmp)
+--9550-- REDIR: 0x4021630 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x484c1a0 (mempcpy)
+--9550-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so
+--9550-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30
+--9550--    object doesn't have a symbol table
+--9550-- Reading syms from /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+--9550--    object doesn't have a symbol table
+--9550-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--9550--   Considering /usr/lib/debug/.build-id/61/96744a316dbd57c0fd8968df1680aac482cec4.debug ..
+--9550--   .. build-id is valid
+==9550== WARNING: new redirection conflicts with existing -- ignoring it
+--9550--     old: 0x04b56600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
+--9550--     new: 0x04b56600 (memalign            ) R-> (1017.0) 0x04846b90 aligned_alloc
+==9550== WARNING: new redirection conflicts with existing -- ignoring it
+--9550--     old: 0x04b56600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
+--9550--     new: 0x04b56600 (memalign            ) R-> (1017.0) 0x04846b60 aligned_alloc
+==9550== WARNING: new redirection conflicts with existing -- ignoring it
+--9550--     old: 0x04b56600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
+--9550--     new: 0x04b56600 (memalign            ) R-> (1017.0) 0x04846b90 aligned_alloc
+==9550== WARNING: new redirection conflicts with existing -- ignoring it
+--9550--     old: 0x04b56600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
+--9550--     new: 0x04b56600 (memalign            ) R-> (1017.0) 0x04846b60 aligned_alloc
+--9550-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/semantic_validator/libSemanticValidator.so
+--9550-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/semantic_normalizer/libSemanticNormalizer.so
+--9550-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/logger/libLoggerService.so
+--9550-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so
+--9550-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/execution_context/libExecutionContext.so
+--9550-- Reading syms from /usr/lib/x86_64-linux-gnu/libreadline.so.8.2
+--9550--    object doesn't have a symbol table
+--9550-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
+--9550--   Considering /usr/lib/debug/.build-id/d6/e6f9e3af1243eed9bf5efd366dd015a9f22c13.debug ..
+--9550--   .. build-id is valid
+--9550-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/auxiliary/libUtils.so
+--9550-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/condition-evaluator/libConditionEvaluator.so
+--9550-- Reading syms from /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4
+--9550--    object doesn't have a symbol table
+--9550-- REDIR: 0x4b5c540 (libc.so.6:strnlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5c5d0 (libc.so.6:strpbrk) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5a6f0 (libc.so.6:strcmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b6f4e0 (libc.so.6:wcsnlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b59830 (libc.so.6:memset) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b6de20 (libc.so.6:wcslen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b58e60 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b6dc50 (libc.so.6:wcschr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5a5e0 (libc.so.6:index) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5c600 (libc.so.6:rindex) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b6dce0 (libc.so.6:wcscmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b59a70 (libc.so.6:stpncpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b6e230 (libc.so.6:wmemchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5c3f0 (libc.so.6:strncmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b59ae0 (libc.so.6:strcasecmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5b950 (libc.so.6:strcspn) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b6dd70 (libc.so.6:wcscpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5a560 (libc.so.6:strcat) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5c2e0 (libc.so.6:strncasecmp_l) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b58d70 (libc.so.6:bcmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b597a0 (libc.so.6:memrchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5a660 (libc.so.6:strchrnul) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5b8d0 (libc.so.6:strcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b59b80 (libc.so.6:strcasecmp_l) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5c1b0 (libc.so.6:strlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5c490 (libc.so.6:strncpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b599f0 (libc.so.6:stpcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b59580 (libc.so.6:memmove) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b58cf0 (libc.so.6:memchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5c7c0 (libc.so.6:strspn) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b59690 (libc.so.6:mempcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5c240 (libc.so.6:strncasecmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b59930 (libc.so.6:rawmemchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5c380 (libc.so.6:strncat) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4bd30d0 (libc.so.6:__memcpy_chk) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b5cf60 (libc.so.6:strstr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9550-- REDIR: 0x4b6cbe0 (libc.so.6:__strrchr_sse2) redirected to 0x4847320 (__strrchr_sse2)
+--9550-- REDIR: 0x4b55920 (libc.so.6:malloc) redirected to 0x4841740 (malloc)
+--9550-- REDIR: 0x4b66d50 (libc.so.6:__strlen_sse2) redirected to 0x48477e0 (__strlen_sse2)
+--9550-- REDIR: 0x4b5f7e0 (libc.so.6:__memcmp_sse2) redirected to 0x484a9e0 (__memcmp_sse2)
+--9550-- REDIR: 0x4c2e600 (libc.so.6:__strcmp_sse42) redirected to 0x4848740 (__strcmp_sse42)
+--9550-- REDIR: 0x492c570 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4841ec0 (operator new(unsigned long))
+--9550-- REDIR: 0x4b5fd70 (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4848890 (memcpy@GLIBC_2.2.5)
+--9550-- REDIR: 0x4b566d0 (libc.so.6:calloc) redirected to 0x4846540 (calloc)
+--9550-- REDIR: 0x4b66720 (libc.so.6:__strcpy_sse2_unaligned) redirected to 0x48478d0 (strcpy)
+--9550-- REDIR: 0x4b64d40 (libc.so.6:__strchrnul_sse2) redirected to 0x484bca0 (strchrnul)
+--9550-- REDIR: 0x4afe3c0 (libc.so.6:setenv) redirected to 0x484cba0 (setenv)
+--9550-- REDIR: 0x4b64b20 (libc.so.6:__strchr_sse2) redirected to 0x4847400 (__strchr_sse2)
+--9550-- REDIR: 0x4c30f70 (libc.so.6:__strncmp_sse42) redirected to 0x4847ff0 (__strncmp_sse42)
+--9550-- REDIR: 0x4b56120 (libc.so.6:realloc) redirected to 0x48467b0 (realloc)
+--9550-- REDIR: 0x4b5fd50 (libc.so.6:__mempcpy_sse2_unaligned) redirected to 0x484bdb0 (mempcpy)
+--9550-- REDIR: 0x4b6c9c0 (libc.so.6:__strnlen_sse2) redirected to 0x4847720 (strnlen)
+--9550-- REDIR: 0x4b55ee0 (libc.so.6:free) redirected to 0x4844110 (free)
+--9550-- REDIR: 0x4b5fd60 (libc.so.6:__memcpy_chk_sse2_unaligned) redirected to 0x484c290 (__memcpy_chk)
+--9550-- REDIR: 0x4b60640 (libc.so.6:__memset_sse2_unaligned) redirected to 0x484b1c0 (memset)
+--9550-- REDIR: 0x4b6b9e0 (libc.so.6:__strncpy_sse2_unaligned) redirected to 0x4847db0 (__strncpy_sse2_unaligned)
+--9550-- REDIR: 0x4b5f4b0 (libc.so.6:__memchr_sse2) redirected to 0x4848800 (memchr)
+--9550-- REDIR: 0x4c2cdc0 (libc.so.6:__strcasecmp_l_sse42) redirected to 0x4848290 (strcasecmp_l)
+--9550-- REDIR: 0x4b60a60 (libc.so.6:__stpcpy_sse2_unaligned) redirected to 0x484ada0 (__stpcpy_sse2_unaligned)
+--9550-- REDIR: 0x4c2cdb0 (libc.so.6:__strcasecmp_sse42) redirected to 0x4848050 (strcasecmp)
+--9550-- REDIR: 0x4c2f4d0 (libc.so.6:__strncasecmp_sse42) redirected to 0x4848110 (strncasecmp)
+--9550-- REDIR: 0x492a8e0 (libstdc++.so.6:operator delete(void*, unsigned long)) redirected to 0x4844930 (operator delete(void*, unsigned long))
+--9550-- REDIR: 0x492c5d0 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x48431a0 (operator new[](unsigned long))
+--9550-- REDIR: 0x492a8d0 (libstdc++.so.6:operator delete(void*)) redirected to 0x48446b0 (operator delete(void*))
+--9550-- REDIR: 0x492a900 (libstdc++.so.6:operator delete[](void*)) redirected to 0x48456f0 (operator delete[](void*))
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x49C2BF6: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_assign(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x49C2FCC: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::operator=(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D9EE5C: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x49C2BFB: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_assign(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x49C2FCC: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::operator=(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D9EE5C: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== Use of uninitialised value of size 8
+==9550==    at 0x49C2C01: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_assign(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x49C2FCC: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::operator=(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D9EE5C: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x11BAD5: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11A57D: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4D9EE6B: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x4844951: operator delete(void*, unsigned long) (vg_replace_malloc.c:935)
+==9550==    by 0x121356: std::__new_allocator<char>::deallocate(char*, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11F8E4: std::allocator_traits<std::allocator<char> >::deallocate(std::allocator<char>&, char*, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11E4F7: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_destroy(unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11BAED: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11A57D: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4D9EE6B: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x11BF0F: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11A83E: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11F111: decltype (::new ((void*)(0)) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >((declval<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>)())) std::construct_at<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D1E1: void std::allocator_traits<std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::construct<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D3AD: void std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_realloc_insert<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(__gnu_cxx::__normal_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11B51D: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::push_back(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4D9EF7C: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x11F1DC: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_S_copy(char*, char const*, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11E787: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_S_copy_chars(char*, char*, char*) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11BFE2: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11A83E: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11F111: decltype (::new ((void*)(0)) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >((declval<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>)())) std::construct_at<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D1E1: void std::allocator_traits<std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::construct<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D3AD: void std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_realloc_insert<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(__gnu_cxx::__normal_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11B51D: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::push_back(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4D9EF7C: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x1185E7: std::char_traits<char>::copy(char*, char const*, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11F209: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_S_copy(char*, char const*, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11E787: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_S_copy_chars(char*, char*, char*) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11BFE2: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11A83E: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11F111: decltype (::new ((void*)(0)) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >((declval<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>)())) std::construct_at<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D1E1: void std::allocator_traits<std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::construct<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D3AD: void std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_realloc_insert<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(__gnu_cxx::__normal_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11B51D: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::push_back(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4D9EF7C: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== Use of uninitialised value of size 8
+==9550==    at 0x118597: std::char_traits<char>::assign(char&, char const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11BC1C: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_set_length(unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11BFFD: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11A83E: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11F111: decltype (::new ((void*)(0)) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >((declval<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>)())) std::construct_at<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D1E1: void std::allocator_traits<std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::construct<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D3AD: void std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_realloc_insert<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(__gnu_cxx::__normal_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11B51D: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::push_back(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4D9EF7C: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x498CA19: std::basic_filebuf<char, std::char_traits<char> >::xsputn(char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x49B3145: std::ostream::write(char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D872D8: FileHandler::writeToBinaryFile(std::basic_ofstream<char, std::char_traits<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D9F11D: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x49C15D5: std::basic_streambuf<char, std::char_traits<char> >::xsputn(char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x49B3145: std::ostream::write(char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D872D8: FileHandler::writeToBinaryFile(std::basic_ofstream<char, std::char_traits<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D9F11D: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x49B3149: std::ostream::write(char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D872D8: FileHandler::writeToBinaryFile(std::basic_ofstream<char, std::char_traits<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D9F11D: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== Syscall param write(buf) points to uninitialised byte(s)
+==9550==    at 0x4BB5340: write (write.c:26)
+==9550==    by 0x494CE2C: std::__basic_file<char>::xsputn(char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x498DE22: std::basic_filebuf<char, std::char_traits<char> >::_M_convert_to_external(char*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x498E1DD: std::basic_filebuf<char, std::char_traits<char> >::overflow(int) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x498DF72: std::basic_filebuf<char, std::char_traits<char> >::_M_terminate_output() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4990F4F: std::basic_filebuf<char, std::char_traits<char> >::close() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4992C70: std::basic_ofstream<char, std::char_traits<char> >::close() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D91928: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Address 0x50ffcb0 is 0 bytes inside a block of size 8,192 alloc'd
+==9550==    at 0x484320F: operator new[](unsigned long) (vg_replace_malloc.c:640)
+==9550==    by 0x498DCE3: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4991AB5: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x499251D: std::basic_ofstream<char, std::char_traits<char> >::basic_ofstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D91842: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+--9550-- REDIR: 0x4c2f4e0 (libc.so.6:__strncasecmp_l_sse42) redirected to 0x48483e0 (strncasecmp_l)
+==9550== 
+==9550== HEAP SUMMARY:
+==9550==     in use at exit: 229,442 bytes in 240 blocks
+==9550==   total heap usage: 1,216 allocs, 976 frees, 625,519 bytes allocated
+==9550== 
+==9550== Searching for pointers to 240 not-freed blocks
+==9550== Checked 427,216 bytes
+==9550== 
+==9550== 9 bytes in 1 blocks are still reachable in loss record 6 of 80
+==9550==    at 0x48417B4: malloc (vg_replace_malloc.c:381)
+==9550==    by 0x4B5B999: strdup (strdup.c:42)
+==9550==    by 0x50641D5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9550==    by 0x50672C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9550==    by 0x4E68DB4: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E699D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E5207B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E52B48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E533C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x48627D3: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550== 
+==9550== 9 bytes in 1 blocks are still reachable in loss record 7 of 80
+==9550==    at 0x48417B4: malloc (vg_replace_malloc.c:381)
+==9550==    by 0x4B5B999: strdup (strdup.c:42)
+==9550==    by 0x50641D5: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9550==    by 0x50672C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9550==    by 0x4E6859C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E699D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E5207B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E52B48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E533C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x48627D3: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550== 
+==9550== 24 bytes in 1 blocks are still reachable in loss record 17 of 80
+==9550==    at 0x48417B4: malloc (vg_replace_malloc.c:381)
+==9550==    by 0x4BBFDD5: tsearch (tsearch.c:337)
+==9550==    by 0x50641F0: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9550==    by 0x50672C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9550==    by 0x4E68DB4: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E699D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E5207B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E52B48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E533C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x48627D3: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550== 
+==9550== 24 bytes in 1 blocks are still reachable in loss record 18 of 80
+==9550==    at 0x48417B4: malloc (vg_replace_malloc.c:381)
+==9550==    by 0x4BBFDD5: tsearch (tsearch.c:337)
+==9550==    by 0x50641F0: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9550==    by 0x50672C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9550==    by 0x4E6859C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E699D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E5207B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E52B48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E533C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x48627D3: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550== 
+==9550== 168 bytes in 1 blocks are still reachable in loss record 29 of 80
+==9550==    at 0x48465EF: calloc (vg_replace_malloc.c:1328)
+==9550==    by 0x506414E: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9550==    by 0x50672C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9550==    by 0x4E68DB4: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E699D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E5207B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E52B48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E533C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x48627D3: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550== 
+==9550== 168 bytes in 1 blocks are still reachable in loss record 30 of 80
+==9550==    at 0x48465EF: calloc (vg_replace_malloc.c:1328)
+==9550==    by 0x506414E: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9550==    by 0x50672C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9550==    by 0x4E6859C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E699D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E5207B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E52B48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x4E533C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9550==    by 0x48627D3: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550== 
+==9550== LEAK SUMMARY:
+==9550==    definitely lost: 0 bytes in 0 blocks
+==9550==    indirectly lost: 0 bytes in 0 blocks
+==9550==      possibly lost: 0 bytes in 0 blocks
+==9550==    still reachable: 402 bytes in 6 blocks
+==9550==         suppressed: 229,040 bytes in 234 blocks
+==9550== 
+==9550== ERROR SUMMARY: 13 errors from 13 contexts (suppressed: 0 from 0)
+==9550== 
+==9550== 1 errors in context 1 of 13:
+==9550== Syscall param write(buf) points to uninitialised byte(s)
+==9550==    at 0x4BB5340: write (write.c:26)
+==9550==    by 0x494CE2C: std::__basic_file<char>::xsputn(char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x498DE22: std::basic_filebuf<char, std::char_traits<char> >::_M_convert_to_external(char*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x498E1DD: std::basic_filebuf<char, std::char_traits<char> >::overflow(int) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x498DF72: std::basic_filebuf<char, std::char_traits<char> >::_M_terminate_output() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4990F4F: std::basic_filebuf<char, std::char_traits<char> >::close() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4992C70: std::basic_ofstream<char, std::char_traits<char> >::close() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D91928: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Address 0x50ffcb0 is 0 bytes inside a block of size 8,192 alloc'd
+==9550==    at 0x484320F: operator new[](unsigned long) (vg_replace_malloc.c:640)
+==9550==    by 0x498DCE3: std::basic_filebuf<char, std::char_traits<char> >::_M_allocate_internal_buffer() (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4991AB5: std::basic_filebuf<char, std::char_traits<char> >::open(char const*, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x499251D: std::basic_ofstream<char, std::char_traits<char> >::basic_ofstream(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::_Ios_Openmode) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D91842: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== 
+==9550== 1 errors in context 2 of 13:
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x49B3149: std::ostream::write(char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D872D8: FileHandler::writeToBinaryFile(std::basic_ofstream<char, std::char_traits<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D9F11D: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== 
+==9550== 1 errors in context 3 of 13:
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x49C15D5: std::basic_streambuf<char, std::char_traits<char> >::xsputn(char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x49B3145: std::ostream::write(char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D872D8: FileHandler::writeToBinaryFile(std::basic_ofstream<char, std::char_traits<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D9F11D: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== 
+==9550== 1 errors in context 4 of 13:
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x498CA19: std::basic_filebuf<char, std::char_traits<char> >::xsputn(char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x49B3145: std::ostream::write(char const*, long) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D872D8: FileHandler::writeToBinaryFile(std::basic_ofstream<char, std::char_traits<char> >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D9F11D: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== 
+==9550== 1 errors in context 5 of 13:
+==9550== Use of uninitialised value of size 8
+==9550==    at 0x118597: std::char_traits<char>::assign(char&, char const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11BC1C: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_set_length(unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11BFFD: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11A83E: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11F111: decltype (::new ((void*)(0)) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >((declval<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>)())) std::construct_at<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D1E1: void std::allocator_traits<std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::construct<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D3AD: void std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_realloc_insert<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(__gnu_cxx::__normal_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11B51D: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::push_back(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4D9EF7C: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== 
+==9550== 1 errors in context 6 of 13:
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x1185E7: std::char_traits<char>::copy(char*, char const*, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11F209: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_S_copy(char*, char const*, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11E787: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_S_copy_chars(char*, char*, char*) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11BFE2: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11A83E: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11F111: decltype (::new ((void*)(0)) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >((declval<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>)())) std::construct_at<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D1E1: void std::allocator_traits<std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::construct<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D3AD: void std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_realloc_insert<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(__gnu_cxx::__normal_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11B51D: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::push_back(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4D9EF7C: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== 
+==9550== 1 errors in context 7 of 13:
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x11F1DC: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_S_copy(char*, char const*, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11E787: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_S_copy_chars(char*, char*, char*) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11BFE2: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11A83E: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11F111: decltype (::new ((void*)(0)) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >((declval<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>)())) std::construct_at<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D1E1: void std::allocator_traits<std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::construct<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D3AD: void std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_realloc_insert<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(__gnu_cxx::__normal_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11B51D: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::push_back(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4D9EF7C: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== 
+==9550== 1 errors in context 8 of 13:
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x11BF0F: void std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_construct<char*>(char*, char*, std::forward_iterator_tag) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11A83E: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::basic_string(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11F111: decltype (::new ((void*)(0)) std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >((declval<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>)())) std::construct_at<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D1E1: void std::allocator_traits<std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::construct<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > >&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11D3AD: void std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::_M_realloc_insert<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&>(__gnu_cxx::__normal_iterator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >*, std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > > >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11B51D: std::vector<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::allocator<std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > > >::push_back(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4D9EF7C: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== 
+==9550== 1 errors in context 9 of 13:
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x4844951: operator delete(void*, unsigned long) (vg_replace_malloc.c:935)
+==9550==    by 0x121356: std::__new_allocator<char>::deallocate(char*, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11F8E4: std::allocator_traits<std::allocator<char> >::deallocate(std::allocator<char>&, char*, unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11E4F7: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_destroy(unsigned long) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11BAED: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11A57D: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4D9EE6B: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== 
+==9550== 1 errors in context 10 of 13:
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x11BAD5: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_dispose() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x11A57D: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::~basic_string() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4D9EE6B: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== 
+==9550== 1 errors in context 11 of 13:
+==9550== Use of uninitialised value of size 8
+==9550==    at 0x49C2C01: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_assign(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x49C2FCC: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::operator=(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D9EE5C: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== 
+==9550== 1 errors in context 12 of 13:
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x49C2BFB: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_assign(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x49C2FCC: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::operator=(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D9EE5C: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+==9550== 
+==9550== 1 errors in context 13 of 13:
+==9550== Conditional jump or move depends on uninitialised value(s)
+==9550==    at 0x49C2BF6: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::_M_assign(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x49C2FCC: std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >::operator=(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30)
+==9550==    by 0x4D9EE5C: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x4D918CF: FileHandler::insertData(InsertNode&, ExecutionContext const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550==    by 0x48641D4: InterpreterVisitor::visit(InsertNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x11950D: InsertNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x4863F0C: InterpreterVisitor::visit(ProgramNode&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x118725: ProgramNode::accept(ASTVisitor&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==    by 0x48626FE: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x486297F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9550==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9550==  Uninitialised value was created by a stack allocation
+==9550==    at 0x4D9EB66: FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, ValueRecordNode const* const&, std::vector<bool, std::allocator<bool> > const&, std::basic_ofstream<char, std::char_traits<char> >&, DB_Types::RecordType, bool) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so)
+==9550== 
+--9550-- 
+--9550-- used_suppression:     42 readline_internal_xmalloc ../suppressions/readline.supp:46 suppressed: 198,669 bytes in 202 blocks
+--9550-- used_suppression:     25 ncurses_terminfo_cache ../suppressions/readline.supp:21 suppressed: 24,715 bytes in 25 blocks
+--9550-- used_suppression:      2 readline_internal_xrealloc ../suppressions/readline.supp:55 suppressed: 1,544 bytes in 2 blocks
+--9550-- used_suppression:      4 precise_readline__generated_suppr_4 ../suppressions/readline.supp:157 suppressed: 4,096 bytes in 4 blocks
+--9550-- used_suppression:      1 precise_readline__generated_suppr_5 ../suppressions/readline.supp:172 suppressed: 16 bytes in 1 blocks
+==9550== 
+==9550== ERROR SUMMARY: 13 errors from 13 contexts (suppressed: 0 from 0)
