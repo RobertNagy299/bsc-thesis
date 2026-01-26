@@ -1,0 +1,180 @@
+{
+   readline_reachable_memory
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:xmalloc
+   fun:rl_*
+   obj:/usr/lib/*/libreadline.so*
+}
+
+{
+   readline_history
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:add_history
+   obj:/usr/lib/*/libreadline.so*
+}
+
+{
+   ncurses_terminfo_cache
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   ...
+   fun:_nc_*
+   obj:/usr/lib/*/libtinfo.so*
+}
+
+{
+   ncurses_tget
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:tget*
+   obj:/usr/lib/*/libtinfo.so*
+}
+
+{
+   ncurses_setupterm
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:_nc_setupterm
+   obj:/usr/lib/*/libtinfo.so*
+}
+
+{
+   readline_internal_xmalloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xmalloc
+   obj:/usr/lib/*/libreadline.so*
+}
+
+{
+   readline_internal_xrealloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:realloc
+   fun:xrealloc
+   obj:/usr/lib/*/libreadline.so*
+}
+
+{
+   readline_initialize_globals
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:rl_initialize
+   obj:/usr/lib/*/libreadline.so*
+}
+
+{
+   readline_redisplay_buffers
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:rl_redisplay
+   obj:/usr/lib/*/libreadline.so*
+}
+
+{
+   readline_history_globals
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:add_history
+   obj:/usr/lib/*/libreadline.so*
+}
+
+{
+   readline_initialize_malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:rl_initialize
+   fun:readline
+   obj:/usr/lib/*/libreadline.so*
+}
+
+{
+   readline_redisplay_malloc
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:rl_redisplay
+   fun:readline_internal_setup
+   fun:readline
+   obj:/usr/lib/*/libreadline.so*
+}
+
+{
+   precise_readline__generated_suppr_1
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xrealloc
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.2
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.2
+   fun:rl_redisplay
+   fun:readline_internal_setup
+   fun:readline
+   fun:_ZN9CLIDriver6runCLIEv
+   fun:main
+}
+
+
+{
+   precise_readline__generated_suppr_2
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xrealloc
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.2
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.2
+   fun:rl_redisplay
+   fun:readline_internal_setup
+   fun:readline
+   fun:_ZN9CLIDriver6runCLIEv
+   fun:main
+}
+
+
+{
+   precise_readline__generated_suppr_3
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xrealloc
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.2
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.2
+   fun:rl_redisplay
+   fun:readline_internal_setup
+   fun:readline
+   fun:_ZN9CLIDriver6runCLIEv
+   fun:main
+}
+
+
+{
+   precise_readline__generated_suppr_4
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xrealloc
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.2
+   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.8.2
+   fun:rl_redisplay
+   fun:readline_internal_setup
+   fun:readline
+   fun:_ZN9CLIDriver6runCLIEv
+   fun:main
+}
+
+{
+   precise_readline__generated_suppr_5
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:rl_initialize
+   fun:readline
+   fun:_ZN9CLIDriver6runCLIEv
+   fun:main
+}

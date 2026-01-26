@@ -8,8 +8,39 @@ valgrind --leak-check=full \
          --show-leak-kinds=all \
          --track-origins=yes \
          --verbose \
+         --suppressions=../suppressions/readline.supp \
          --log-file=../valgrind-out.txt \
          ./MainApp
+
+```
+
+## To generate remaining suppressions while suppressing some stuff already
+
+```
+
+valgrind --leak-check=full \
+         --show-leak-kinds=all \
+         --track-origins=yes \
+         --verbose \
+         --suppressions=../suppressions/readline.supp \
+         --gen-suppressions=all \
+         --log-file=../valgrind-out.txt \
+         ./MainApp
+
+```
+
+
+## To generate suppressions:
+
+```
+
+valgrind \
+  --leak-check=full \
+  --show-leak-kinds=all \
+  --gen-suppressions=all \
+  --track-origins=yes \
+  ./MainApp
+
 
 ```
 

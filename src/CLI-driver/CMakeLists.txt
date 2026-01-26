@@ -7,10 +7,14 @@ add_library(CLIDriver SHARED
 
 target_link_libraries(CLIDriver
   PRIVATE
-    Readline::Readline
     SemanticValidator 
     SemanticNormalizer
     LoggerService
     FileHandler
     ExecutionContext
 )
+
+
+find_library(READLINE_LIB readline REQUIRED)
+
+target_link_libraries(CLIDriver PRIVATE ${READLINE_LIB})

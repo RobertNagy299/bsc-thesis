@@ -6,7 +6,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(BISON REQUIRED)
 find_package(FLEX REQUIRED)
-find_package(Readline REQUIRED)
+# find_package(Readline REQUIRED)
+
+
 
 bison_target(
   Parser

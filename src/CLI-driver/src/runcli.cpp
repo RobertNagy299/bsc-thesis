@@ -1,3 +1,13 @@
+/**
+ * =========== DISCLAIMER! =============
+ *
+ * This part of the database system is interacting with third party, multiple decades old C-libraries
+ * Hence, the coding style might be more C-style in this file and might not resemble idiomatic C++ code
+ *
+ * Furthermore, Valgrind will report "still reachable" memory "leaks" due to GNU readline.
+ * This is expected and a suppression file should take care of GNU readline false positives.
+ */
+
 #include "../../DBEngine/execution_context/public_api.hpp"
 #include "../../interpreter/interpreter_visitor.hpp"
 #include "../../parser/ast.hpp"
@@ -15,6 +25,12 @@ extern FILE* yyin;
 extern int yylex_destroy();
 
 namespace {
+
+void cleanupReadline() {
+  clear_history();
+  rl_free_line_state();
+  rl_cleanup_after_signal();
+}
 
 bool endsWithSemicolonOutsideQuotes(const std::string& s) {
   bool inSingleQuote = false;
@@ -62,18 +78,30 @@ void parseAndExecute(const std::string& sql) {
 } // namespace
 
 void CLIDriver::runCLI() {
+  stifle_history(100);
   std::cout << "Welcome to MiniSQL. Type INIT, QUIT, or SQL statements.\n";
 
-  std::string line;
   std::string sqlBuffer;
   bool initialized = false;
 
   while (true) {
-    std::cout << (sqlBuffer.empty() ? "sql> " : "  -> ");
-    if (!std::getline(std::cin, line)) break;
+    const char* prompt = sqlBuffer.empty() ? "sql> " : "  -> ";
+    char* input = readline(prompt);
+
+    if (!input) { // Ctrl+D
+      std::cout << "\nBye!\n";
+      break;
+    }
+
+    std::string line(input);
+    free(input);
+
+    // Ignore empty lines (but still allow multiline continuation)
+    if (!line.empty()) { add_history(line.c_str()); }
 
     if (line == "QUIT") {
       if (initialized) { ExecutionContext::destroyInstance(); }
+      cleanupReadline();
       std::cout << "Bye.\n";
       break;
     }
@@ -82,7 +110,6 @@ void CLIDriver::runCLI() {
       if (!initialized) {
         ExecutionContext::getInstance();
         initialized = true;
-        std::cout << "Execution context initialized.\n";
       } else {
         std::cout << "Already initialized.\n";
       }
@@ -92,7 +119,7 @@ void CLIDriver::runCLI() {
     sqlBuffer += line;
     sqlBuffer += '\n';
 
-    if (!endsWithSemicolonOutsideQuotes(sqlBuffer)) continue;
+    if (!endsWithSemicolonOutsideQuotes(sqlBuffer)) { continue; }
 
     if (!initialized) {
       std::cerr << "Error: INIT must be called first.\n";
