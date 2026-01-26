@@ -71,8 +71,11 @@ void parseAndExecute(const std::string& sql) {
   InterpreterVisitor visitor(ctx);
   root->accept(visitor);
 
-  delete root;
-  root = nullptr;
+  if (root) {
+    // clang-format off
+    delete root; root = nullptr;
+    // clang-format on
+  }
 }
 
 } // namespace

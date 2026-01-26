@@ -29,35 +29,58 @@
 %defines
 
 %union {
-    std::string* str;
-    ASTNode* node;
-    std::vector<ASTNode*>* nodeList;
-    std::vector<std::string>* strList;
-    ColumnListNode* colList;
-    ValuesListNode* valuesList;
-    ValueRecordNode* valRecord;
-    WhereNode* whereNode;
-    ComparatorNode* comparatorNode;
-    AssignmentNode* assignmentNode;
-    AssignmentListNode* assignmentListNode;
-    ConditionListNode* conditionListNode;
-    std::vector<LiteralNode*>* litList;
-    LiteralNode* literal;
+    std::string* str; // destructor exists
+    ASTNode* node; 
+    std::vector<ASTNode*>* nodeList; // destructor exists
+    std::vector<std::string>* strList; // destructor exists
+    ColumnListNode* colList; // destructor exists
+    ValuesListNode* valuesList; // destructor exists
+    ValueRecordNode* valRecord; // destructor exists
+    WhereNode* whereNode; // destructor exists
+    ComparatorNode* comparatorNode; // destructor exists
+    AssignmentNode* assignmentNode; // destructor exists
+    AssignmentListNode* assignmentListNode; // destructor exists
+    ConditionListNode* conditionListNode; // destructor exists
+    std::vector<LiteralNode*>* litList; // destructor exists 
+    LiteralNode* literal; // destructor exists
 }
 
 /* Tell Bison how to free semantic values if it discards them. */
-/* TODO: revisit this for syntax errors with update, delete, insert */
-%destructor { delete $$; $$ = nullptr; } <str>
-/* TODO: command withouth semicolon causes leak  %destructor { if($$) {delete $$; $$ = nullptr;} } <node> */
-%destructor { delete $$; $$ = nullptr; } <strList>
+
+%destructor { if($$) { delete $$; $$ = nullptr; } } <str>
+%destructor { if($$) { delete $$; $$ = nullptr; } } <node> // this rule causes pure virtual method called error
+%destructor { if($$) { delete $$; $$ = nullptr; } } <strList>
+%destructor { if($$) { delete $$; $$ = nullptr; } } <colList>
+%destructor { if($$) { delete $$; $$ = nullptr; } } <valuesList>
+%destructor { if($$) { delete $$; $$ = nullptr; } } <valRecord>
+%destructor { if($$) { delete $$; $$ = nullptr; } } <whereNode>
+%destructor { if($$) { delete $$; $$ = nullptr; } } <comparatorNode>
+%destructor { if($$) { delete $$; $$ = nullptr; } } <assignmentNode>
+%destructor { if($$) { delete $$; $$ = nullptr; } } <assignmentListNode>
+%destructor { if($$) { delete $$; $$ = nullptr; } } <conditionListNode>
+%destructor { if($$) { delete $$; $$ = nullptr; } } <literal>
 
 %destructor {
-  for (auto &p : *$$) {
-    delete p; p = nullptr;
+  if($$) {
+    for (auto &p : *$$) {
+      if(p) {
+        delete p; p = nullptr;
+      }
+    }
+    delete $$; $$ = nullptr;
   }
-  delete $$; $$ = nullptr;
 } <nodeList>
 
+%destructor {
+  if($$) {
+    for (auto &p : *$$) {
+      if(p) {
+        delete p; p = nullptr;
+      }
+    }
+    delete $$; $$ = nullptr;
+  }
+} <litList>
 
 %token SEMICOLON LPAREN RPAREN COMMA ASTERISK
 %token KW_CREATE KW_UNTYPED KW_TABLE KW_NOT KW_KEY KW_PRIMARY KW_DEFAULT KW_UNIQUE KW_DROP
@@ -88,12 +111,12 @@ program
       auto prog = new ProgramNode();
       prog->statements.push_back($1);
       root = prog;   // root is global
-      $$ = prog;
+      $$ = nullptr;
     }
   | program statement SEMICOLON {
       auto prog = static_cast<ProgramNode*>($1);
       prog->statements.push_back($2);
-      $$ = prog;
+      $$ = nullptr;
     }
   ;
 
