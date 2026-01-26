@@ -25,7 +25,15 @@ public:
 
   void visit(CreateUntypedTableNode& node) override { FileHandler::createUntypedTable(node, ctx); }
 
-  void visit(DropTableNode& node) override { FileHandler::dropTable(node, ctx); }
+  void visit(DropTableNode& node) override {
+
+    if (!SemanticValidator::validateDropSemantics(node, ctx)) {
+      LoggerService::ErrorLogger::printAsStandardError(
+          StatusCode::ErrorCode::NOCONTX_SEMVAL_DROP_GenericInvalidStatement);
+      return;
+    }
+    FileHandler::dropTable(node, ctx);
+  }
 
   void visit(InsertNode& node) override {
 
@@ -58,20 +66,6 @@ public:
     LoggerService::StatusLogger::printResultSetAsTable(node, results);
 
     // end of results's lifespan
-    /*
-    std::cout << "Select node detected, table_name = " << node.table_name << '\n' << "col list = ";
-    if (!node.columns) {
-      std::cout << " * ";
-      return;
-    }
-    for (auto col : node.columns->columns) { std ::cout << col << ", "; }
-    std::cout << "\nprojection mask: ";
-    for (auto bit : node.projection_mask) { std::cout << bit << ", "; }
-    std::cout << "\nschema indexes in where: ";
-    for (auto& condNode : node.opt_where_node->conditions_list_node->conditions) {
-      std::cout << std::to_string(condNode->schema_index) << ", ";
-    }
-      */
   }
 
   void visit(UpdateNode& node) override {

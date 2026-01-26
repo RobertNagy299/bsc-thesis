@@ -10,6 +10,7 @@
  */
 const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const ExecutionContext& ctx) {
   assert(node.is_normalized);
+  if (!SemanticValidator::checkIfTableExists(node.table_name, ctx)) { return false; }
 
   const auto& tables = ctx.getUntypedTables();
   const std::string& table_pk_col = Utilities::ColumnUtils::extractPrimaryKeyColumn(tables.at(node.table_name));

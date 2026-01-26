@@ -4,11 +4,7 @@ const bool SemanticValidator::validateUpdateSemantics(UpdateNode& node, const Ex
   // check if table exists
   const auto& untyped_tables = ctx.getUntypedTables();
   const auto& current_table = untyped_tables.find(node.table_name);
-  if (current_table == untyped_tables.end()) {
-    LoggerService::ErrorLogger::printAsStandardError(StatusCode::ErrorCode::SEMVAL_TableDoesNotExist,
-                                                     std::vector<std::string>{node.table_name});
-    return false;
-  }
+  if (!SemanticValidator::checkIfTableExists(node.table_name, ctx)) { return false; }
 
   std::unordered_set<std::string> assignment_cols;
   const std::string& primary_key_column = Utilities::ColumnUtils::extractPrimaryKeyColumn(current_table->second);

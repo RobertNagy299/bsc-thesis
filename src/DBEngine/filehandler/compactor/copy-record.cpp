@@ -62,6 +62,7 @@ FileHandler::Compactor::copyNextLiveRecord(std::ifstream& old_table_file, std::o
 
     for (auto& lit : literals) FileHandler::writeToBinaryFile(new_table_file, lit);
   } catch (const std::exception& exc) {
+    if (new_table_file.is_open()) { new_table_file.close(); }
     LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::FILEOPS_GenericFileIOFailure,
                                                  std::vector<std::string>{exc.what()});
   }

@@ -41,6 +41,7 @@ enum class ErrorCode : std::uint16_t {
   NOCONTX_SEMVAL_SELECT_GenericInvalidStatement,
   NOCONTX_SEMVAL_UPDATE_GenericInvalidStatement,
   NOCONTX_SEMVAL_DELETE_GenericInvalidStatement,
+  NOCONTX_SEMVAL_DROP_GenericInvalidStatement,
 
   NOCONTX_SEMVAL_INSERT_PrimaryKeyCannotBeEmpty,
   NOCONTX_SEMVAL_INSERT_NotNullNoDefaultViolation,

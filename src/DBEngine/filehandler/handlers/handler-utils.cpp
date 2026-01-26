@@ -35,6 +35,7 @@ void FileHandler::checkFileValidity(std::ifstream& table_file, const std::string
   DB_Types::table_file_header_t file_header;
   table_file.read(reinterpret_cast<char*>(&file_header), sizeof(file_header));
   if (file_header.magic != FileHandler::DB_MAGIC) {
+    if (table_file.is_open()) { table_file.close(); }
     LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::FILEOPS_UnknownTableFileFormat,
                                                  std::vector<std::string>{table_name});
   }

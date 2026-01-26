@@ -43,7 +43,7 @@ void ExecutionContext::initializeUntypedTableMetadata() {
 
       file.close();
       this->untyped_tables[table_name] = schema;
-      LoggerService::StatusLogger::printAsStandardOutput("Recognized table " + table_name + " with " +
+      LoggerService::StatusLogger::printAsStandardOutput("Recognized table '" + table_name + "' with " +
                                                          std::to_string(schema.size()) + " columns.");
     }
   }
@@ -111,11 +111,8 @@ void ExecutionContext::initializePrimaryKeyIndicesForTable(const std::string& ta
       this->indices->at(table_name)
           ->insert(std::pair<std::string, DB_Types::index_ptr_t>(
               pk_col_name, FileHandler::extractPrimaryKeysIndex(table_file, schema.size() - 1UL)));
-      // TODO remove debugging logs
-      for (const auto& rec : *(this->indices->at(table_name)->at(pk_col_name))) {
-        std::cout << " in index, pk val = " << rec.first << " Offset = " << std::to_string(rec.second) << '\n';
-      }
     } else {
+      if (table_file.is_open()) { table_file.close(); }
       LoggerService::ErrorLogger::handleFatalError(
           StatusCode::FatalErrorCode::NOCONTX_NULLPTR_InMemoryPrimaryKeyHashMapInitializationFailure);
     }

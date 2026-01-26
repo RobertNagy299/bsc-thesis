@@ -158,6 +158,7 @@ FileHandler::performSequentialDelete(const DeleteNode& node, const ExecutionCont
       if (entry.col_id == colcode_of_comp_col) { final_offset = entry.offset; }
     }
     if (final_offset == UINT64_MAX) {
+      if (table_file.is_open()) { table_file.close(); }
       LoggerService::ErrorLogger::handleFatalError(
           StatusCode::FatalErrorCode::NOCONTX_FILEOPS_DELETE_ColumnNotFoundDueToCorruption);
     }

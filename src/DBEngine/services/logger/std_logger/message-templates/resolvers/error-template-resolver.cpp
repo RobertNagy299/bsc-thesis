@@ -77,6 +77,9 @@ std::string MessageTemplateResolver::resolveErrorMessageTemplate(const StatusCod
           "You've tried to update the primary key (column '{}'), which is not allowed because it's a bad practice.",
           resolved_context);
     }
+    case StatusCode::ErrorCode::NOCONTX_SEMVAL_DROP_GenericInvalidStatement: {
+      return "Drop statement is semantically invalid! The engine will not perform any file operations.";
+    }
     default: {
       return "Unknown error";
     }

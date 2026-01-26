@@ -7,12 +7,7 @@
 bool SemanticNormalizer::normalizeInsert(InsertNode& node, const ExecutionContext& ctx) {
   const auto& tables = ctx.getUntypedTables();
   auto t = tables.find(node.table_name);
-  if (t == tables.end()) {
-    // TODO move this to the validator instead and decouple their calling in the visitor
-    LoggerService::ErrorLogger::printAsStandardError(StatusCode::ErrorCode::SEMVAL_TableDoesNotExist,
-                                                     std::vector<std::string>{node.table_name});
-    return false;
-  } // validator will error later
+  if (t == tables.end()) { return false; } // validator will report the error later
 
   const auto& schema_cols = t->second;
   const std::size_t ncols = schema_cols.size();
@@ -47,7 +42,6 @@ bool SemanticNormalizer::normalizeInsert(InsertNode& node, const ExecutionContex
   for (auto& record : node.values->records) {
 
     std::vector<LiteralNode*> normalized_row(ncols, nullptr);
-    std::cout << "In semantic normalizer, node.cols size = " << std::to_string(node.columns->columns.size()) << '\n';
     for (std::size_t j = 0; j < node.columns->columns.size(); ++j) {
       std::size_t schema_index = std::distance(
           full_col_list.begin(), std::find(full_col_list.begin(), full_col_list.end(), node.columns->columns[j]));
@@ -57,7 +51,6 @@ bool SemanticNormalizer::normalizeInsert(InsertNode& node, const ExecutionContex
       else
         normalized_row[schema_index] = new LiteralNode(LiteralNode::Type::EMPTY, ""); // implicit default
     }
-    std::cout << "size of normalized_row = " << std::to_string(normalized_row.size()) << '\n';
     record->values = std::move(normalized_row);
   }
 

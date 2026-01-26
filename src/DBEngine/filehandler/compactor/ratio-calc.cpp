@@ -19,6 +19,7 @@ double FileHandler::Compactor::calculateTombstoneRatio(const std::string& table_
       total_count++;
       if (type_deser_result == DB_Types::TableFileDeserializationIndicator::TOMBSTONE) { tombstone_count++; }
       if (type_deser_result == DB_Types::TableFileDeserializationIndicator::IOERROR) {
+        if (table_file.is_open()) { table_file.close(); }
         LoggerService::ErrorLogger::handleFatalError(
             StatusCode::FatalErrorCode::NOCONTX_FILEOPS_UnknownIoErrorDuringDeserialization);
       }

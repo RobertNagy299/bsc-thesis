@@ -65,7 +65,6 @@ struct ProgramNode : ASTNode {
   void accept(ASTVisitor& v) override { v.visit(*this); }
 
   ~ProgramNode() override {
-    std::cout << "ProgramNode destructor called!\n";
     for (auto& s : statements) {
       if (s) {
         // clang-format off

@@ -25,6 +25,8 @@ void FileHandler::Compactor::compactTable(const std::string& table_name, const E
   do {
     copy_result = FileHandler::Compactor::copyNextLiveRecord(old_table_file, new_table_file, number_of_cols_without_pk);
     if (copy_result == DB_Types::TableFileDeserializationIndicator::IOERROR) {
+      if (new_table_file.is_open()) { new_table_file.close(); }
+      if (old_table_file.is_open()) { old_table_file.close(); }
       LoggerService::ErrorLogger::handleFatalError(
           StatusCode::FatalErrorCode::NOCONTX_FILEOPS_COMPACT_UnknownErrorDuringCopyingDuringCompaction);
     }

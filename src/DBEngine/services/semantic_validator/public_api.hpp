@@ -11,9 +11,12 @@
 
 namespace SemanticValidator {
 const bool validateWhereClauseSemantics(const DB_Types::untyped_table_t::const_iterator& table, WhereNode* node);
+const bool checkIfTableExists(const std::string& table_name, const ExecutionContext& ctx);
 
 const bool validateInsertSemantics(InsertNode& node, const ExecutionContext& ctx);
 const bool validateSelectSemantics(SelectNode& node, const ExecutionContext& ctx);
 const bool validateDeleteSemantics(DeleteNode& node, const ExecutionContext& ctx);
 const bool validateUpdateSemantics(UpdateNode& node, const ExecutionContext& ctx);
+const bool validateDropSemantics(const DropTableNode& node, const ExecutionContext& ctx);
+
 }; // namespace SemanticValidator
