@@ -12,7 +12,7 @@ void ExecutionContext::addNewPrimaryKeyIndex(const std::string& table_name, cons
 
 void ExecutionContext::recalculateIndicesForTable(const std::string& table_name) {
   // first, delete the current indices for the table
-  this->indices->erase(table_name);
+  if (this->indices->find(table_name) != this->indices->end()) { this->indices->erase(table_name); }
   // then rebuild them
   this->initializePrimaryKeyIndicesForTable(table_name);
   // TODO add Unique attribute indexing in the future maybe

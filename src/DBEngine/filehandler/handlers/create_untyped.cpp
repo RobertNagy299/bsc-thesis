@@ -50,6 +50,10 @@ void FileHandler::createUntypedTable(CreateUntypedTableNode& node, ExecutionCont
       cols.push_back(new UntypedColumnDefNode(*casted_col)); // deep copy
     }
   }
+
+  // create empty indicies for this table.
+  ctx.recalculateIndicesForTable(table_name);
+
   LoggerService::StatusLogger::printAsStandardOutput("Created table " + table_name + " with " +
                                                      std::to_string(cols.size()) + " columns");
   ctx.setUntypedTable(table_name, cols);

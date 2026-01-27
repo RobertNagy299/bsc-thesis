@@ -9,11 +9,19 @@ bool ConditionEvaluator::evaluateComparator(const std::string& lhs, ComparatorNo
 
   switch (cmp) {
 
-    case ComparatorNode::Type::IS:
+    case ComparatorNode::Type::IS: {
+      // first check if this is a boolean comparison
+      if (ltype == RuntimeType::BOOLEAN && rtype == RuntimeType::BOOLEAN) { return rhs == lhs; }
+      // if it's not a boolean check, then it's a NULL check
       return ltype == RuntimeType::NULLTYPE;
+    }
 
-    case ComparatorNode::Type::IS_NOT:
+    case ComparatorNode::Type::IS_NOT: {
+      // first check if it's a boolean
+      if (ltype == RuntimeType::BOOLEAN && rtype == RuntimeType::BOOLEAN) { return rhs != lhs; }
+      // if it's not a boolean, then it's a NULL check
       return ltype != RuntimeType::NULLTYPE;
+    }
 
     case ComparatorNode::Type::LIKE:
       if (ltype != RuntimeType::STRING) return false;

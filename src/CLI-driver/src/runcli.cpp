@@ -34,15 +34,26 @@ void cleanupReadline() {
 
 bool endsWithSemicolonOutsideQuotes(const std::string& s) {
   bool inSingleQuote = false;
+  bool escaped = false;
 
   for (char c : s) {
-    if (c == '\'') inSingleQuote = !inSingleQuote;
+    if (escaped) {
+      escaped = false;
+      continue;
+    }
+
+    if (c == '\\') {
+      escaped = true;
+      continue;
+    }
+
+    if (c == '\'') { inSingleQuote = !inSingleQuote; }
   }
 
   if (inSingleQuote) return false;
 
-  for (int i = s.size() - 1; i >= 0; --i) {
-    if (isspace(s[i])) continue;
+  for (std::size_t i = (s.size()) - 1u; i >= 0u; --i) {
+    if (isspace(static_cast<unsigned char>(s[i]))) continue;
     return s[i] == ';';
   }
   return false;

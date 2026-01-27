@@ -178,3 +178,20 @@
    fun:_ZN9CLIDriver6runCLIEv
    fun:main
 }
+
+{
+   readline_leaks_by_gemini
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible,definite
+   fun:malloc
+   ...
+   fun:readline
+}
+{
+   add_history_leaks_by_gemini
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible,definite
+   fun:malloc
+   ...
+   fun:add_history
+}
