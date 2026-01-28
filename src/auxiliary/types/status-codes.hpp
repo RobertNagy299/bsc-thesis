@@ -81,6 +81,7 @@ enum class FatalErrorCode : std::uint16_t {
   METADAT_CouldNotCreateMetadataFileForTable,
   METADAT_TableMetadataDirectoryDoesNotExist,
   DROP_FILEOPS_UnknownFileSystemError,
+  COLCODE_TableDoesNotExistWhenTryingToConstructColcodeMapping,
   COMPACT_FILEOPS_UnknownFileSystemErrorWhileDeletingOldFile,
   COMPACT_FILEOPS_UnknownFileSystemErrorWhileRenamingNewFile
 };

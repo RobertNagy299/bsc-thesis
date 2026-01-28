@@ -104,19 +104,30 @@
 %type <colList> opt_col_list col_list selection_col_statement
 %type <assignmentNode> assignment
 %type <assignmentListNode> assignment_list
+%type <node> input
+%start input
 
 %%
+
+input
+  : program
+    {
+      root = static_cast<ProgramNode*>($1);
+      $$ = nullptr;   // <--- steal ownership here ONLY
+    }
+  ;
+
+
 program
   : statement SEMICOLON {
       auto prog = new ProgramNode();
       prog->statements.push_back($1);
-      root = prog;   // root is global
-      $$ = nullptr;
+      $$ = prog;
     }
   | program statement SEMICOLON {
       auto prog = static_cast<ProgramNode*>($1);
       prog->statements.push_back($2);
-      $$ = nullptr;
+      $$ = prog;
     }
   ;
 

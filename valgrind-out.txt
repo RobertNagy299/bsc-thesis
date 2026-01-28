@@ -1,194 +1,212 @@
-==11487== Memcheck, a memory error detector
-==11487== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
-==11487== Using Valgrind-3.19.0-8d3c8034b8-20220411 and LibVEX; rerun with -h for copyright info
-==11487== Command: ./MainApp
-==11487== Parent PID: 3757
-==11487== 
---11487-- 
---11487-- Valgrind options:
---11487--    --leak-check=full
---11487--    --show-leak-kinds=all
---11487--    --track-origins=yes
---11487--    --verbose
---11487--    --suppressions=../suppressions/readline.supp
---11487--    --log-file=../valgrind-out.txt
---11487-- Contents of /proc/version:
---11487--   Linux version 6.1.0-42-amd64 (debian-kernel@lists.debian.org) (gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #1 SMP PREEMPT_DYNAMIC Debian 6.1.159-1 (2025-12-30)
---11487-- 
---11487-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3
---11487-- Page sizes: currently 4096, max supported 4096
---11487-- Valgrind library directory: /usr/libexec/valgrind
---11487-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp
---11487-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
---11487--   Considering /usr/lib/debug/.build-id/65/80196fa83df5c1edec10a57b2725eda6c73d7c.debug ..
---11487--   .. build-id is valid
---11487-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
---11487--   Considering /usr/lib/debug/.build-id/82/26c2aa6b808ebd5a6fafb694a7fb3287f33590.debug ..
---11487--   .. build-id is valid
---11487--    object doesn't have a dynamic symbol table
---11487-- Scheduler: using generic scheduler lock implementation.
---11487-- Reading suppressions file: ../suppressions/readline.supp
---11487-- Reading suppressions file: /usr/libexec/valgrind/default.supp
-==11487== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-11487-by-robi-on-???
-==11487== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-11487-by-robi-on-???
-==11487== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-11487-by-robi-on-???
-==11487== 
-==11487== TO CONTROL THIS PROCESS USING vgdb (which you probably
-==11487== don't want to do, unless you know exactly what you're doing,
-==11487== or are doing some strange experiment):
-==11487==   /usr/bin/vgdb --pid=11487 ...command...
-==11487== 
-==11487== TO DEBUG THIS PROCESS USING GDB: start GDB like this
-==11487==   /path/to/gdb ./MainApp
-==11487== and then give GDB the following command
-==11487==   target remote | /usr/bin/vgdb --pid=11487
-==11487== --pid is optional if only one valgrind process is running
-==11487== 
---11487-- REDIR: 0x40239c0 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bb0e2 (vgPlain_amd64_linux_REDIR_FOR_strlen)
---11487-- REDIR: 0x40221a0 (ld-linux-x86-64.so.2:index) redirected to 0x580bb0fc (vgPlain_amd64_linux_REDIR_FOR_index)
---11487-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
---11487--   Considering /usr/lib/debug/.build-id/ad/f1388be4d8781737b0c83fe111a5a9c6e930aa.debug ..
---11487--   .. build-id is valid
---11487-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
---11487--   Considering /usr/lib/debug/.build-id/d8/ec66cffcb23a75c3f15940674d6028709121f8.debug ..
---11487--   .. build-id is valid
-==11487== WARNING: new redirection conflicts with existing -- ignoring it
---11487--     old: 0x040239c0 (strlen              ) R-> (0000.0) 0x580bb0e2 vgPlain_amd64_linux_REDIR_FOR_strlen
---11487--     new: 0x040239c0 (strlen              ) R-> (2007.0) 0x048478a0 strlen
---11487-- REDIR: 0x40223c0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4848780 (strcmp)
---11487-- REDIR: 0x4021630 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x484c1a0 (mempcpy)
---11487-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so
---11487-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30
---11487--    object doesn't have a symbol table
---11487-- Reading syms from /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
---11487--    object doesn't have a symbol table
---11487-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
---11487--   Considering /usr/lib/debug/.build-id/61/96744a316dbd57c0fd8968df1680aac482cec4.debug ..
---11487--   .. build-id is valid
-==11487== WARNING: new redirection conflicts with existing -- ignoring it
---11487--     old: 0x04b56600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
---11487--     new: 0x04b56600 (memalign            ) R-> (1017.0) 0x04846b90 aligned_alloc
-==11487== WARNING: new redirection conflicts with existing -- ignoring it
---11487--     old: 0x04b56600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
---11487--     new: 0x04b56600 (memalign            ) R-> (1017.0) 0x04846b60 aligned_alloc
-==11487== WARNING: new redirection conflicts with existing -- ignoring it
---11487--     old: 0x04b56600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
---11487--     new: 0x04b56600 (memalign            ) R-> (1017.0) 0x04846b90 aligned_alloc
-==11487== WARNING: new redirection conflicts with existing -- ignoring it
---11487--     old: 0x04b56600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
---11487--     new: 0x04b56600 (memalign            ) R-> (1017.0) 0x04846b60 aligned_alloc
---11487-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/semantic_validator/libSemanticValidator.so
---11487-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/semantic_normalizer/libSemanticNormalizer.so
---11487-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/logger/libLoggerService.so
---11487-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so
---11487-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/execution_context/libExecutionContext.so
---11487-- Reading syms from /usr/lib/x86_64-linux-gnu/libreadline.so.8.2
---11487--    object doesn't have a symbol table
---11487-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
---11487--   Considering /usr/lib/debug/.build-id/d6/e6f9e3af1243eed9bf5efd366dd015a9f22c13.debug ..
---11487--   .. build-id is valid
---11487-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/auxiliary/libUtils.so
---11487-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/condition-evaluator/libConditionEvaluator.so
---11487-- Reading syms from /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4
---11487--    object doesn't have a symbol table
---11487-- REDIR: 0x4b5c540 (libc.so.6:strnlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5c5d0 (libc.so.6:strpbrk) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5a6f0 (libc.so.6:strcmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b6f4e0 (libc.so.6:wcsnlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b59830 (libc.so.6:memset) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b6de20 (libc.so.6:wcslen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b58e60 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b6dc50 (libc.so.6:wcschr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5a5e0 (libc.so.6:index) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5c600 (libc.so.6:rindex) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b6dce0 (libc.so.6:wcscmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b59a70 (libc.so.6:stpncpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b6e230 (libc.so.6:wmemchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5c3f0 (libc.so.6:strncmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b59ae0 (libc.so.6:strcasecmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5b950 (libc.so.6:strcspn) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b6dd70 (libc.so.6:wcscpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5a560 (libc.so.6:strcat) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5c2e0 (libc.so.6:strncasecmp_l) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b58d70 (libc.so.6:bcmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b597a0 (libc.so.6:memrchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5a660 (libc.so.6:strchrnul) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5b8d0 (libc.so.6:strcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b59b80 (libc.so.6:strcasecmp_l) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5c1b0 (libc.so.6:strlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5c490 (libc.so.6:strncpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b599f0 (libc.so.6:stpcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b59580 (libc.so.6:memmove) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b58cf0 (libc.so.6:memchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5c7c0 (libc.so.6:strspn) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b59690 (libc.so.6:mempcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5c240 (libc.so.6:strncasecmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b59930 (libc.so.6:rawmemchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5c380 (libc.so.6:strncat) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4bd30d0 (libc.so.6:__memcpy_chk) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b5cf60 (libc.so.6:strstr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
---11487-- REDIR: 0x4b6cbe0 (libc.so.6:__strrchr_sse2) redirected to 0x4847320 (__strrchr_sse2)
---11487-- REDIR: 0x4b55920 (libc.so.6:malloc) redirected to 0x4841740 (malloc)
---11487-- REDIR: 0x4b66d50 (libc.so.6:__strlen_sse2) redirected to 0x48477e0 (__strlen_sse2)
---11487-- REDIR: 0x4b5f7e0 (libc.so.6:__memcmp_sse2) redirected to 0x484a9e0 (__memcmp_sse2)
---11487-- REDIR: 0x4c2e600 (libc.so.6:__strcmp_sse42) redirected to 0x4848740 (__strcmp_sse42)
---11487-- REDIR: 0x492c570 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4841ec0 (operator new(unsigned long))
---11487-- REDIR: 0x4b5fd70 (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4848890 (memcpy@GLIBC_2.2.5)
---11487-- REDIR: 0x4b566d0 (libc.so.6:calloc) redirected to 0x4846540 (calloc)
---11487-- REDIR: 0x4b66720 (libc.so.6:__strcpy_sse2_unaligned) redirected to 0x48478d0 (strcpy)
---11487-- REDIR: 0x4b64d40 (libc.so.6:__strchrnul_sse2) redirected to 0x484bca0 (strchrnul)
---11487-- REDIR: 0x4afe3c0 (libc.so.6:setenv) redirected to 0x484cba0 (setenv)
---11487-- REDIR: 0x4b64b20 (libc.so.6:__strchr_sse2) redirected to 0x4847400 (__strchr_sse2)
---11487-- REDIR: 0x4c30f70 (libc.so.6:__strncmp_sse42) redirected to 0x4847ff0 (__strncmp_sse42)
---11487-- REDIR: 0x4b56120 (libc.so.6:realloc) redirected to 0x48467b0 (realloc)
---11487-- REDIR: 0x4b5fd50 (libc.so.6:__mempcpy_sse2_unaligned) redirected to 0x484bdb0 (mempcpy)
---11487-- REDIR: 0x4b6c9c0 (libc.so.6:__strnlen_sse2) redirected to 0x4847720 (strnlen)
---11487-- REDIR: 0x4b55ee0 (libc.so.6:free) redirected to 0x4844110 (free)
---11487-- REDIR: 0x4b5fd60 (libc.so.6:__memcpy_chk_sse2_unaligned) redirected to 0x484c290 (__memcpy_chk)
---11487-- REDIR: 0x4b60640 (libc.so.6:__memset_sse2_unaligned) redirected to 0x484b1c0 (memset)
---11487-- REDIR: 0x4b6b9e0 (libc.so.6:__strncpy_sse2_unaligned) redirected to 0x4847db0 (__strncpy_sse2_unaligned)
---11487-- REDIR: 0x4b5f4b0 (libc.so.6:__memchr_sse2) redirected to 0x4848800 (memchr)
---11487-- REDIR: 0x4c2cdc0 (libc.so.6:__strcasecmp_l_sse42) redirected to 0x4848290 (strcasecmp_l)
---11487-- REDIR: 0x4b60a60 (libc.so.6:__stpcpy_sse2_unaligned) redirected to 0x484ada0 (__stpcpy_sse2_unaligned)
---11487-- REDIR: 0x4c2cdb0 (libc.so.6:__strcasecmp_sse42) redirected to 0x4848050 (strcasecmp)
---11487-- REDIR: 0x4c2f4d0 (libc.so.6:__strncasecmp_sse42) redirected to 0x4848110 (strncasecmp)
---11487-- REDIR: 0x492a8e0 (libstdc++.so.6:operator delete(void*, unsigned long)) redirected to 0x4844930 (operator delete(void*, unsigned long))
---11487-- REDIR: 0x492c5d0 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x48431a0 (operator new[](unsigned long))
---11487-- REDIR: 0x492a8d0 (libstdc++.so.6:operator delete(void*)) redirected to 0x48446b0 (operator delete(void*))
---11487-- REDIR: 0x492a900 (libstdc++.so.6:operator delete[](void*)) redirected to 0x48456f0 (operator delete[](void*))
---11487-- REDIR: 0x4c2f4e0 (libc.so.6:__strncasecmp_l_sse42) redirected to 0x48483e0 (strncasecmp_l)
-==11487== 
-==11487== HEAP SUMMARY:
-==11487==     in use at exit: 229,241 bytes in 237 blocks
-==11487==   total heap usage: 1,059 allocs, 822 frees, 549,055 bytes allocated
-==11487== 
-==11487== Searching for pointers to 237 not-freed blocks
-==11487== Checked 426,944 bytes
-==11487== 
-==11487== 168 bytes in 1 blocks are still reachable in loss record 27 of 77
-==11487==    at 0x48465EF: calloc (vg_replace_malloc.c:1328)
-==11487==    by 0x506914E: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
-==11487==    by 0x506C2C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
-==11487==    by 0x4E6DDB4: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==11487==    by 0x4E6E9D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==11487==    by 0x4E5707B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==11487==    by 0x4E57B48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==11487==    by 0x4E583C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
-==11487==    by 0x48627E3: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
-==11487==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
-==11487== 
-==11487== LEAK SUMMARY:
-==11487==    definitely lost: 0 bytes in 0 blocks
-==11487==    indirectly lost: 0 bytes in 0 blocks
-==11487==      possibly lost: 0 bytes in 0 blocks
-==11487==    still reachable: 168 bytes in 1 blocks
-==11487==         suppressed: 229,073 bytes in 236 blocks
-==11487== 
-==11487== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
---11487-- 
---11487-- used_suppression:     55 readline_leaks_by_gemini ../suppressions/readline.supp:183 suppressed: 205,989 bytes in 215 blocks
---11487-- used_suppression:     18 ncurses_terminfo_cache ../suppressions/readline.supp:21 suppressed: 20,724 bytes in 18 blocks
---11487-- used_suppression:      2 readline_internal_xrealloc ../suppressions/readline.supp:55 suppressed: 1,544 bytes in 2 blocks
---11487-- used_suppression:      1 add_history_leaks_by_gemini ../suppressions/readline.supp:191 suppressed: 816 bytes in 1 blocks
-==11487== 
-==11487== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==9574== Memcheck, a memory error detector
+==9574== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==9574== Using Valgrind-3.19.0-8d3c8034b8-20220411 and LibVEX; rerun with -h for copyright info
+==9574== Command: ./MainApp
+==9574== Parent PID: 3727
+==9574== 
+--9574-- 
+--9574-- Valgrind options:
+--9574--    --leak-check=full
+--9574--    --show-leak-kinds=all
+--9574--    --track-origins=yes
+--9574--    --verbose
+--9574--    --suppressions=../suppressions/readline.supp
+--9574--    --log-file=../valgrind-out.txt
+--9574-- Contents of /proc/version:
+--9574--   Linux version 6.1.0-42-amd64 (debian-kernel@lists.debian.org) (gcc-12 (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #1 SMP PREEMPT_DYNAMIC Debian 6.1.159-1 (2025-12-30)
+--9574-- 
+--9574-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3
+--9574-- Page sizes: currently 4096, max supported 4096
+--9574-- Valgrind library directory: /usr/libexec/valgrind
+--9574-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp
+--9574-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--9574--   Considering /usr/lib/debug/.build-id/65/80196fa83df5c1edec10a57b2725eda6c73d7c.debug ..
+--9574--   .. build-id is valid
+--9574-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--9574--   Considering /usr/lib/debug/.build-id/82/26c2aa6b808ebd5a6fafb694a7fb3287f33590.debug ..
+--9574--   .. build-id is valid
+--9574--    object doesn't have a dynamic symbol table
+--9574-- Scheduler: using generic scheduler lock implementation.
+--9574-- Reading suppressions file: ../suppressions/readline.supp
+--9574-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==9574== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-9574-by-robi-on-???
+==9574== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-9574-by-robi-on-???
+==9574== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-9574-by-robi-on-???
+==9574== 
+==9574== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==9574== don't want to do, unless you know exactly what you're doing,
+==9574== or are doing some strange experiment):
+==9574==   /usr/bin/vgdb --pid=9574 ...command...
+==9574== 
+==9574== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==9574==   /path/to/gdb ./MainApp
+==9574== and then give GDB the following command
+==9574==   target remote | /usr/bin/vgdb --pid=9574
+==9574== --pid is optional if only one valgrind process is running
+==9574== 
+--9574-- REDIR: 0x40239c0 (ld-linux-x86-64.so.2:strlen) redirected to 0x580bb0e2 (vgPlain_amd64_linux_REDIR_FOR_strlen)
+--9574-- REDIR: 0x40221a0 (ld-linux-x86-64.so.2:index) redirected to 0x580bb0fc (vgPlain_amd64_linux_REDIR_FOR_index)
+--9574-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--9574--   Considering /usr/lib/debug/.build-id/ad/f1388be4d8781737b0c83fe111a5a9c6e930aa.debug ..
+--9574--   .. build-id is valid
+--9574-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+--9574--   Considering /usr/lib/debug/.build-id/d8/ec66cffcb23a75c3f15940674d6028709121f8.debug ..
+--9574--   .. build-id is valid
+==9574== WARNING: new redirection conflicts with existing -- ignoring it
+--9574--     old: 0x040239c0 (strlen              ) R-> (0000.0) 0x580bb0e2 vgPlain_amd64_linux_REDIR_FOR_strlen
+--9574--     new: 0x040239c0 (strlen              ) R-> (2007.0) 0x048478a0 strlen
+--9574-- REDIR: 0x40223c0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4848780 (strcmp)
+--9574-- REDIR: 0x4021630 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x484c1a0 (mempcpy)
+--9574-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so
+--9574-- Reading syms from /usr/lib/x86_64-linux-gnu/libstdc++.so.6.0.30
+--9574--    object doesn't have a symbol table
+--9574-- Reading syms from /usr/lib/x86_64-linux-gnu/libgcc_s.so.1
+--9574--    object doesn't have a symbol table
+--9574-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--9574--   Considering /usr/lib/debug/.build-id/61/96744a316dbd57c0fd8968df1680aac482cec4.debug ..
+--9574--   .. build-id is valid
+==9574== WARNING: new redirection conflicts with existing -- ignoring it
+--9574--     old: 0x04b56600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
+--9574--     new: 0x04b56600 (memalign            ) R-> (1017.0) 0x04846b90 aligned_alloc
+==9574== WARNING: new redirection conflicts with existing -- ignoring it
+--9574--     old: 0x04b56600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
+--9574--     new: 0x04b56600 (memalign            ) R-> (1017.0) 0x04846b60 aligned_alloc
+==9574== WARNING: new redirection conflicts with existing -- ignoring it
+--9574--     old: 0x04b56600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
+--9574--     new: 0x04b56600 (memalign            ) R-> (1017.0) 0x04846b90 aligned_alloc
+==9574== WARNING: new redirection conflicts with existing -- ignoring it
+--9574--     old: 0x04b56600 (memalign            ) R-> (1011.0) 0x04846bc0 memalign
+--9574--     new: 0x04b56600 (memalign            ) R-> (1017.0) 0x04846b60 aligned_alloc
+--9574-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/semantic_validator/libSemanticValidator.so
+--9574-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/semantic_normalizer/libSemanticNormalizer.so
+--9574-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/logger/libLoggerService.so
+--9574-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/filehandler/libFileHandler.so
+--9574-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/execution_context/libExecutionContext.so
+--9574-- Reading syms from /usr/lib/x86_64-linux-gnu/libreadline.so.8.2
+--9574--    object doesn't have a symbol table
+--9574-- Reading syms from /usr/lib/x86_64-linux-gnu/libm.so.6
+--9574--   Considering /usr/lib/debug/.build-id/d6/e6f9e3af1243eed9bf5efd366dd015a9f22c13.debug ..
+--9574--   .. build-id is valid
+--9574-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/auxiliary/libUtils.so
+--9574-- Reading syms from /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/DBEngine/services/condition-evaluator/libConditionEvaluator.so
+--9574-- Reading syms from /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4
+--9574--    object doesn't have a symbol table
+--9574-- REDIR: 0x4b5c540 (libc.so.6:strnlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5c5d0 (libc.so.6:strpbrk) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5a6f0 (libc.so.6:strcmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b6f4e0 (libc.so.6:wcsnlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b59830 (libc.so.6:memset) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b6de20 (libc.so.6:wcslen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b58e60 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b6dc50 (libc.so.6:wcschr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5a5e0 (libc.so.6:index) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5c600 (libc.so.6:rindex) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b6dce0 (libc.so.6:wcscmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b59a70 (libc.so.6:stpncpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b6e230 (libc.so.6:wmemchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5c3f0 (libc.so.6:strncmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b59ae0 (libc.so.6:strcasecmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5b950 (libc.so.6:strcspn) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b6dd70 (libc.so.6:wcscpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5a560 (libc.so.6:strcat) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5c2e0 (libc.so.6:strncasecmp_l) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b58d70 (libc.so.6:bcmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b597a0 (libc.so.6:memrchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5a660 (libc.so.6:strchrnul) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5b8d0 (libc.so.6:strcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b59b80 (libc.so.6:strcasecmp_l) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5c1b0 (libc.so.6:strlen) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5c490 (libc.so.6:strncpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b599f0 (libc.so.6:stpcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b59580 (libc.so.6:memmove) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b58cf0 (libc.so.6:memchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5c7c0 (libc.so.6:strspn) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b59690 (libc.so.6:mempcpy) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5c240 (libc.so.6:strncasecmp) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b59930 (libc.so.6:rawmemchr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5c380 (libc.so.6:strncat) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4bd30d0 (libc.so.6:__memcpy_chk) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b5cf60 (libc.so.6:strstr) redirected to 0x48381b0 (_vgnU_ifunc_wrapper)
+--9574-- REDIR: 0x4b6cbe0 (libc.so.6:__strrchr_sse2) redirected to 0x4847320 (__strrchr_sse2)
+--9574-- REDIR: 0x4b55920 (libc.so.6:malloc) redirected to 0x4841740 (malloc)
+--9574-- REDIR: 0x4b66d50 (libc.so.6:__strlen_sse2) redirected to 0x48477e0 (__strlen_sse2)
+--9574-- REDIR: 0x4b5f7e0 (libc.so.6:__memcmp_sse2) redirected to 0x484a9e0 (__memcmp_sse2)
+--9574-- REDIR: 0x4c2e600 (libc.so.6:__strcmp_sse42) redirected to 0x4848740 (__strcmp_sse42)
+--9574-- REDIR: 0x492c570 (libstdc++.so.6:operator new(unsigned long)) redirected to 0x4841ec0 (operator new(unsigned long))
+--9574-- REDIR: 0x4b5fd70 (libc.so.6:memcpy@GLIBC_2.2.5) redirected to 0x4848890 (memcpy@GLIBC_2.2.5)
+--9574-- REDIR: 0x4b566d0 (libc.so.6:calloc) redirected to 0x4846540 (calloc)
+--9574-- REDIR: 0x4b66720 (libc.so.6:__strcpy_sse2_unaligned) redirected to 0x48478d0 (strcpy)
+--9574-- REDIR: 0x4b64d40 (libc.so.6:__strchrnul_sse2) redirected to 0x484bca0 (strchrnul)
+--9574-- REDIR: 0x4afe3c0 (libc.so.6:setenv) redirected to 0x484cba0 (setenv)
+--9574-- REDIR: 0x4b64b20 (libc.so.6:__strchr_sse2) redirected to 0x4847400 (__strchr_sse2)
+--9574-- REDIR: 0x4c30f70 (libc.so.6:__strncmp_sse42) redirected to 0x4847ff0 (__strncmp_sse42)
+--9574-- REDIR: 0x4b56120 (libc.so.6:realloc) redirected to 0x48467b0 (realloc)
+--9574-- REDIR: 0x4b5fd50 (libc.so.6:__mempcpy_sse2_unaligned) redirected to 0x484bdb0 (mempcpy)
+--9574-- REDIR: 0x4b6c9c0 (libc.so.6:__strnlen_sse2) redirected to 0x4847720 (strnlen)
+--9574-- REDIR: 0x4b55ee0 (libc.so.6:free) redirected to 0x4844110 (free)
+--9574-- REDIR: 0x4b5fd60 (libc.so.6:__memcpy_chk_sse2_unaligned) redirected to 0x484c290 (__memcpy_chk)
+--9574-- REDIR: 0x4b60640 (libc.so.6:__memset_sse2_unaligned) redirected to 0x484b1c0 (memset)
+--9574-- REDIR: 0x4b6b9e0 (libc.so.6:__strncpy_sse2_unaligned) redirected to 0x4847db0 (__strncpy_sse2_unaligned)
+--9574-- REDIR: 0x4b5f4b0 (libc.so.6:__memchr_sse2) redirected to 0x4848800 (memchr)
+--9574-- REDIR: 0x4c2cdc0 (libc.so.6:__strcasecmp_l_sse42) redirected to 0x4848290 (strcasecmp_l)
+--9574-- REDIR: 0x4b60a60 (libc.so.6:__stpcpy_sse2_unaligned) redirected to 0x484ada0 (__stpcpy_sse2_unaligned)
+--9574-- REDIR: 0x4c2cdb0 (libc.so.6:__strcasecmp_sse42) redirected to 0x4848050 (strcasecmp)
+--9574-- REDIR: 0x4c2f4d0 (libc.so.6:__strncasecmp_sse42) redirected to 0x4848110 (strncasecmp)
+--9574-- REDIR: 0x492a8e0 (libstdc++.so.6:operator delete(void*, unsigned long)) redirected to 0x4844930 (operator delete(void*, unsigned long))
+--9574-- REDIR: 0x492c5d0 (libstdc++.so.6:operator new[](unsigned long)) redirected to 0x48431a0 (operator new[](unsigned long))
+--9574-- REDIR: 0x492a8d0 (libstdc++.so.6:operator delete(void*)) redirected to 0x48446b0 (operator delete(void*))
+--9574-- REDIR: 0x492a900 (libstdc++.so.6:operator delete[](void*)) redirected to 0x48456f0 (operator delete[](void*))
+==9574== 
+==9574== HEAP SUMMARY:
+==9574==     in use at exit: 229,490 bytes in 241 blocks
+==9574==   total heap usage: 1,714 allocs, 1,473 frees, 906,855 bytes allocated
+==9574== 
+==9574== Searching for pointers to 241 not-freed blocks
+==9574== Checked 427,144 bytes
+==9574== 
+==9574== 48 bytes in 1 blocks are definitely lost in loss record 22 of 81
+==9574==    at 0x4841F2F: operator new(unsigned long) (vg_replace_malloc.c:422)
+==9574==    by 0x1178F6: yyparse() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9574==    by 0x4862681: (anonymous namespace)::parseAndExecute(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9574==    by 0x486298F: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9574==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9574== 
+==9574== 168 bytes in 1 blocks are still reachable in loss record 30 of 81
+==9574==    at 0x48465EF: calloc (vg_replace_malloc.c:1328)
+==9574==    by 0x506A14E: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9574==    by 0x506D2C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9574==    by 0x4E6EDB4: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9574==    by 0x4E6F9D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9574==    by 0x4E5807B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9574==    by 0x4E58B48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9574==    by 0x4E593C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9574==    by 0x48627E3: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9574==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9574== 
+==9574== 168 bytes in 1 blocks are still reachable in loss record 31 of 81
+==9574==    at 0x48465EF: calloc (vg_replace_malloc.c:1328)
+==9574==    by 0x506A14E: ??? (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9574==    by 0x506D2C0: _nc_tiparm (in /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4)
+==9574==    by 0x4E6E59C: ??? (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9574==    by 0x4E6F9D0: rl_redisplay (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9574==    by 0x4E5807B: _rl_internal_char_cleanup (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9574==    by 0x4E58B48: readline_internal_char (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9574==    by 0x4E593C4: readline (in /usr/lib/x86_64-linux-gnu/libreadline.so.8.2)
+==9574==    by 0x48627E3: CLIDriver::runCLI() (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/src/CLI-driver/libCLIDriver.so)
+==9574==    by 0x1153A1: main (in /home/robi/programming/FinalThesisBSC/JSSqlProject_V2_after_repo_corruption/bsc-thesis/build/MainApp)
+==9574== 
+==9574== LEAK SUMMARY:
+==9574==    definitely lost: 48 bytes in 1 blocks
+==9574==    indirectly lost: 0 bytes in 0 blocks
+==9574==      possibly lost: 0 bytes in 0 blocks
+==9574==    still reachable: 336 bytes in 2 blocks
+==9574==         suppressed: 229,106 bytes in 238 blocks
+==9574== 
+==9574== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)
+--9574-- 
+--9574-- used_suppression:     57 readline_leaks_by_gemini ../suppressions/readline.supp:183 suppressed: 206,022 bytes in 217 blocks
+--9574-- used_suppression:     18 ncurses_terminfo_cache ../suppressions/readline.supp:21 suppressed: 20,724 bytes in 18 blocks
+--9574-- used_suppression:      2 readline_internal_xrealloc ../suppressions/readline.supp:55 suppressed: 1,544 bytes in 2 blocks
+--9574-- used_suppression:      1 add_history_leaks_by_gemini ../suppressions/readline.supp:191 suppressed: 816 bytes in 1 blocks
+==9574== 
+==9574== ERROR SUMMARY: 1 errors from 1 contexts (suppressed: 0 from 0)

@@ -49,25 +49,33 @@ void ExecutionContext::initializeUntypedTableMetadata() {
   }
 }
 
+void ExecutionContext::initializeColumnEncodingMapForTable(const std::string& table_name) {
+  const auto it = this->getUntypedTables().find(table_name);
+  if (it == this->getUntypedTables().end()) {
+    LoggerService::ErrorLogger::handleFatalError(
+        StatusCode::FatalErrorCode::COLCODE_TableDoesNotExistWhenTryingToConstructColcodeMapping,
+        std::vector<std::string>{table_name});
+  }
+  const auto& schema = it->second;
+  std::uint8_t col_code = (std::uint8_t)0x0u;
+  auto map_ptr = std::make_unique<DB_Types::colname_colcode_map_t>();
+  for (const auto& col : schema) {
+    (*map_ptr)[col->name] = col_code;
+    col_code += 0x1u;
+    if (col_code == (std::uint8_t)0x0u) {
+      LoggerService::ErrorLogger::handleFatalError(
+          StatusCode::FatalErrorCode::FILEOPS_ColOffsetRegionHasMoreColsThanAllowed,
+          std::vector<std::string>{table_name});
+    }
+  }
+  // transfer ownership to member variable
+  this->table_colcodes[table_name] = std::move(map_ptr);
+}
+
 void ExecutionContext::initializeColumnEncodingMap() {
-  LoggerService::StatusLogger::printAsStandardOutput(
-      "Constructing Column name - std::uint8_t encoding for binary file handling...");
   for (const auto& table : this->untyped_tables) {
     const std::string& table_name = table.first;
-    const auto& table_cols = table.second;
-    std::uint8_t col_code = (std::uint8_t)0x0u;
-    auto map_ptr = std::make_unique<DB_Types::colname_colcode_map_t>();
-    for (const auto& col : table_cols) {
-      (*map_ptr)[col->name] = col_code;
-      col_code += 0x1u;
-      if (col_code == (std::uint8_t)0x0u) {
-        LoggerService::ErrorLogger::handleFatalError(
-            StatusCode::FatalErrorCode::FILEOPS_ColOffsetRegionHasMoreColsThanAllowed,
-            std::vector<std::string>{table_name});
-      }
-    }
-    // transfer ownership to member variable
-    this->table_colcodes[table_name] = std::move(map_ptr);
+    ExecutionContext::initializeColumnEncodingMapForTable(table_name);
   }
 }
 

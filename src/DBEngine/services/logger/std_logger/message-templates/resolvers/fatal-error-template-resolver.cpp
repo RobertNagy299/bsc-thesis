@@ -64,6 +64,10 @@ std::string MessageTemplateResolver::resolveFatalErrorMessageTemplate(const Stat
       return "Could not deserialize column offset region during delete process, possibly due to file corruption or "
              "misalignment";
     }
+    case StatusCode::FatalErrorCode::COLCODE_TableDoesNotExistWhenTryingToConstructColcodeMapping: {
+      return MessageTemplateResolver::injectContext(
+          "Could not find table '{}' while trying to calculate its column codes.", resolved_context);
+    }
     default: {
       return "Unknown fatal error";
     }

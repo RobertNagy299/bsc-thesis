@@ -51,10 +51,11 @@ void FileHandler::createUntypedTable(CreateUntypedTableNode& node, ExecutionCont
     }
   }
 
+  ctx.setUntypedTable(table_name, cols);
+  ctx.initializeColumnEncodingMapForTable(table_name);
   // create empty indicies for this table.
   ctx.recalculateIndicesForTable(table_name);
 
   LoggerService::StatusLogger::printAsStandardOutput("Created table " + table_name + " with " +
                                                      std::to_string(cols.size()) + " columns");
-  ctx.setUntypedTable(table_name, cols);
 }

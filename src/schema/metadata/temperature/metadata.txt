@@ -1,0 +1,2 @@
+timestamp PRIMARY KEY
+celsius NOT NULL

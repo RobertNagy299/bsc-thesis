@@ -9,7 +9,7 @@
  * @returns `true` if the insertion Node is semantically valid, `false` otherwise
  */
 const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const ExecutionContext& ctx) {
-  assert(node.is_normalized);
+
   if (!SemanticValidator::checkIfTableExists(node.table_name, ctx)) { return false; }
 
   const auto& tables = ctx.getUntypedTables();
@@ -23,7 +23,12 @@ const bool SemanticValidator::validateInsertSemantics(InsertNode& node, const Ex
 
   for (auto& record : node.values->records) {
     const auto& vals = record->values;
-
+    if (vals.size() > ncols) {
+      LoggerService::ErrorLogger::printAsStandardError(
+          StatusCode::ErrorCode::SEMVAL_INSERT_MoreValuesThanColumnsInTable,
+          std::vector<std::string>{node.table_name, std::to_string(ncols), std::to_string(vals.size())});
+      return false;
+    }
     // already guaranteed same length as schema
     for (std::size_t j = 0; j < ncols; ++j) {
 
