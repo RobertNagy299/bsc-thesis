@@ -1,3 +1,81 @@
+# Supported SQL Commands:
+
+- `CREATE UNTYPED TABLE` with column modifiers: `PRIMARY KEY`, `DEFAULT` , `NOT NULL`
+- `DESCRIBE table_name`
+- `DROP table_name`
+- `INSERT` with or without an optional column list, and with either a single value record or multiple value records. Supports implicit and explicit empty literals and default value substitutions
+- `DELETE FROM table_name [WHERE condition]`, with an optimized execution path for the specialized case when "condition" is a primary key equality. For other cases, it performs a sequential file scan. In all cases, deletion consists of marking records as TOMBSTONES, and only performing a physical deletion when the tombstone / live record ratio exceeds a certain threshold
+- `UPDATE table_name SET col_name = literal_value [, col_name_2 = literal_2, ...] [WHERE condition]`. 
+UPDATE is implemented in several steps:
+  1. Deserialize the old records and mark them as tombstones
+  2. Construct the new records by performing an in-memory projection based on an inverse projection mask (reuse old values where no update is needed, and use new values where they were given)
+  3. Append the new records to the table file
+  4. perform compaction if the tombstone ratio is too big
+- `SELECT * FROM table_name [WHERE condition]`
+- `SELECT col1, col2, col3.. FROM table_name [WHERE condition]`
+- WHERE clause supports a single condition with the following comparators:
+  1. `IS` / `IS NOT` --> used for NULL and TRUE / FALSE checks
+  2. `LIKE` / `NOT LIKE` --> used for string pattern matching -- supports the wildcard characters `_` (to match a single arbitrary character) and `%` (to match any number of characters). 
+  3. Mathematical comparators (`>, >=, <, <=`)
+
+Type handling is the task of the user, not the task of the DB Engine. There is no strict column type checking. This means that a column can contain anything. Even a mixture of different types.
+
+Condition evaluation however, DOES use types, by attempting to convert strings to special runtime types, based on their contents. The condition evaluator knows when to use which comparator, and gives the user errors when appropriate, with instructions.
+
+Supported types for condition evaluation: 
+- STRING (comparators: `LIKE`, `NOT LIKE`, `=`)
+- BOOLEAN (comparators: `IS`, `IS NOT`)
+- NULL (comparators: `IS`, `IS NOT`)
+- NUMERIC (double, float, or int - comparators: `<, <=, >, >=, =`)
+
+### **STRINGS ARE ALWAYS IN SINGLE QUOTES !!**
+
+String handling does not support double quotes `""`. If you enter a string literal, you must strictly wrap it inside single quotes `''`
+
+### SQL KEYWORDS ARE STRICTLY UPPERCASE!
+
+SQL Keywords like CREATE, INSERT, DELETE, etc. are only recognized as keywords by the parser if they are entered with uppercase letters. Lowercase strings are considered identifiers by the tokenizer.
+
+## Example commands
+
+```
+CREATE UNTYPED TABLE users (
+  id PRIMARY KEY, 
+  name NOT NULL, 
+  age NOT NULL DEFAULT 18, 
+  is_premium DEFAULT FALSE,
+  badge_color DEFAULT 'purple' 
+  );
+
+DESCRIBE users;
+
+INSERT INTO users(id, name, is_premium)
+VALUES 
+(1, 'George', TRUE),
+(2, 'Tim', TRUE);
+
+INSERT INTO users VALUES (3, 'Gerald', 43);
+
+SELECT * FROM users WHERE name LIKE 'G%';
+
+SELECT name, is_premium FROM users;
+
+UPDATE users SET is_premium = FALSE WHERE id = 1;
+
+UPDATE users SET name = 'Howard' WHERE age > 20;
+
+UPDATE users SET age = 23;
+
+DELETE FROM users WHERE id = 2;
+
+DELETE FROM users;
+
+SELECT * FROM users;
+
+DROP TABLE users;
+
+```
+
 # Valgrind usage
 
 ## For a text report about memory usage and leaks / bad alloc errors
@@ -60,25 +138,26 @@ valgrind --tool=massif --stacks=yes ./your_program
 ```
 
 
-# Commands:
-
-[optional]
-
-DROP TABLE identifier; \
-INSERT INTO table[(col1, col2)] VALUES (asd, asd1) [, (asd3, asd4)]; \
-CREATE UNTYPED TABLE table (col1 [PRIMARY KEY] [, col2 [NOT NULL], col3 [UNIQUE], col4 [DEFAULT 'str1']]); \
-SELECT (col1, col2) FROM table \
-SELECT * FROM table \
 
 # Limitations:
 
- - Maximum # of columns in a table: 256 (comes from the column offset map - col_id is of type std::uint8_t)
- - Only one condition is allowed in the WHERE clause
- - The maximum safe length of a record is LONG_INT_MAX bytes. UNSIGNED_LONG_MAX number of bytes is the theoretical maximum, but due to seekg pointer manipulation and std::streamoff static casting, the record length is ultimately treated as a long int
+ - **Strings cannot contain single quotes** - this is due to the implementation of the CLI driver. Without this limitation, it wouldn't be able to parse multi-line SQL input, because the line separator parsing is done in the CLI Driver and not in the tokenizer / parser. So for example, `'It's good'` wouldn't be parsed, but `'It\'s good'` would be, because in the latter example, the single quote is escaped. However, the escaping `\` character might still be written to the disk
+ - **The maximum number of columns in a table is 256** (comes from the column offset map - col_id is of type `std::uint8_t`)
+ - **Only one condition is allowed in the WHERE clause** - logical operators like AND, OR or BETWEEN are not supported.
+ - **The maximum safe length of a record is LONG_INT_MAX bytes.** UNSIGNED_LONG_MAX number of bytes is the theoretical maximum, but due to seekg pointer manipulation and std::streamoff static casting, the record length is ultimately treated as a long int
+- **the parser supports the UNIQUE column modifier, but the DB Engine doesn't** - the UNIQUE keyword is recognized and applied as a modifier, but there are no internal index structures or uniqueness checks / enforcements in the DB engine. (The PRIMARY KEY column is an exception - there are indexes and uniqueness checks for it, as you would expect)
+- **No composite keys allowed** - PRIMARY KEY must be a single column
+- **Primary key value cannot be updated** - the UPDATE statement will give you an error if you try to modify existing primary keys. This is to enforce better database design, because changing primary keys in real systems is a bad practice that might severely impact performance due to CASCADE and other effects, or even introduce data integrity issues.
+- **This app is Linux only** - testing and development was done exclusively on a Debian 12 Linux virtual machine with 3 CPU cores and 12 GB of RAM. Compatibility with other OSs was not tested and is not guaranteed.
+- **No aggregation functions in SELECT** - Aggregations like SELECT MAX, MIN or AVERAGE are not implemented
+- **No aliases** - aliasing during selection is not implemented - statements like `SELECT id AS user_id ...` are not supported
+- **No JOINS** - the JOIN command is not implemented. Hence, FOREIGN KEYS and CASCADE statements are also unavailable
+- **No GROUP BY, ORDER BY, or HAVING COUNT clauses** - the only "extra" clause that is supported is the `WHERE` clause.
+- **Memory safety** - the BISON parser is using raw pointers and is usually safe and does not cause any leaks, however, **in certain rare scenarios or syntax error paths, the parser might not dispose of the AST structure properly, and a few bytes of memory might be leaked - 80-1000 bytes, reported as "definitely" or "possibly" or "indirectly" lost by Valgrind** - based on the length of the inputs. **However, reports and visualizations generated by Massif and Valgrind report a platued memory profile**, with peak usage usually happening during initialization. This indicates that memory leaks don't occur anywhere in the app, and memory is usually reused. This is expected, because the DB Engine is using smart pointers where possible. Only the parser and the AST are using raw pointers, because they were the first components that I implemented and I deliberately used raw pointers in order to learn manual memory management and ownership principles. - **Peak memory usage with 5 different tables containing 5-10 records each, and the CLI having parsed over 15 different SQL statements was around 350 KiB.**
 
 # Binary file structure:
 
-Table.dat is a single binary file that looks like this:
+table_name.bin is a single binary file that looks like this:
 
 `[table header][record][record][record]...`
 
@@ -103,15 +182,16 @@ DB_Types::primary_key_t primary_key; // variable length
 std::string payload; // variable length
 ```
 
-ColumnOffset is `[column_id][offset]` which is stored like this:
+ColumnOffset is `[offset][column_id]` which is stored like this:
 
 ```
-std::uint8_t col_id;
 std::uint64_t offset;
+std::uint8_t col_id;
 ```
 
 ColumnOffset is used to speed up the evaluation of Where conditions for columns without an index 
-offset is relative, tells you how far the data is from the beginning of the current record's data_tuple region (after the primary key)
+
+
 `[payload]` is:
 
 `[size][data][size][data]...` where each `[size][data]` pair corresponds to a single cell in the row
@@ -189,3 +269,7 @@ THEN
  - add a description to the ticket - prefer verbosity and precision over ambiguity
 THEN create a commit like this:
  - `bug(memory safety): 123 Add proper bison destructor for GROUP BY node in case of a syntax error`
+
+ ### Always create merge requests / pull requests. Never commit directly to `main` !!
+
+ Except if you're the owner and know what you're doing ;)
