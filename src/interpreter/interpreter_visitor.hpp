@@ -46,9 +46,9 @@ public:
   }
 
   void visit(InsertNode& node) override {
-
+    bool is_normalized = SemanticNormalizer::normalizeInsert(node, ctx);
     // Semantic validation - ensure proper literal values, types, etc.
-    if (!SemanticNormalizer::normalizeInsert(node, ctx) || !SemanticValidator::validateInsertSemantics(node, ctx)) {
+    if (!SemanticValidator::validateInsertSemantics(node, ctx) || !is_normalized) {
       LoggerService::ErrorLogger::printAsStandardError(
           StatusCode::ErrorCode::NOCONTX_SEMVAL_INSERT_GenericInvalidStatement);
       return;

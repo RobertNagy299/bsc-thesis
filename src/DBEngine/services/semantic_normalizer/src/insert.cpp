@@ -40,7 +40,9 @@ bool SemanticNormalizer::normalizeInsert(InsertNode& node, const ExecutionContex
 
   // ---- 3) Rewrite each VALUES(...) record to schema order ----
   for (auto& record : node.values->records) {
-
+    // check if the user gave more values than there are columns in the table
+    if (record->values.size() > ncols) { return false; }
+    // construct the normalized value records
     std::vector<LiteralNode*> normalized_row(ncols, nullptr);
     for (std::size_t j = 0; j < node.columns->columns.size(); ++j) {
       std::size_t schema_index = std::distance(

@@ -30,7 +30,7 @@
 
 %union {
     std::string* str; // destructor exists
-    ASTNode* node; 
+    ASTNode* node;  // destructor exists
     std::vector<ASTNode*>* nodeList; // destructor exists
     std::vector<std::string>* strList; // destructor exists
     ColumnListNode* colList; // destructor exists
