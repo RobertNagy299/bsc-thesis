@@ -1,3 +1,0 @@
-id PRIMARY KEY
-content NOT NULL
-timestamp

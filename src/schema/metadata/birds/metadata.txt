@@ -1,0 +1,5 @@
+id PRIMARY KEY
+weight NOT NULL
+species DEFAULT 'Unknown'
+is_tracked DEFAULT FALSE
+age NOT NULL

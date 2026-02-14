@@ -57,7 +57,8 @@ void FileHandler::deleteData(const DeleteNode& node, ExecutionContext& ctx) {
 void FileHandler::performDeleteByIndexLookup(const DeleteNode& node, ExecutionContext& ctx, std::fstream& table_file) {
   // find the offset in the index
   const std::string& column_name = node.opt_where_node->conditions_list_node->conditions[0]->col_name;
-  const std::string& key_value = node.opt_where_node->conditions_list_node->conditions[0]->literal_value->value;
+  const std::string& key_value = Utilities::StringUtils::removeOuterQuotes(
+      node.opt_where_node->conditions_list_node->conditions[0]->literal_value->value);
   const auto& offset = ctx.getHashmapIndices()->at(node.table_name)->at(column_name)->at(key_value);
   // seek to the col offset region and then back to the col type region
   // offset is absolute, and seekp is not influenced by seekg, so we seek from the beg.
@@ -69,7 +70,7 @@ void FileHandler::performDeleteByIndexLookup(const DeleteNode& node, ExecutionCo
 
   // overwrite the record type
   FileHandler::writeToBinaryFile(table_file, DB_Types::RecordType::DELETE);
-
+  table_file.flush();
   // erase this key from the index
   ctx.eraseKeyFromIndex(node.table_name, column_name, key_value);
 }

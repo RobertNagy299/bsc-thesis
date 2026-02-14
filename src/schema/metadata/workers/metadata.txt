@@ -1,5 +1,0 @@
-id PRIMARY KEY
-name NOT NULL
-is_out_office DEFAULT FALSE
-age NOT NULL
-number_of_children
