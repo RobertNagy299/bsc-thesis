@@ -1,3 +1,7 @@
+# Demo video
+
+available [here](https://youtu.be/YfypWezCLGo)
+
 # How to build and run
 
 1. cd to the main directory (bsc-thesis)
