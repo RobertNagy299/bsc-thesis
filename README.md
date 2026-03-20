@@ -15,6 +15,7 @@ available [here](https://youtu.be/YfypWezCLGo)
 - `FLEX` (lexical analyzer generator) `v2.6.4` 
 - GNU `Bison` `v3.8.2`
 - `GNU readline (libreadline-dev)` `v8.2-1.3`
+- Optional: `GoogleTest C++` testing library (or just remove the test directory from CMakeLists.txt)
 
 # Supported SQL Commands:
 
