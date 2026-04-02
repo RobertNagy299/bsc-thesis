@@ -62,8 +62,7 @@ void FileHandler::performDeleteByIndexLookup(const DeleteNode& node, ExecutionCo
   const auto& offset = ctx.getHashmapIndices()->at(node.table_name)->at(column_name)->at(key_value);
   // seek to the col offset region and then back to the col type region
   // offset is absolute, and seekp is not influenced by seekg, so we seek from the beg.
-  table_file.seekp(0, std::ios::beg);
-  table_file.seekp(offset + sizeof(DB_Types::table_file_header_t), std::ios::beg);
+  table_file.seekp(offset, std::ios::beg);
 
   // move back
   table_file.seekp(-sizeof(DB_Types::RecordType), std::ios::cur);

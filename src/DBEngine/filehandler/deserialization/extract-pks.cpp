@@ -26,9 +26,7 @@ FileHandler::Deserializer::deserializeNextPrimaryKey(std::ifstream& table_file, 
   // tellg will include the 32 bytes long file header and the 9 bytes long record len and type info
   // our binary file format ensures that the column offset region starts right after the record_type byte.
 
-  // cast away the ambiguity caused by the "long - unsigned long" subtraction
-  out_offset = static_cast<std::uint64_t>(table_file.tellg()) -
-               static_cast<std::uint64_t>(sizeof(DB_Types::table_file_header_t));
+  out_offset = static_cast<std::uint64_t>(table_file.tellg());
 
   // if it is a tombstone record, skip it
   if (record_type == DB_Types::RecordType::DELETE || record_type == DB_Types::RecordType::UNUSED) {

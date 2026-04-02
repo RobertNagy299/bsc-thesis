@@ -5,9 +5,14 @@ void ExecutionContext::setUntypedTable(const std::string& table_name,
   this->untyped_tables[table_name] = std::move(coldefs);
 }
 
-void ExecutionContext::addNewPrimaryKeyIndex(const std::string& table_name, const std::string& pk_col_name,
+void ExecutionContext::upsertPrimaryKeyIndex(const std::string& table_name, const std::string& pk_col_name,
                                              const std::string& pk_literal, const std::uint64_t offset) {
-  this->indices->at(table_name)->at(pk_col_name)->insert(std::pair<std::string, std::uint64_t>(pk_literal, offset));
+  const auto currentOffset = this->indices->at(table_name)->at(pk_col_name)->find(pk_literal);
+  if (currentOffset != this->indices->at(table_name)->at(pk_col_name)->end()) {
+    this->indices->at(table_name)->at(pk_col_name)->at(pk_literal) = offset;
+  } else {
+    this->indices->at(table_name)->at(pk_col_name)->insert(std::pair<std::string, std::uint64_t>(pk_literal, offset));
+  }
 }
 
 void ExecutionContext::recalculateIndicesForTable(const std::string& table_name) {
