@@ -34,7 +34,7 @@ typedef struct ColModifierChecklist {
 // anonymous indices - only create indices for columns
 
 // stores pairs of "primary key value" - "offset" or "unique value" - "offset" eg. "123 -> 432 bytes"
-// offset is the absolute offset from the beginning of the record region to the start of the col offset region
+// offset is the absolute offset from the beginning of the table file to the start of the record type region
 
 // [literal] --> [offset]
 typedef std::unordered_map<std::string, std::uint64_t> index_t;

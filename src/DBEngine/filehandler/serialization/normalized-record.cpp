@@ -73,11 +73,11 @@ void FileHandler::Serializer::serializeNormalizedRecord(ExecutionContext& ctx, c
   // ---- write ----
   try {
     FileHandler::writeToBinaryFile(table_file, record_length);
-    FileHandler::writeToBinaryFile(table_file, type);
     // add the primary key to the index here in the case of INSERT or UPDATE
     if (type == DB_Types::RecordType::INSERT || type == DB_Types::RecordType::UPDATE) {
       ctx.upsertPrimaryKeyIndex(table_name, table_cols.at(pk_idx)->name, pk_literal, table_file.tellp());
     }
+    FileHandler::writeToBinaryFile(table_file, type);
 
     for (auto& off : column_offsets) FileHandler::writeToBinaryFile(table_file, off);
 

@@ -225,8 +225,8 @@ size is used for reading the exact number of bytes needed to get the data, data 
 
 **In this case, the offset is absolute** - it does not include the table header - header will always be checked in the local function to ensure format consistency
 
-This kind of offset always points to the start of the record's col_offset_region, starting from the beginning of
-the record region in a table file. The record region begins right after the table file header.
+This kind of offset always points to the start of the record's type region, starting from the beginning of
+the table file.
 
 ### Offsets in the context of "column offset regions" in the binary file
 

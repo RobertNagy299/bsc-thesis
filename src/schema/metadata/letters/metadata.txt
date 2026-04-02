@@ -1,5 +1,0 @@
-id PRIMARY KEY
-weight NOT NULL
-sender NOT NULL
-destination NOT NULL
-stamp DEFAULT 'approved'

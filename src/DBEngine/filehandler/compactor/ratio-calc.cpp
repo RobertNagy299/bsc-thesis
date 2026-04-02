@@ -16,8 +16,11 @@ double FileHandler::Compactor::calculateTombstoneRatio(const std::string& table_
     DB_Types::TableFileDeserializationIndicator type_deser_result;
     do {
       type_deser_result = FileHandler::Deserializer::deserializeNextRecordType(table_file);
-      total_count++;
-      if (type_deser_result == DB_Types::TableFileDeserializationIndicator::TOMBSTONE) { tombstone_count++; }
+      if (type_deser_result == DB_Types::TableFileDeserializationIndicator::TOMBSTONE) { ++tombstone_count; }
+      if (type_deser_result != DB_Types::TableFileDeserializationIndicator::IOERROR &&
+          type_deser_result != DB_Types::TableFileDeserializationIndicator::ENDOFTABLE) {
+        ++total_count;
+      }
       if (type_deser_result == DB_Types::TableFileDeserializationIndicator::IOERROR) {
         if (table_file.is_open()) { table_file.close(); }
         LoggerService::ErrorLogger::handleFatalError(

@@ -1,3 +1,0 @@
-id PRIMARY KEY
-name NOT NULL
-age DEFAULT 18

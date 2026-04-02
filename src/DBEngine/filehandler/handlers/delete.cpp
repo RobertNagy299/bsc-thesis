@@ -63,10 +63,6 @@ void FileHandler::performDeleteByIndexLookup(const DeleteNode& node, ExecutionCo
   // seek to the col offset region and then back to the col type region
   // offset is absolute, and seekp is not influenced by seekg, so we seek from the beg.
   table_file.seekp(offset, std::ios::beg);
-
-  // move back
-  table_file.seekp(-sizeof(DB_Types::RecordType), std::ios::cur);
-
   // overwrite the record type
   FileHandler::writeToBinaryFile(table_file, DB_Types::RecordType::DELETE);
   table_file.flush();

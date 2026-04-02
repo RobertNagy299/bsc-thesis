@@ -99,7 +99,6 @@ void ExecutionContext::initializePrimaryKeyIndicesForTable(const std::string& ta
   }
   std::ifstream table_file(table_path, std::ios::binary | std::ios::in);
   // store the index as a "pk" -> "offset" pair where pk is the string representation of the pk
-  // and the offset is the relative offset from the start of the record to the start of the data tuple region
   if (table_file.is_open()) {
     FileHandler::checkFileValidity(table_file, table_name);
     // perform deserialization logic

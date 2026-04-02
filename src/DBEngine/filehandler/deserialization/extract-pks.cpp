@@ -2,8 +2,8 @@
 
 /* offset is absolute - it does not include the table header - header will always be checked in the local function to
  * ensure format consistency
- * out_offset always points to the start of the record's col_offset_region, starting from the beginning of
- * the record region in a table file
+ * out_offset always points to the start of the record's type, starting from the beginning of
+ * the table file
  */
 DB_Types::TableFileDeserializationIndicator
 FileHandler::Deserializer::deserializeNextPrimaryKey(std::ifstream& table_file, std::string& out_pk_val,
@@ -15,18 +15,17 @@ FileHandler::Deserializer::deserializeNextPrimaryKey(std::ifstream& table_file, 
     // If read fails (e.g., end of file reached or an error), return eof
     return DB_Types::TableFileDeserializationIndicator::ENDOFTABLE;
   }
+  // at the start of the scanning of the record, reposition the offset
+  // tellg will include the 32 bytes long file header and the 8 bytes long record length.
+  // our binary file format ensures that the column offset region starts right after the record_type byte.
+
+  out_offset = static_cast<std::uint64_t>(table_file.tellg());
 
   // read the record type
   DB_Types::RecordType record_type;
   if (!table_file.read(reinterpret_cast<char*>(&record_type), sizeof(record_type))) {
     return DB_Types::TableFileDeserializationIndicator::IOERROR;
   }
-
-  // at the start of the scanning of the record, reposition the offset
-  // tellg will include the 32 bytes long file header and the 9 bytes long record len and type info
-  // our binary file format ensures that the column offset region starts right after the record_type byte.
-
-  out_offset = static_cast<std::uint64_t>(table_file.tellg());
 
   // if it is a tombstone record, skip it
   if (record_type == DB_Types::RecordType::DELETE || record_type == DB_Types::RecordType::UNUSED) {
