@@ -60,6 +60,7 @@ bool endsWithSemicolonOutsideQuotes(const std::string& s) {
 }
 
 void parseAndExecute(const std::string& sql) {
+  auto start = std::chrono::steady_clock::now();
   root = nullptr;
 
   FILE* f = fmemopen((void*)sql.c_str(), sql.size(), "r");
@@ -87,6 +88,11 @@ void parseAndExecute(const std::string& sql) {
     delete root; root = nullptr;
     // clang-format on
   }
+  auto end = std::chrono::steady_clock::now();
+  std::chrono::duration<double, std::milli> double_duration = end - start;
+  std::cout << std::endl
+            << ">>> The complete query was executed in " << std::to_string(double_duration.count()) << " ms"
+            << std::endl;
 }
 
 } // namespace
