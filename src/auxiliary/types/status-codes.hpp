@@ -69,6 +69,7 @@ enum class ErrorCode : std::uint16_t {
 enum class FatalErrorCode : std::uint16_t {
   FILEOPS_GenericFileIOFailure = 20000u,
   FILEOPS_ColOffsetRegionHasMoreColsThanAllowed,
+  NOCONTX_CSV_IMPORT_CannotOpenFile,
   FILEOPS_CouldNotCreateTableFile,
   FILEOPS_UnknownExceptionWhileCreatingTableFile,
   NOCONTX_NULLPTR_InMemoryPrimaryKeyHashMapInitializationFailure,
@@ -81,9 +82,11 @@ enum class FatalErrorCode : std::uint16_t {
   METADAT_CouldNotCreateMetadataFileForTable,
   METADAT_TableMetadataDirectoryDoesNotExist,
   DROP_FILEOPS_UnknownFileSystemError,
+
   COLCODE_TableDoesNotExistWhenTryingToConstructColcodeMapping,
   COMPACT_FILEOPS_UnknownFileSystemErrorWhileDeletingOldFile,
-  COMPACT_FILEOPS_UnknownFileSystemErrorWhileRenamingNewFile
+  COMPACT_FILEOPS_UnknownFileSystemErrorWhileRenamingNewFile,
+  CSV_IMPORT_UnknownException,
 };
 
 /**
@@ -96,6 +99,7 @@ enum class FatalErrorCode : std::uint16_t {
  */
 enum class WarningCode : std::uint16_t {
   FILEOPS_FileWasMadeWithDifferentDBVersion = 40000u,
+  CSV_IMPORT_RowHasMoreColumnsThanTable,
 };
 
 } // namespace StatusCode

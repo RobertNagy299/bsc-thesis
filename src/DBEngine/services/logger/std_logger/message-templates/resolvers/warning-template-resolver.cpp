@@ -10,6 +10,14 @@ std::string MessageTemplateResolver::resolveWarningMessageTemplate(const StatusC
                                                     "the DB engine. Expect undefined behavior. Use at your own risk!",
                                                     resolved_context);
     }
+    case StatusCode::WarningCode::CSV_IMPORT_RowHasMoreColumnsThanTable: {
+      return MessageTemplateResolver::injectContext(
+          "Found a row with '{}' columns on line '{}' of the csv file. This is more than the number of columns in "
+          "table '{}' (which is "
+          "'{}'). The "
+          "system is skipping this row, and will continue trying to import other rows.",
+          resolved_context);
+    }
     default: {
       return "Unknown warning";
     }

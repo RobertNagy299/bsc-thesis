@@ -9,9 +9,16 @@ std::string MessageTemplateResolver::resolveFatalErrorMessageTemplate(const Stat
     case StatusCode::FatalErrorCode::FILEOPS_GenericFileIOFailure: {
       return MessageTemplateResolver::injectContext("An unknown IO error occured. Error message: {}", resolved_context);
     }
+    case StatusCode::FatalErrorCode::NOCONTX_CSV_IMPORT_CannotOpenFile: {
+      return "Could not open the given CSV file. Check your file path.";
+    }
     case StatusCode::FatalErrorCode::FILEOPS_ColOffsetRegionHasMoreColsThanAllowed: {
       return MessageTemplateResolver::injectContext(
           "Table '{}' Has more than 256 columns on the disk, which is illegal.", resolved_context);
+    }
+    case StatusCode::FatalErrorCode::CSV_IMPORT_UnknownException: {
+      return MessageTemplateResolver::injectContext("Unknown exception while parsing the CSV file. Error message: '{}'",
+                                                    resolved_context);
     }
     case StatusCode::FatalErrorCode::NOCONTX_NULLPTR_InMemoryPrimaryKeyHashMapInitializationFailure: {
       return "One of the pointers responsible for primary key indexing was nullptr.";
