@@ -21,11 +21,13 @@ void printRow(const std::vector<std::string>& row, const std::vector<std::size_t
 // Main methods
 
 void LoggerService::StatusLogger::printAsStandardOutput(const std::string& status_msg) {
+  if (LoggerService::is_silent_mode) { return; }
   std::cout << status_msg << std::endl;
 }
 
 void LoggerService::StatusLogger::printResultSetAsTable(const SelectNode& node,
                                                         const std::unique_ptr<DB_Types::ResultSet>& results) {
+  if (LoggerService::is_silent_mode) { return; }
   if (results->empty()) {
     std::cout << "(0 rows)\n";
     return;
@@ -61,6 +63,8 @@ void LoggerService::StatusLogger::printResultSetAsTable(const SelectNode& node,
 
 void LoggerService::StatusLogger::printTableDescription(const DescribeNode& node,
                                                         const std::vector<UntypedColumnDefNode*> schema) {
+
+  if (LoggerService::is_silent_mode) { return; }
 
   std::size_t max_coldef_length = 0;
   std::vector<std::string> coldefs_to_print;

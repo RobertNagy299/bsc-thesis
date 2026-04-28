@@ -106,9 +106,11 @@ void parseAndExecute(const std::string& sql) {
   }
   auto end = std::chrono::steady_clock::now();
   std::chrono::duration<double, std::milli> double_duration = end - start;
-  std::cout << std::endl
-            << ">>> The complete query was executed in " << std::to_string(double_duration.count()) << " ms"
-            << std::endl;
+  if (!LoggerService::is_silent_mode) {
+    std::cout << std::endl
+              << ">>> The complete query was executed in " << std::to_string(double_duration.count()) << " ms"
+              << std::endl;
+  }
 }
 
 void performTotalCleanup(bool is_initialized, std::string& sql_buffer, bool is_interactive) {
@@ -116,18 +118,31 @@ void performTotalCleanup(bool is_initialized, std::string& sql_buffer, bool is_i
   if (is_initialized) { ExecutionContext::destroyInstance(); }
   if (is_interactive) {
     cleanupReadline();
-    std::cout << "Bye!" << std::endl;
+    if (!LoggerService::is_silent_mode) { std::cout << std::endl << "Bye!" << std::endl; }
   }
+}
+
+void processArgs(int argc, char** argv) {
+  // default flag values
+  bool silent = false;
+
+  // user provided flag values
+  for (int i = 1; i < argc; ++i) {
+    std::string arg = argv[i];
+    if (arg == "--silent") { silent = true; }
+  }
+
+  LoggerService::setSilentMode(silent);
 }
 
 } // namespace
 
-void CLIDriver::runCLI() {
+void CLIDriver::runCLI(int argc, char** argv) {
+  processArgs(argc, argv);
   stifle_history(100);
   // 1 MB = 1024 * 1024 bytes
   const size_t MAX_SQL_BUFFER_SIZE = 1024u * 1024u;
-
-  std::cout << "Welcome to MiniSQL. Type INIT, QUIT, or SQL statements.\n";
+  if (!LoggerService::is_silent_mode) { std::cout << "Welcome to MiniSQL. Type INIT, QUIT, or SQL statements.\n"; }
 
   std::string sqlBuffer;
   bool initialized = false;
@@ -142,7 +157,7 @@ void CLIDriver::runCLI() {
       char* input = readline(prompt);
 
       if (!input) {
-        std::cout << "\nBye!\n";
+        if (!LoggerService::is_silent_mode) { std::cout << std::endl << "Bye!" << std::endl; }
         break;
       }
 
