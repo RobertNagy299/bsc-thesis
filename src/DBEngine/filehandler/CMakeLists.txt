@@ -25,3 +25,4 @@ add_library(FileHandler SHARED
 )
 
 target_link_libraries(FileHandler ConditionEvaluator)
+target_link_libraries(FileHandler StrategyDecider)

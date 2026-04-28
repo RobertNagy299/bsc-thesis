@@ -1,4 +1,5 @@
 #include "../../services/condition-evaluator/public-api.hpp"
+#include "../../services/strategy-decider/public-api.hpp"
 #include "../public_api.hpp"
 
 void FileHandler::deleteData(const DeleteNode& node, ExecutionContext& ctx) {
@@ -17,9 +18,7 @@ void FileHandler::deleteData(const DeleteNode& node, ExecutionContext& ctx) {
     // perform actual tombstone logic
     // strategy - WHERE node contains a primaryKeyEQ comparison
     const std::string& primary_key_column = Utilities::ColumnUtils::extractPrimaryKeyColumn(table_cols);
-    if (node.opt_where_node &&
-        node.opt_where_node->conditions_list_node->conditions[0]->col_name == primary_key_column &&
-        node.opt_where_node->conditions_list_node->conditions[0]->cmp_node->type == ComparatorNode::Type::EQ) {
+    if (StrategyDecider::isUniqueEqualityLookup(node.opt_where_node, primary_key_column)) {
       // perform index look-up for fast delete
       FileHandler::performDeleteByIndexLookup(node, ctx, table_file);
     } else {

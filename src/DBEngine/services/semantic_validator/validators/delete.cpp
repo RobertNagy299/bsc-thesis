@@ -20,7 +20,7 @@ const bool SemanticValidator::validateDeleteSemantics(DeleteNode& node, const Ex
         node.opt_where_node->conditions_list_node->conditions[0]->cmp_node->type == ComparatorNode::Type::EQ &&
         pk_index->find(pk_literal) == pk_index->end()) {
       LoggerService::ErrorLogger::printAsStandardError(
-          StatusCode::ErrorCode::SEMVAL_DELETE_PrimaryKeyDoesNotExistInSpecialPKEQCase,
+          StatusCode::ErrorCode::SEMVAL_PrimaryKeyDoesNotExistInSpecialPKEQCase,
           std::vector<std::string>{pk_literal, node.table_name});
       return false;
     }
