@@ -1,0 +1,4 @@
+uuid PRIMARY KEY
+color
+weight
+price

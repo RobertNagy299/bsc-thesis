@@ -18,6 +18,7 @@
 #include <readline/readline.h>
 #include <sstream>
 #include <string>
+#include <unistd.h> // for isatty
 
 extern int yyparse();
 extern ProgramNode* root;
@@ -36,7 +37,7 @@ bool endsWithSemicolonOutsideQuotes(const std::string& s) {
   bool inSingleQuote = false;
   bool escaped = false;
 
-  for (char c : s) {
+  for (const auto& c : s) {
     if (escaped) {
       escaped = false;
       continue;
@@ -52,18 +53,19 @@ bool endsWithSemicolonOutsideQuotes(const std::string& s) {
 
   if (inSingleQuote) return false;
 
-  for (std::size_t i = (s.size()) - 1u; i >= 0u; --i) {
-    if (isspace(static_cast<unsigned char>(s[i]))) continue;
-    return s[i] == ';';
+  for (auto it = s.rbegin(); it != s.rend(); ++it) {
+    if (std::isspace(static_cast<unsigned char>(*it))) continue;
+    return *it == ';';
   }
+
   return false;
 }
 
 void parseAndExecute(const std::string& sql) {
   auto start = std::chrono::steady_clock::now();
   root = nullptr;
-
-  FILE* f = fmemopen((void*)sql.c_str(), sql.size(), "r");
+  std::vector<char> tmp_buffer(sql.begin(), sql.end());
+  FILE* f = fmemopen(tmp_buffer.data(), tmp_buffer.size(), "r");
   if (!f) {
     std::cerr << "Failed to open SQL buffer\n";
     return;
@@ -74,14 +76,28 @@ void parseAndExecute(const std::string& sql) {
   fclose(f);
   yylex_destroy();
 
-  if (result != 0 || !root) {
+  if (result != 0) {
+    if (root) {
+      // clang-format off
+      delete root; root = nullptr;  // Cleanup partial AST if it exists
+      // clang-format on
+    }
     std::cerr << "Parse error.\n";
     return;
   }
 
   ExecutionContext& ctx = ExecutionContext::getInstance();
   InterpreterVisitor visitor(ctx);
-  root->accept(visitor);
+  try {
+    root->accept(visitor);
+  } catch (std::exception& err) {
+    std::cerr << "An unexpected exception occured while parsing the input. Error message: " << err.what() << std::endl;
+    if (root) {
+      // clang-format off
+    delete root; root = nullptr;
+      // clang-format on
+    }
+  }
 
   if (root) {
     // clang-format off
@@ -95,51 +111,76 @@ void parseAndExecute(const std::string& sql) {
             << std::endl;
 }
 
+void performTotalCleanup(bool is_initialized, std::string& sql_buffer, bool is_interactive) {
+  sql_buffer.clear();
+  if (is_initialized) { ExecutionContext::destroyInstance(); }
+  if (is_interactive) {
+    cleanupReadline();
+    std::cout << "Bye!" << std::endl;
+  }
+}
+
 } // namespace
 
 void CLIDriver::runCLI() {
   stifle_history(100);
+  // 1 MB = 1024 * 1024 bytes
+  const size_t MAX_SQL_BUFFER_SIZE = 1024u * 1024u;
+
   std::cout << "Welcome to MiniSQL. Type INIT, QUIT, or SQL statements.\n";
 
   std::string sqlBuffer;
   bool initialized = false;
 
+  const bool interactive = isatty(STDIN_FILENO);
+
   while (true) {
-    const char* prompt = sqlBuffer.empty() ? "sql> " : "  -> ";
-    char* input = readline(prompt);
+    std::string line;
 
-    if (!input) { // Ctrl+D
-      std::cout << "\nBye!\n";
-      break;
+    if (interactive) {
+      const char* prompt = sqlBuffer.empty() ? "sql> " : "  -> ";
+      char* input = readline(prompt);
+
+      if (!input) {
+        std::cout << "\nBye!\n";
+        break;
+      }
+
+      line = input;
+      free(input);
+
+      if (!line.empty()) { add_history(line.data()); }
+    } else {
+      // This part handles the case when SQL commands are piped or coming from stdin, a file, etc.
+      if (!std::getline(std::cin, line)) {
+        // If the file ends but there's a partial command, we should clear the buffers
+        // and destroy everything. Do not execute unfinished commands.
+        line.clear();
+        break; // EOF
+      }
     }
+    line.erase(line.begin(),
+               std::find_if(line.begin(), line.end(), [](unsigned char ch) { return !std::isspace(ch); }));
+    line.erase(std::find_if(line.rbegin(), line.rend(), [](unsigned char ch) { return !std::isspace(ch); }).base(),
+               line.end());
 
-    std::string line(input);
-    free(input);
-
-    // Ignore empty lines (but still allow multiline continuation)
-    if (!line.empty()) { add_history(line.c_str()); }
-
-    if (line == "QUIT") {
-      if (initialized) { ExecutionContext::destroyInstance(); }
-      cleanupReadline();
-      std::cout << "Bye.\n";
-      break;
-    }
+    if (line == "QUIT") { break; }
 
     if (line == "INIT") {
       if (!initialized) {
         ExecutionContext::getInstance();
         initialized = true;
-      } else {
-        std::cout << "Already initialized.\n";
       }
       continue;
     }
 
+    if (sqlBuffer.size() > MAX_SQL_BUFFER_SIZE || line.size() > MAX_SQL_BUFFER_SIZE) {
+      std::cerr << "SQL Command is too large, SQL Buffer exceeded 1 MB. Terminating the CLI..." << std::endl;
+      break;
+    }
     sqlBuffer += line;
     sqlBuffer += '\n';
-
-    if (!endsWithSemicolonOutsideQuotes(sqlBuffer)) { continue; }
+    if (!endsWithSemicolonOutsideQuotes(sqlBuffer)) continue;
 
     if (!initialized) {
       std::cerr << "Error: INIT must be called first.\n";
@@ -150,4 +191,7 @@ void CLIDriver::runCLI() {
     parseAndExecute(sqlBuffer);
     sqlBuffer.clear();
   }
+  // only put the cleanup here, because this runs when the while loop breaks.
+  // Only use the cleanup inside the loop to handle exceptions.
+  performTotalCleanup(initialized, sqlBuffer, interactive);
 }

@@ -26,11 +26,9 @@ std::unique_ptr<DB_Types::ResultSet> FileHandler::selectData(const SelectNode& n
       const auto& offset = ctx.getHashmapIndices()->at(node.table_name)->at(column_name)->at(key_value);
       // the offset is right behind the record size - my mistake. Subtract the size, 8 bytes.
       table_file.seekg(offset - sizeof(std::uint64_t), std::ios::beg);
-      std::cout << "FUCK YES" << std::endl;
       auto deserialization_indicator = FileHandler::Deserializer::deserializeNextRecord(
           table_file, current_table, node.projection_mask, node.opt_where_node, record_buffer);
       if (deserialization_indicator == DB_Types::TableFileDeserializationIndicator::LIVE) {
-        std::cout << "Result found\n";
         results->push_back(std::move(record_buffer));
       }
     } else {
