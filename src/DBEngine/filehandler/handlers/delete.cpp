@@ -41,6 +41,7 @@ void FileHandler::deleteData(const DeleteNode& node, ExecutionContext& ctx) {
         "Tombstone ratio is greater than or equal to the compaction treshold, which is " +
         std::to_string(FileHandler::Compactor::COMPACTION_THRESHOLD) + ". Performing compaction...");
     FileHandler::Compactor::compactTable(node.table_name, ctx);
+    ctx.recalculateIndicesForTable(node.table_name);
   }
 
   auto end = std::chrono::steady_clock::now();

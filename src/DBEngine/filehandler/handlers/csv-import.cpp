@@ -35,6 +35,8 @@ void FileHandler::CSVImporter::performCSVImport(const CSVImportNode& node, Execu
 
     if (csv_file.is_open()) { csv_file.close(); }
     if (table_file.is_open()) { table_file.close(); }
+    LoggerService::StatusLogger::printAsStandardOutput("Successfully imported " + std::to_string(line_count) +
+                                                       " row(s).");
   } catch (std::exception& e) {
     LoggerService::ErrorLogger::handleFatalError(StatusCode::FatalErrorCode::CSV_IMPORT_UnknownException,
                                                  std::vector<std::string>{e.what()});
