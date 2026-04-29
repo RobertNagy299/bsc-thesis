@@ -26,8 +26,6 @@ void FileHandler::deleteData(const DeleteNode& node, ExecutionContext& ctx) {
       do {
         delete_indicator = FileHandler::performSequentialDelete(node, ctx, table_file);
       } while (delete_indicator != DB_Types::TableFileDeserializationIndicator::ENDOFTABLE);
-      // invalidate indices for this table and recalculate them
-      ctx.recalculateIndicesForTable(node.table_name);
     }
   }
 
@@ -41,8 +39,9 @@ void FileHandler::deleteData(const DeleteNode& node, ExecutionContext& ctx) {
         "Tombstone ratio is greater than or equal to the compaction treshold, which is " +
         std::to_string(FileHandler::Compactor::COMPACTION_THRESHOLD) + ". Performing compaction...");
     FileHandler::Compactor::compactTable(node.table_name, ctx);
-    ctx.recalculateIndicesForTable(node.table_name);
   }
+  // recalculate the indexes
+  ctx.recalculateIndicesForTable(node.table_name);
 
   auto end = std::chrono::steady_clock::now();
   std::chrono::duration<double, std::milli> double_duration = end - start;
