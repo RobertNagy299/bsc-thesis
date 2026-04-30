@@ -16,6 +16,10 @@ std::string MessageTemplateResolver::resolveFatalErrorMessageTemplate(const Stat
       return MessageTemplateResolver::injectContext(
           "Table '{}' Has more than 256 columns on the disk, which is illegal.", resolved_context);
     }
+    case StatusCode::FatalErrorCode::COMPACT_INTERNAL_TableNotFoundInDeleteCountMap: {
+      return MessageTemplateResolver::injectContext(
+          "Cannot find table '{}' in the execution context's per-table-delete-counter.", resolved_context);
+    }
     case StatusCode::FatalErrorCode::CSV_IMPORT_UnknownException: {
       return MessageTemplateResolver::injectContext("Unknown exception while parsing the CSV file. Error message: '{}'",
                                                     resolved_context);

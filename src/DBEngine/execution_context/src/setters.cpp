@@ -22,3 +22,7 @@ void ExecutionContext::recalculateIndicesForTable(const std::string& table_name)
   this->initializePrimaryKeyIndicesForTable(table_name);
   // TODO add Unique attribute indexing in the future maybe
 }
+
+void ExecutionContext::setDeleteCountForTable(const std::string& table_name, std::uint64_t new_delete_count) {
+  this->delete_counter_per_table[table_name] = new_delete_count;
+}

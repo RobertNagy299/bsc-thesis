@@ -70,6 +70,7 @@ enum class FatalErrorCode : std::uint16_t {
   FILEOPS_ColOffsetRegionHasMoreColsThanAllowed,
   NOCONTX_CSV_IMPORT_CannotOpenFile,
   FILEOPS_CouldNotCreateTableFile,
+
   FILEOPS_UnknownExceptionWhileCreatingTableFile,
   NOCONTX_NULLPTR_InMemoryPrimaryKeyHashMapInitializationFailure,
   NOCONTX_HASHIDX_NULLPTR_GenericNullptrError,
@@ -85,6 +86,7 @@ enum class FatalErrorCode : std::uint16_t {
   COLCODE_TableDoesNotExistWhenTryingToConstructColcodeMapping,
   COMPACT_FILEOPS_UnknownFileSystemErrorWhileDeletingOldFile,
   COMPACT_FILEOPS_UnknownFileSystemErrorWhileRenamingNewFile,
+  COMPACT_INTERNAL_TableNotFoundInDeleteCountMap,
   CSV_IMPORT_UnknownException,
 };
 
