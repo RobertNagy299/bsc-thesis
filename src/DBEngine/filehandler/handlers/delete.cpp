@@ -42,7 +42,7 @@ void FileHandler::deleteData(const DeleteNode& node, ExecutionContext& ctx) {
       ctx.getHashmapIndices()->at(node.table_name)->at(primary_key_column)->size();
   double tombstone_approximation = (1.0 - FileHandler::Compactor::COMPACTION_THRESHOLD) *
                                    (1.0 * ctx.getDeleteCountForTable(node.table_name) / (1ul + number_of_active_cols));
-  std::cout << "Tombstone approximation = " << std::to_string(tombstone_approximation) << std::endl;
+  // std::cout << "Tombstone approximation = " << std::to_string(tombstone_approximation) << std::endl;
 
   if (tombstone_approximation >= FileHandler::Compactor::COMPACTION_THRESHOLD) {
     LoggerService::StatusLogger::printAsStandardOutput(
@@ -60,8 +60,8 @@ void FileHandler::deleteData(const DeleteNode& node, ExecutionContext& ctx) {
       ctx.recalculateIndicesForTable(node.table_name);
     }
   }
-  std::cout << "Number of deletes = " << std::to_string(ctx.getDeleteCountForTable(node.table_name)) << std::endl;
-  std::cout << "Number of active cols = " << std::to_string(number_of_active_cols) << std::endl;
+  // std::cout << "Number of deletes = " << std::to_string(ctx.getDeleteCountForTable(node.table_name)) << std::endl;
+  // std::cout << "Number of active cols = " << std::to_string(number_of_active_cols) << std::endl;
 
   auto end = std::chrono::steady_clock::now();
   std::chrono::duration<double, std::milli> double_duration = end - start;
