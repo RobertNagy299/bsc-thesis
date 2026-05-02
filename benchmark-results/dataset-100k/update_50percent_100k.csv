@@ -1,4 +1,4 @@
 command,mean,stddev,median,user,system,min,max
-psql -d mydb -q -f test-scripts/postgres/update-50percent.sql > /dev/null,0.11771709658000001,0.013132992931445351,0.11321824246000001,0.057071939999999995,0.029611560000000002,0.10787829346000001,0.17129667846000002
-(echo 'PRAGMA journal_mode=OFF; PRAGMA synchronous=OFF; PRAGMA temp_store=MEMORY;';      cat test-scripts/sqlite/update-50percent.sql) | sqlite3 -batch -noheader sqlite.db > /dev/null,0.03928916494,0.00857358697954319,0.03572717146,0.025282201600000002,0.017854427199999995,0.02952371246,0.05934761746
-./MainApp --silent < test-scripts/minisql/update-50percent.sql > /dev/null,4.9888701053,0.25828839516191876,5.13366756946,2.55753986,2.4224917599999998,4.4566337664599995,5.24925424646
+psql -d mydb -q -f test-scripts/postgres/update-50percent.sql > /dev/null,0.12357501648,0.010177926142872284,0.12293013172,0.05634608,0.033497780000000005,0.11215702672000001,0.15340217072
+(echo 'PRAGMA journal_mode=OFF; PRAGMA synchronous=OFF; PRAGMA temp_store=MEMORY;';      cat test-scripts/sqlite/update-50percent.sql) | sqlite3 -batch -noheader sqlite.db > /dev/null,0.04610783748,0.02441094666814077,0.03833040372,0.023466942399999996,0.02609758,0.029056070720000004,0.13668723172
+./MainApp --silent < test-scripts/minisql/update-50percent.sql > /dev/null,5.382502424560001,0.25334646179359627,5.33668727772,2.75905128,2.6092170599999998,4.80456589072,5.92873473772
