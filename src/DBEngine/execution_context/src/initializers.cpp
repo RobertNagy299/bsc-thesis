@@ -118,3 +118,12 @@ void ExecutionContext::initializePrimaryKeyIndicesForTable(const std::string& ta
 
   if (table_file.is_open()) { table_file.close(); }
 }
+
+void ExecutionContext::initializeDeleteCounters() {
+  // TODO implement read from file
+  auto tables = this->getUntypedTables();
+  for (auto& table : tables) {
+    auto& table_name = table.first;
+    this->delete_counter_per_table[table_name] = 0UL;
+  }
+}

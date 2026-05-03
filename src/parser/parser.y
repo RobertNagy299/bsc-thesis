@@ -83,14 +83,14 @@
 } <litList>
 
 %token SEMICOLON LPAREN RPAREN COMMA ASTERISK
-%token KW_CREATE KW_UNTYPED KW_TABLE KW_NOT KW_KEY KW_PRIMARY KW_DEFAULT KW_UNIQUE KW_DROP
+%token KW_CREATE KW_UNTYPED KW_TABLE KW_NOT KW_KEY KW_PRIMARY KW_DEFAULT KW_UNIQUE KW_DROP KW_IMPORT
 %token KW_INSERT KW_INTO KW_NUMBER_T KW_VALUES KW_TRUE KW_NULL KW_FALSE KW_SELECT KW_FROM KW_DELETE
 %token KW_WHERE KW_LIKE KW_IS KW_AND KW_OR KW_SET KW_UPDATE KW_DESCRIBE
 %token OP_EQ OP_GE OP_GT OP_LE OP_LT OP_NE
 
 %token <str> IDENTIFIER LITERAL_STRING LITERAL_NUMBER
 
-%type <node> program statement tabl_crea untyped_col_def tabl_drop tabl_insert tabl_select tabl_delete tabl_update tabl_describe
+%type <node> program statement csv_import tabl_crea untyped_col_def tabl_drop tabl_insert tabl_select tabl_delete tabl_update tabl_describe
 %type <whereNode> opt_where_statement where_statement
 %type <comparatorNode> comparator
 %type <conditionListNode> condition_list
@@ -136,10 +136,19 @@ statement
   | tabl_drop { $$ = $1; }
   | tabl_insert { $$ = $1; }
   | tabl_select { $$ = $1; }
+  | csv_import { $$ = $1; }
   | tabl_delete { $$ = $1; }
   | tabl_update { $$ = $1; }
   | tabl_describe { $$ = $1; }
   ;
+
+/** LITERAL_STRING is a file path here! */
+csv_import
+  : KW_IMPORT IDENTIFIER KW_FROM LITERAL_STRING {
+    $$ = new CSVImportNode(*$2, *$4);
+    delete $2; $2 = nullptr;
+    delete $4; $4 = nullptr;
+  }
 
 tabl_describe
   : KW_DESCRIBE IDENTIFIER {

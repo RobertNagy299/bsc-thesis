@@ -27,7 +27,10 @@ DB_Types::TableFileDeserializationIndicator performSequentialDelete(const Delete
                                                                     std::fstream& table_file);
 
 std::unique_ptr<DB_Types::ResultSet> selectData(const SelectNode& node, const ExecutionContext& ctx);
-
+namespace CSVImporter {
+  void performCSVImport(const CSVImportNode& node, ExecutionContext& ctx);
+  std::vector<std::string> parseCsvRow(const std::string& row);
+} // namespace CSVImporter
 // "utils"
 void checkFileValidity(std::ifstream& table_file, const std::string& table_name);
 void checkFileValidity(std::fstream& table_file, const std::string& table_name);

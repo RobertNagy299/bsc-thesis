@@ -6,6 +6,8 @@
 #include <string>
 
 namespace LoggerService {
+extern bool is_silent_mode;
+void setSilentMode(bool silent);
 
 namespace ErrorLogger {
   void handleFatalError(const StatusCode::FatalErrorCode& error_code,

@@ -1,4 +1,6 @@
 id PRIMARY KEY
-name DEFAULT 'patrik123'
-age NOT NULL
-is_banned DEFAULT FALSE
+username
+email
+age
+is_active
+signup_timestamp

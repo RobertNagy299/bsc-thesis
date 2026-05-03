@@ -6,6 +6,7 @@ add_library(FileHandler SHARED
   ${CMAKE_CURRENT_SOURCE_DIR}/handlers/select.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/handlers/delete.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/handlers/update.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/handlers/csv-import.cpp
 
   ${CMAKE_CURRENT_SOURCE_DIR}/serialization/normalized-record.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/serialization/create-new-tablefile.cpp
@@ -24,3 +25,4 @@ add_library(FileHandler SHARED
 )
 
 target_link_libraries(FileHandler ConditionEvaluator)
+target_link_libraries(FileHandler StrategyDecider)

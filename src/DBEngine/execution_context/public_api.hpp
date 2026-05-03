@@ -26,6 +26,7 @@ private:
   DB_Types::untyped_table_t untyped_tables;
   DB_Types::table_colcode_map_t table_colcodes;
   DB_Types::indices_ptr_t indices = std::make_unique<DB_Types::tablename_idxmap_map_t>();
+  std::unordered_map<std::string, std::uint64_t> delete_counter_per_table;
 
   static inline const std::string METADATA_BASE_DIR = "../src/schema/metadata";
   // TODO : implement thread safety (NVM: Implement GIL instead if you have time)
@@ -37,8 +38,11 @@ private:
   void initializeUntypedTableMetadata();
   void initializePrimaryKeyIndices();
   void initializePrimaryKeyIndicesForTable(const std::string& table_name);
+  void initializeDeleteCounters();
 
 public:
+  std::uint64_t getDeleteCountForTable(const std::string& table_name);
+  void setDeleteCountForTable(const std::string& table_name, std::uint64_t new_delete_count);
   void eraseKeyFromIndex(const std::string& table_name, const std::string& col_name, const std::string& key_value);
   void recalculateIndicesForTable(const std::string& table_name);
   const DB_Types::indices_ptr_t& getHashmapIndices() const;

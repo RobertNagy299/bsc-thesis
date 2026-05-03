@@ -1,0 +1,4 @@
+command,mean,stddev,median,user,system,min,max
+psql -d mydb -q -f test-scripts/postgres/import-100k.sql > /dev/null,0.5488626860600001,0.02830258224644236,0.5477103585800001,0.08247305999999999,0.06072069999999999,0.49655346058,0.6037115315800001
+(echo 'PRAGMA journal_mode=OFF; PRAGMA synchronous=OFF; PRAGMA temp_store=MEMORY;';      cat test-scripts/sqlite/import-100k.sql) | sqlite3 -batch -noheader sqlite.db > /dev/null,0.7272767977800001,0.11459262066830127,0.71177584258,0.44555602,0.28607437999999996,0.5640593875800001,0.9047056325800001
+./MainApp --silent < test-scripts/minisql/import-100k.sql > /dev/null,8.330535338219999,0.26336180922771385,8.35909354758,6.1188603,2.17681446,7.61068987758,8.81351596058

@@ -1,5 +1,5 @@
 #pragma once
 
 namespace CLIDriver {
-void runCLI();
+void runCLI(int argc, char** argv);
 }

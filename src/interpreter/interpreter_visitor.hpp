@@ -78,6 +78,13 @@ public:
     // end of results's lifespan
   }
 
+  void visit(CSVImportNode& node) override {
+    // normalization is not needed, the table is expected to exist.
+    // The table should have been created by the user, with matching schema.
+    // The handler will perform some minimal sanity checks.
+    FileHandler::CSVImporter::performCSVImport(node, ctx);
+  }
+
   void visit(UpdateNode& node) override {
 
     bool is_normalized = SemanticNormalizer::normalizeUpdate(node, ctx);

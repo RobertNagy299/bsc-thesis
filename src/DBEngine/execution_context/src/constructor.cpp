@@ -7,6 +7,8 @@ ExecutionContext::ExecutionContext() {
   ExecutionContext::initializeUntypedTableMetadata();
   ExecutionContext::initializeColumnEncodingMap();
   ExecutionContext::initializePrimaryKeyIndices();
+  // TODO implement file persistence for delete counters
+  ExecutionContext::initializeDeleteCounters();
   //  TODO initialize indeces
 
   auto end = std::chrono::steady_clock::now();

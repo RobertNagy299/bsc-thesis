@@ -1,0 +1,4 @@
+command,mean,stddev,median,user,system,min,max
+psql -d mydb -q -f test-scripts/postgres/range-select-last-100-100k.sql > /dev/null,0.11259279092,0.03531376104950322,0.103271835,0.06231708000000001,0.03368134,0.08803865400000001,0.262601823
+(echo 'PRAGMA journal_mode=OFF; PRAGMA synchronous=OFF; PRAGMA temp_store=MEMORY;';      cat test-scripts/sqlite/range-select-last-100-100k.sql) | sqlite3 -batch -noheader sqlite.db > /dev/null,0.015344576400000002,0.019948828553657594,0.010627327999999998,0.013760839999999998,0.006231877599999999,0.004997026999999999,0.085829971
+./MainApp --silent < test-scripts/minisql/range-select-last-100-100k.sql > /dev/null,3.0167729042800007,0.292979206878368,3.0858852740000002,1.76749268,1.23970222,2.4009733890000002,3.4225646860000003

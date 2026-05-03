@@ -9,6 +9,7 @@ struct ProgramNode;
 struct CreateUntypedTableNode;
 struct UntypedColumnDefNode;
 struct DropTableNode;
+struct CSVImportNode;
 
 struct InsertNode;
 struct ColumnListNode;
@@ -36,6 +37,7 @@ struct ASTVisitor {
   virtual void visit(ConditionListNode& node) = 0;
   virtual void visit(WhereNode& node) = 0;
   virtual void visit(DescribeNode& node) = 0;
+  virtual void visit(CSVImportNode& node) = 0;
 
   virtual void visit(DeleteNode& node) = 0;
 
@@ -75,6 +77,16 @@ struct ProgramNode : ASTNode {
       }
     }
   }
+};
+
+struct CSVImportNode : ASTNode {
+  std::string table_name;
+  std::string file_path;
+
+  CSVImportNode(const std::string& table_name, const std::string& file_path)
+      : table_name(std::move(table_name)), file_path(std::move(file_path)) {}
+
+  void accept(ASTVisitor& v) override { v.visit(*this); }
 };
 
 struct DescribeNode : ASTNode {
@@ -143,6 +155,13 @@ struct LiteralNode : ASTNode {
 // A list of literal values = one row/record in VALUES
 struct ValueRecordNode : ASTNode {
   std::vector<LiteralNode*> values;
+
+  ValueRecordNode(std::vector<std::string> csv_row) {
+    for (const auto& literal : csv_row) {
+      auto type = LiteralNode::Type::STRING;
+      this->values.push_back(new LiteralNode(type, literal));
+    }
+  }
 
   ValueRecordNode(std::vector<LiteralNode*> vals) : values(std::move(vals)) {}
   ValueRecordNode(std::vector<std::unique_ptr<LiteralNode>> vals) {

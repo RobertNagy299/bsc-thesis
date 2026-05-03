@@ -24,6 +24,7 @@ void FileHandler::updateData(const UpdateNode& node, ExecutionContext& ctx) {
         table_file, schema, node.opt_where_node, record_buffer);
     if (record_deser_result == DB_Types::TableFileDeserializationIndicator::LIVE) {
       old_records.push_back(std::make_unique<DB_Types::Record>(std::move(record_buffer)));
+      ctx.setDeleteCountForTable(node.table_name, ctx.getDeleteCountForTable(node.table_name) + 1UL);
     }
     if (record_deser_result == DB_Types::TableFileDeserializationIndicator::IOERROR) {
       LoggerService::ErrorLogger::handleFatalError(
@@ -62,18 +63,38 @@ void FileHandler::updateData(const UpdateNode& node, ExecutionContext& ctx) {
   if (append_table_file.is_open()) { append_table_file.close(); }
   if (table_file.is_open()) { table_file.close(); }
 
-  // 5. perform compaction due to tombstones
-  double tombstone_ratio = FileHandler::Compactor::calculateTombstoneRatio(node.table_name);
-  LoggerService::StatusLogger::printAsStandardOutput("Tombstone ratio = " + std::to_string(tombstone_ratio));
-  if (tombstone_ratio >= FileHandler::Compactor::COMPACTION_THRESHOLD) {
-    LoggerService::StatusLogger::printAsStandardOutput(
-        "Tombstone ratio is greater than or equal to the compaction treshold, which is " +
-        std::to_string(FileHandler::Compactor::COMPACTION_THRESHOLD) + ". Performing compaction...");
-    FileHandler::Compactor::compactTable(node.table_name, ctx);
-  }
-
-  // 6. invalidate indices and update them for this table
+  // 5. invalidate indices and update them for this table
   ctx.recalculateIndicesForTable(node.table_name);
+
+  // 6. perform compaction due to tombstones
+
+  // Compaction is very expensive, so first maintain an approximation of the number of tombstones,
+  // and if the approximation is large enough, perform a real check.
+  const std::string& primary_key_column = Utilities::ColumnUtils::extractPrimaryKeyColumn(schema);
+  const std::size_t number_of_active_cols =
+      ctx.getHashmapIndices()->at(node.table_name)->at(primary_key_column)->size();
+  // add the number of deletes to the number of active cols, as the file actually contains both the new live, and the
+  // old tombstone
+  double tombstone_approximation = (1.0 * ctx.getDeleteCountForTable(node.table_name) /
+                                    (1ul + number_of_active_cols + ctx.getDeleteCountForTable(node.table_name)));
+  // std::cout << "Tombstone approximation = " << std::to_string(tombstone_approximation) << std::endl;
+  if (tombstone_approximation >= FileHandler::Compactor::COMPACTION_THRESHOLD) {
+    LoggerService::StatusLogger::printAsStandardOutput(
+        "Tombstone ratio is estimated to be " + std::to_string(tombstone_approximation) +
+        ", which is greater than the threshold. Calculating tombstone ratio...");
+    double tombstone_ratio = FileHandler::Compactor::calculateTombstoneRatio(node.table_name);
+    LoggerService::StatusLogger::printAsStandardOutput("Tombstone ratio = " + std::to_string(tombstone_ratio));
+    if (tombstone_ratio >= FileHandler::Compactor::COMPACTION_THRESHOLD) {
+      LoggerService::StatusLogger::printAsStandardOutput(
+          "Tombstone ratio is greater than or equal to the compaction treshold, which is " +
+          std::to_string(FileHandler::Compactor::COMPACTION_THRESHOLD) + ". Performing compaction...");
+      FileHandler::Compactor::compactTable(node.table_name, ctx);
+      ctx.setDeleteCountForTable(node.table_name, 0UL);
+      ctx.recalculateIndicesForTable(node.table_name);
+    }
+  }
+  // std::cout << "Number of deletes = " << std::to_string(ctx.getDeleteCountForTable(node.table_name)) << std::endl;
+  // std::cout << "Number of active cols = " << std::to_string(number_of_active_cols) << std::endl;
 
   auto end = std::chrono::steady_clock::now();
   std::chrono::duration<double, std::milli> double_duration = end - start;

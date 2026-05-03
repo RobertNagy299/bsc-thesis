@@ -25,6 +25,7 @@ STRING    \'([^\'\\]|\\.)*\'
 %%
 
 "CREATE"         {  return KW_CREATE; }
+"IMPORT"         {  return KW_IMPORT; }
 "WHERE"          {  return KW_WHERE; }
 "LIKE"           {  return KW_LIKE; }
 "AND"            {  return KW_AND; }
